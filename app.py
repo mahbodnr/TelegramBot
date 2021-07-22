@@ -5,14 +5,7 @@ from bot import TelegramBot
 from database import Database
 
 async def main():
-    mongodb_connection_info = json.load(open('./mongodb.json', 'r'))
-    access_url= (
-        "mongodb+srv://{}:{}@mahbodnr.z1box.mongodb.net/{}".format(
-        mongodb_connection_info['user'], mongodb_connection_info['password'], "test_bot"
-        )
-        + "?retryWrites=true&w=majority"
-    )
-    db = Database(access_url)
+    db = Database(r"mongodb://localhost:27017/")
     bot = TelegramBot(
         r'1743689155:AAHeSu4jYeIgYMN5yOBVcb6RcHEXNV7-iJY',
         database = db,
