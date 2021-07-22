@@ -33,6 +33,71 @@ class TelegramBot:
             self.database.add_messages(msg)
         return msg
 
+    def getUpdates(
+        self,
+        offset = None,
+        limit = None,
+        timeout = None,
+        allowed_updates = None,
+        ):
+        """
+        Use this method to receive incoming updates using long polling (wiki). An Array of Update objects is returned.
+
+        Keyword arguments:
+        
+        :param offset (Integer, Optional): Identifier of the first update to be returned. Must be greater by one than the highest among the identifiers of previously received updates. By default, updates starting with the earliest unconfirmed update are returned. An update is considered confirmed as soon as getUpdates is called with an offset higher than its update_id. The negative offset can be specified to retrieve updates starting from -offset update from the end of the updates queue. All previous updates will forgotten.
+        :param limit (Integer, Optional): Limits the number of updates to be retrieved. Values between 1-100 are accepted. Defaults to 100.
+        :param timeout (Integer, Optional): Timeout in seconds for long polling. Defaults to 0, i.e. usual short polling. Should be positive, short polling should be used for testing purposes only.
+        :param allowed_updates (Array of String, Optional): A JSON-serialized list of the update types you want your bot to receive. For example, specify [\xe2\x80\x9cmessage\xe2\x80\x9d, \xe2\x80\x9cedited_channel_post\xe2\x80\x9d, \xe2\x80\x9ccallback_query\xe2\x80\x9d] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all update types except chat_member (default). If not specified, the previous setting will be used.Please note that this parameter doesn't affect updates created before the call to the getUpdates, so unwanted updates may be received for a short period of time.
+        """
+        kwargs = {k:v for k,v in locals().items() if k!='self' and v!=None}
+        return self("getUpdates", kwargs)
+
+    def setWebhook(
+        self,
+        url,
+        certificate = None,
+        ip_address = None,
+        max_connections = None,
+        allowed_updates = None,
+        drop_pending_updates = None,
+        ):
+        """
+        Use this method to specify a url and receive incoming updates via an outgoing webhook. Whenever there is an update for the bot, we will send an HTTPS POST request to the specified url, containing a JSON-serialized Update. In case of an unsuccessful request, we will give up after a reasonable amount of attempts. Returns True on success.
+        If you'd like to make sure that the Webhook request comes from Telegram, we recommend using a secret path in the URL, e.g. https://www.example.com/<token>. Since nobody else knows your bot's token, you can be pretty sure it's us.
+
+        Keyword arguments:
+        
+        :param url (String): HTTPS url to send updates to. Use an empty string to remove webhook integration
+        :param certificate (InputFile, Optional): Upload your public key certificate so that the root certificate in use can be checked. See our self-signed guide for details.
+        :param ip_address (String, Optional): The fixed IP address which will be used to send webhook requests instead of the IP address resolved through DNS
+        :param max_connections (Integer, Optional): Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery, 1-100. Defaults to 40. Use lower values to limit the load on your bot's server, and higher values to increase your bot's throughput.
+        :param allowed_updates (Array of String, Optional): A JSON-serialized list of the update types you want your bot to receive. For example, specify [\xe2\x80\x9cmessage\xe2\x80\x9d, \xe2\x80\x9cedited_channel_post\xe2\x80\x9d, \xe2\x80\x9ccallback_query\xe2\x80\x9d] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all update types except chat_member (default). If not specified, the previous setting will be used.Please note that this parameter doesn't affect updates created before the call to the setWebhook, so unwanted updates may be received for a short period of time.
+        :param drop_pending_updates (Boolean, Optional): Pass True to drop all pending updates
+        """
+        kwargs = {k:v for k,v in locals().items() if k!='self' and v!=None}
+        return self("setWebhook", kwargs)
+
+    def deleteWebhook(
+        self,
+        drop_pending_updates = None,
+        ):
+        """
+        Use this method to remove webhook integration if you decide to switch back to getUpdates. Returns True on success.
+
+        Keyword arguments:
+        
+        :param drop_pending_updates (Boolean, Optional): Pass True to drop all pending updates
+        """
+        kwargs = {k:v for k,v in locals().items() if k!='self' and v!=None}
+        return self("deleteWebhook", kwargs)
+
+    def getWebhookInfo(self):
+        """
+        Use this method to get current webhook status. Requires no parameters. On success, returns a WebhookInfo object. If the bot is using getUpdates, will return an object with the url field empty.
+        """
+        return self("getWebhookInfo", None)
+
     def getMe(self):
         """
         A simple method for testing your bot's auth token. Requires no parameters. Returns basic information about the bot in form of a User object.
@@ -1282,3 +1347,373 @@ class TelegramBot:
         """
         kwargs = {k:v for k,v in locals().items() if k!='self' and v!=None}
         return self("deleteMessage", kwargs)
+
+    def sendSticker(
+        self,
+        chat_id,
+        sticker,
+        disable_notification = None,
+        reply_to_message_id = None,
+        allow_sending_without_reply = None,
+        reply_markup = None,
+        ):
+        """
+        Use this method to send static .WEBP or animated .TGS stickers. On success, the sent Message is returned.
+
+        Keyword arguments:
+        
+        :param chat_id (Integer or String): Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :param sticker (InputFile or String): Sticker to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a .WEBP file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files \xc2\xbb
+        :param disable_notification (Boolean, Optional): Sends the message silently. Users will receive a notification with no sound.
+        :param reply_to_message_id (Integer, Optional): If the message is a reply, ID of the original message
+        :param allow_sending_without_reply (Boolean, Optional): Pass True, if the message should be sent even if the specified replied-to message is not found
+        :param reply_markup (InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply, Optional): Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+        """
+        kwargs = {k:v for k,v in locals().items() if k!='self' and v!=None}
+        return self("sendSticker", kwargs)
+
+    def getStickerSet(
+        self,
+        name,
+        ):
+        """
+        Use this method to get a sticker set. On success, a StickerSet object is returned.
+
+        Keyword arguments:
+        
+        :param name (String): Name of the sticker set
+        """
+        kwargs = {k:v for k,v in locals().items() if k!='self' and v!=None}
+        return self("getStickerSet", kwargs)
+
+    def uploadStickerFile(
+        self,
+        user_id,
+        png_sticker,
+        ):
+        """
+        Use this method to upload a .PNG file with a sticker for later use in createNewStickerSet and addStickerToSet methods (can be used multiple times). Returns the uploaded File on success.
+
+        Keyword arguments:
+        
+        :param user_id (Integer): User identifier of sticker file owner
+        :param png_sticker (InputFile): PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. More info on Sending Files \xc2\xbb
+        """
+        kwargs = {k:v for k,v in locals().items() if k!='self' and v!=None}
+        return self("uploadStickerFile", kwargs)
+
+    def createNewStickerSet(
+        self,
+        user_id,
+        name,
+        title,
+        emojis,
+        png_sticker = None,
+        tgs_sticker = None,
+        contains_masks = None,
+        mask_position = None,
+        ):
+        """
+        Use this method to create a new sticker set owned by a user. The bot will be able to edit the sticker set thus created. You must use exactly one of the fields png_sticker or tgs_sticker. Returns True on success.
+
+        Keyword arguments:
+        
+        :param user_id (Integer): User identifier of created sticker set owner
+        :param name (String): Short name of sticker set, to be used in t.me/addstickers/ URLs (e.g., animals). Can contain only english letters, digits and underscores. Must begin with a letter, can't contain consecutive underscores and must end in \xe2\x80\x9c_by_<bot username>\xe2\x80\x9d. <bot_username> is case insensitive. 1-64 characters.
+        :param title (String): Sticker set title, 1-64 characters
+        :param emojis (String): One or more emoji corresponding to the sticker
+        :param png_sticker (InputFile or String, Optional): PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files \xc2\xbb
+        :param tgs_sticker (InputFile, Optional): TGS animation with the sticker, uploaded using multipart/form-data. See https://core.telegram.org/animated_stickers#technical-requirements for technical requirements
+        :param contains_masks (Boolean, Optional): Pass True, if a set of mask stickers should be created
+        :param mask_position (MaskPosition, Optional): A JSON-serialized object for position where the mask should be placed on faces
+        """
+        kwargs = {k:v for k,v in locals().items() if k!='self' and v!=None}
+        return self("createNewStickerSet", kwargs)
+
+    def addStickerToSet(
+        self,
+        user_id,
+        name,
+        emojis,
+        png_sticker = None,
+        tgs_sticker = None,
+        mask_position = None,
+        ):
+        """
+        Use this method to add a new sticker to a set created by the bot. You must use exactly one of the fields png_sticker or tgs_sticker. Animated stickers can be added to animated sticker sets and only to them. Animated sticker sets can have up to 50 stickers. Static sticker sets can have up to 120 stickers. Returns True on success.
+
+        Keyword arguments:
+        
+        :param user_id (Integer): User identifier of sticker set owner
+        :param name (String): Sticker set name
+        :param emojis (String): One or more emoji corresponding to the sticker
+        :param png_sticker (InputFile or String, Optional): PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files \xc2\xbb
+        :param tgs_sticker (InputFile, Optional): TGS animation with the sticker, uploaded using multipart/form-data. See https://core.telegram.org/animated_stickers#technical-requirements for technical requirements
+        :param mask_position (MaskPosition, Optional): A JSON-serialized object for position where the mask should be placed on faces
+        """
+        kwargs = {k:v for k,v in locals().items() if k!='self' and v!=None}
+        return self("addStickerToSet", kwargs)
+
+    def setStickerPositionInSet(
+        self,
+        sticker,
+        position,
+        ):
+        """
+        Use this method to move a sticker in a set created by the bot to a specific position. Returns True on success.
+
+        Keyword arguments:
+        
+        :param sticker (String): File identifier of the sticker
+        :param position (Integer): New sticker position in the set, zero-based
+        """
+        kwargs = {k:v for k,v in locals().items() if k!='self' and v!=None}
+        return self("setStickerPositionInSet", kwargs)
+
+    def deleteStickerFromSet(
+        self,
+        sticker,
+        ):
+        """
+        Use this method to delete a sticker from a set created by the bot. Returns True on success.
+
+        Keyword arguments:
+        
+        :param sticker (String): File identifier of the sticker
+        """
+        kwargs = {k:v for k,v in locals().items() if k!='self' and v!=None}
+        return self("deleteStickerFromSet", kwargs)
+
+    def setStickerSetThumb(
+        self,
+        name,
+        user_id,
+        thumb = None,
+        ):
+        """
+        Use this method to set the thumbnail of a sticker set. Animated thumbnails can be set for animated sticker sets only. Returns True on success.
+
+        Keyword arguments:
+        
+        :param name (String): Sticker set name
+        :param user_id (Integer): User identifier of the sticker set owner
+        :param thumb (InputFile or String, Optional): A PNG image with the thumbnail, must be up to 128 kilobytes in size and have width and height exactly 100px, or a TGS animation with the thumbnail up to 32 kilobytes in size; see https://core.telegram.org/animated_stickers#technical-requirements for animated sticker technical requirements. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files \xc2\xbb. Animated sticker set thumbnail can't be uploaded via HTTP URL.
+        """
+        kwargs = {k:v for k,v in locals().items() if k!='self' and v!=None}
+        return self("setStickerSetThumb", kwargs)
+
+    def answerInlineQuery(
+        self,
+        inline_query_id,
+        results,
+        cache_time = None,
+        is_personal = None,
+        next_offset = None,
+        switch_pm_text = None,
+        switch_pm_parameter = None,
+        ):
+        """
+        Use this method to send answers to an inline query. On success, True is returned.No more than 50 results per query are allowed.
+
+        Keyword arguments:
+        
+        :param inline_query_id (String): Unique identifier for the answered query
+        :param results (Array of InlineQueryResult): A JSON-serialized array of results for the inline query
+        :param cache_time (Integer, Optional): The maximum amount of time in seconds that the result of the inline query may be cached on the server. Defaults to 300.
+        :param is_personal (Boolean, Optional): Pass True, if results may be cached on the server side only for the user that sent the query. By default, results may be returned to any user who sends the same query
+        :param next_offset (String, Optional): Pass the offset that a client should send in the next query with the same text to receive more results. Pass an empty string if there are no more results or if you don't support pagination. Offset length can't exceed 64 bytes.
+        :param switch_pm_text (String, Optional): If passed, clients will display a button with specified text that switches the user to a private chat with the bot and sends the bot a start message with the parameter switch_pm_parameter
+        :param switch_pm_parameter (String, Optional): Deep-linking parameter for the /start message sent to the bot when user presses the switch button. 1-64 characters, only A-Z, a-z, 0-9, _ and - are allowed.Example: An inline bot that sends YouTube videos can ask the user to connect the bot to their YouTube account to adapt search results accordingly. To do this, it displays a 'Connect your YouTube account' button above the results, or even before showing any. The user presses the button, switches to a private chat with the bot and, in doing so, passes a start parameter that instructs the bot to return an oauth link. Once done, the bot can offer a switch_inline button so that the user can easily return to the chat where they wanted to use the bot's inline capabilities.
+        """
+        kwargs = {k:v for k,v in locals().items() if k!='self' and v!=None}
+        return self("answerInlineQuery", kwargs)
+
+    def sendInvoice(
+        self,
+        chat_id,
+        title,
+        description,
+        payload,
+        provider_token,
+        currency,
+        prices,
+        max_tip_amount = None,
+        suggested_tip_amounts = None,
+        start_parameter = None,
+        provider_data = None,
+        photo_url = None,
+        photo_size = None,
+        photo_width = None,
+        photo_height = None,
+        need_name = None,
+        need_phone_number = None,
+        need_email = None,
+        need_shipping_address = None,
+        send_phone_number_to_provider = None,
+        send_email_to_provider = None,
+        is_flexible = None,
+        disable_notification = None,
+        reply_to_message_id = None,
+        allow_sending_without_reply = None,
+        reply_markup = None,
+        ):
+        """
+        Use this method to send invoices. On success, the sent Message is returned.
+
+        Keyword arguments:
+        
+        :param chat_id (Integer or String): Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        :param title (String): Product name, 1-32 characters
+        :param description (String): Product description, 1-255 characters
+        :param payload (String): Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use for your internal processes.
+        :param provider_token (String): Payments provider token, obtained via Botfather
+        :param currency (String): Three-letter ISO 4217 currency code, see more on currencies
+        :param prices (Array of LabeledPrice): Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)
+        :param max_tip_amount (Integer, Optional): The maximum accepted amount for tips in the smallest units of the currency (integer, not float/double). For example, for a maximum tip of US$ 1.45 pass max_tip_amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). Defaults to 0
+        :param suggested_tip_amounts (Array of Integer, Optional): A JSON-serialized array of suggested amounts of tips in the smallest units of the currency (integer, not float/double). At most 4 suggested tip amounts can be specified. The suggested tip amounts must be positive, passed in a strictly increased order and must not exceed max_tip_amount.
+        :param start_parameter (String, Optional): Unique deep-linking parameter. If left empty, forwarded copies of the sent message will have a Pay button, allowing multiple users to pay directly from the forwarded message, using the same invoice. If non-empty, forwarded copies of the sent message will have a URL button with a deep link to the bot (instead of a Pay button), with the value used as the start parameter
+        :param provider_data (String, Optional): A JSON-serialized data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider.
+        :param photo_url (String, Optional): URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service. People like it better when they see what they are paying for.
+        :param photo_size (Integer, Optional): Photo size
+        :param photo_width (Integer, Optional): Photo width
+        :param photo_height (Integer, Optional): Photo height
+        :param need_name (Boolean, Optional): Pass True, if you require the user's full name to complete the order
+        :param need_phone_number (Boolean, Optional): Pass True, if you require the user's phone number to complete the order
+        :param need_email (Boolean, Optional): Pass True, if you require the user's email address to complete the order
+        :param need_shipping_address (Boolean, Optional): Pass True, if you require the user's shipping address to complete the order
+        :param send_phone_number_to_provider (Boolean, Optional): Pass True, if user's phone number should be sent to provider
+        :param send_email_to_provider (Boolean, Optional): Pass True, if user's email address should be sent to provider
+        :param is_flexible (Boolean, Optional): Pass True, if the final price depends on the shipping method
+        :param disable_notification (Boolean, Optional): Sends the message silently. Users will receive a notification with no sound.
+        :param reply_to_message_id (Integer, Optional): If the message is a reply, ID of the original message
+        :param allow_sending_without_reply (Boolean, Optional): Pass True, if the message should be sent even if the specified replied-to message is not found
+        :param reply_markup (InlineKeyboardMarkup, Optional): A JSON-serialized object for an inline keyboard. If empty, one 'Pay total price' button will be shown. If not empty, the first button must be a Pay button.
+        """
+        kwargs = {k:v for k,v in locals().items() if k!='self' and v!=None}
+        return self("sendInvoice", kwargs)
+
+    def answerShippingQuery(
+        self,
+        shipping_query_id,
+        ok,
+        shipping_options = None,
+        error_message = None,
+        ):
+        """
+        If you sent an invoice requesting a shipping address and the parameter is_flexible was specified, the Bot API will send an Update with a shipping_query field to the bot. Use this method to reply to shipping queries. On success, True is returned.
+
+        Keyword arguments:
+        
+        :param shipping_query_id (String): Unique identifier for the query to be answered
+        :param ok (Boolean): Specify True if delivery to the specified address is possible and False if there are any problems (for example, if delivery to the specified address is not possible)
+        :param shipping_options (Array of ShippingOption, Optional): Required if ok is True. A JSON-serialized array of available shipping options.
+        :param error_message (String, Optional): Required if ok is False. Error message in human readable form that explains why it is impossible to complete the order (e.g. "Sorry, delivery to your desired address is unavailable'). Telegram will display this message to the user.
+        """
+        kwargs = {k:v for k,v in locals().items() if k!='self' and v!=None}
+        return self("answerShippingQuery", kwargs)
+
+    def answerPreCheckoutQuery(
+        self,
+        pre_checkout_query_id,
+        ok,
+        error_message = None,
+        ):
+        """
+        Once the user has confirmed their payment and shipping details, the Bot API sends the final confirmation in the form of an Update with the field pre_checkout_query. Use this method to respond to such pre-checkout queries. On success, True is returned. Note: The Bot API must receive an answer within 10 seconds after the pre-checkout query was sent.
+
+        Keyword arguments:
+        
+        :param pre_checkout_query_id (String): Unique identifier for the query to be answered
+        :param ok (Boolean): Specify True if everything is alright (goods are available, etc.) and the bot is ready to proceed with the order. Use False if there are any problems.
+        :param error_message (String, Optional): Required if ok is False. Error message in human readable form that explains the reason for failure to proceed with the checkout (e.g. "Sorry, somebody just bought the last of our amazing black T-shirts while you were busy filling out your payment details. Please choose a different color or garment!"). Telegram will display this message to the user.
+        """
+        kwargs = {k:v for k,v in locals().items() if k!='self' and v!=None}
+        return self("answerPreCheckoutQuery", kwargs)
+
+    def setPassportDataErrors(
+        self,
+        user_id,
+        errors,
+        ):
+        """
+        Informs a user that some of the Telegram Passport elements they provided contains errors. The user will not be able to re-submit their Passport to you until the errors are fixed (the contents of the field for which you returned the error must change). Returns True on success.
+        Use this if the data submitted by the user doesn't satisfy the standards your service requires for any reason. For example, if a birthday date seems invalid, a submitted document is blurry, a scan shows evidence of tampering, etc. Supply some details in the error message to make sure the user knows how to correct the issues.
+
+        Keyword arguments:
+        
+        :param user_id (Integer): User identifier
+        :param errors (Array of PassportElementError): A JSON-serialized array describing the errors
+        """
+        kwargs = {k:v for k,v in locals().items() if k!='self' and v!=None}
+        return self("setPassportDataErrors", kwargs)
+
+    def sendGame(
+        self,
+        chat_id,
+        game_short_name,
+        disable_notification = None,
+        reply_to_message_id = None,
+        allow_sending_without_reply = None,
+        reply_markup = None,
+        ):
+        """
+        Use this method to send a game. On success, the sent Message is returned.
+
+        Keyword arguments:
+        
+        :param chat_id (Integer): Unique identifier for the target chat
+        :param game_short_name (String): Short name of the game, serves as the unique identifier for the game. Set up your games via Botfather.
+        :param disable_notification (Boolean, Optional): Sends the message silently. Users will receive a notification with no sound.
+        :param reply_to_message_id (Integer, Optional): If the message is a reply, ID of the original message
+        :param allow_sending_without_reply (Boolean, Optional): Pass True, if the message should be sent even if the specified replied-to message is not found
+        :param reply_markup (InlineKeyboardMarkup, Optional): A JSON-serialized object for an inline keyboard. If empty, one 'Play game_title' button will be shown. If not empty, the first button must launch the game.
+        """
+        kwargs = {k:v for k,v in locals().items() if k!='self' and v!=None}
+        return self("sendGame", kwargs)
+
+    def setGameScore(
+        self,
+        user_id,
+        score,
+        force = None,
+        disable_edit_message = None,
+        chat_id = None,
+        message_id = None,
+        inline_message_id = None,
+        ):
+        """
+        Use this method to set the score of the specified user in a game. On success, if the message was sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the new score is not greater than the user's current score in the chat and force is False.
+
+        Keyword arguments:
+        
+        :param user_id (Integer): User identifier
+        :param score (Integer): New score, must be non-negative
+        :param force (Boolean, Optional): Pass True, if the high score is allowed to decrease. This can be useful when fixing mistakes or banning cheaters
+        :param disable_edit_message (Boolean, Optional): Pass True, if the game message should not be automatically edited to include the current scoreboard
+        :param chat_id (Integer, Optional): Required if inline_message_id is not specified. Unique identifier for the target chat
+        :param message_id (Integer, Optional): Required if inline_message_id is not specified. Identifier of the sent message
+        :param inline_message_id (String, Optional): Required if chat_id and message_id are not specified. Identifier of the inline message
+        """
+        kwargs = {k:v for k,v in locals().items() if k!='self' and v!=None}
+        return self("setGameScore", kwargs)
+
+    def getGameHighScores(
+        self,
+        user_id,
+        chat_id = None,
+        message_id = None,
+        inline_message_id = None,
+        ):
+        """
+        Use this method to get data for high score tables. Will return the score of the specified user and several of their neighbors in a game. On success, returns an Array of GameHighScore objects.
+        This method will currently return scores for the target user, plus two of their closest neighbors on each side. Will also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject to change.
+
+        Keyword arguments:
+        
+        :param user_id (Integer): Target user id
+        :param chat_id (Integer, Optional): Required if inline_message_id is not specified. Unique identifier for the target chat
+        :param message_id (Integer, Optional): Required if inline_message_id is not specified. Identifier of the sent message
+        :param inline_message_id (String, Optional): Required if chat_id and message_id are not specified. Identifier of the inline message
+        """
+        kwargs = {k:v for k,v in locals().items() if k!='self' and v!=None}
+        return self("getGameHighScores", kwargs)
