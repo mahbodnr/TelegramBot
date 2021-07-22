@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# web scripting files
+web_script/
+
+#mongo db info
+mongodb.json
