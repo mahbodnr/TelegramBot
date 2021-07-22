@@ -28,13 +28,13 @@ class Database:
         self,
         msg: TelegramMessage,
         ):
-        if self.db.messages.find({'_id':msg.chat_id}).count()>0:
+        if self.users.find({'_id':msg.chat_id}).count()>0:
             self.messages.update_one(
                 {'_id':msg.chat_id},
                 {'$set':{**msg.chat}}
                 )
         else:
-            self.messages.insert_one(
+            self.users.insert_one(
                 {
                     '_id': msg.chat_id,
                     **msg.chat
