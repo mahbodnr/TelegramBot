@@ -1,5 +1,6 @@
-import pymongo
+# import pymongo
 from pymongo import MongoClient
+# from motor.motor_asyncio import AsyncIOMotorClient
 
 from message import TelegramMessage
 
@@ -7,10 +8,11 @@ from message import TelegramMessage
 class Database:
     def __init__(
         self,
-        connecting_string: str,
+        connecting_string: str = None,
+        database_name = 'bot_db'
         ):
         self.cluster = MongoClient(connecting_string)
-        self.db = self.cluster['bot_db']
+        self.db = self.cluster[database_name]
         self.users = self.db['users']
         self.messages = self.db['messages']
 
@@ -19,14 +21,14 @@ class Database:
         self,
         msg: TelegramMessage,
         ):
-        self.messages.insert_one(msg.content)
+        self.messages.insert_one(msg.result)
 
 
     def add_user(
         self,
         msg: TelegramMessage,
         ):
-        if db.messages.find({'_id':msg.chat_id}).count()>0:
+        if self.db.messages.find({'_id':msg.chat_id}).count()>0:
             self.messages.update_one(
                 {'_id':msg.chat_id},
                 {'$set':{**msg.chat}}
@@ -50,5 +52,5 @@ if __name__ == '__main__':
         )
         + "?retryWrites=true&w=majority"
     )
-    db = Database(access_url)
-    db.messages.update_one({'_id':1}, {'$set':{'value': 10}})
+    db = Database()
+    db.messages.remove()

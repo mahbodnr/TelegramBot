@@ -11,7 +11,6 @@ async def main():
         database = db,
         )
     msg = await bot.sendMessage(455572260, 'This message will be deleted :)')
-    print(msg.content)
     await bot.deleteMessage(msg.chat_id, msg.message_id)
     
 

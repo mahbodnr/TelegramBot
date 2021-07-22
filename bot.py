@@ -35,19 +35,19 @@ class TelegramBot:
 
     def getMe(self):
         """
-                A simple method for testing your bot's auth token. Requires no parameters. Returns basic information about the bot in form of a User object.
+        A simple method for testing your bot's auth token. Requires no parameters. Returns basic information about the bot in form of a User object.
         """
         return self("getMe", None)
 
     def logOut(self):
         """
-                Use this method to log out from the cloud Bot API server before launching the bot locally. You must log out the bot before running it locally, otherwise there is no guarantee that the bot will receive updates. After a successful call, you can immediately log in on a local server, but will not be able to log in back to the cloud Bot API server for 10 minutes. Returns True on success. Requires no parameters.
+        Use this method to log out from the cloud Bot API server before launching the bot locally. You must log out the bot before running it locally, otherwise there is no guarantee that the bot will receive updates. After a successful call, you can immediately log in on a local server, but will not be able to log in back to the cloud Bot API server for 10 minutes. Returns True on success. Requires no parameters.
         """
         return self("logOut", None)
 
     def close(self):
         """
-                Use this method to close the bot instance before moving it from one local server to another. You need to delete the webhook before calling this method to ensure that the bot isn't launched again after server restart. The method will return error 429 in the first 10 minutes after the bot is launched. Returns True on success. Requires no parameters.
+        Use this method to close the bot instance before moving it from one local server to another. You need to delete the webhook before calling this method to ensure that the bot isn't launched again after server restart. The method will return error 429 in the first 10 minutes after the bot is launched. Returns True on success. Requires no parameters.
         """
         return self("close", None)
 
@@ -1282,14 +1282,3 @@ class TelegramBot:
         """
         kwargs = {k:v for k,v in locals().items() if k!='self' and v!=None}
         return self("deleteMessage", kwargs)
-
-
-async def main():
-    bot = TelegramBot(r'1743689155:AAHeSu4jYeIgYMN5yOBVcb6RcHEXNV7-iJY')
-    msg = await bot.sendMessage(455572260, 'This message will be deleted :)')
-    await asyncio.sleep(2)
-    await bot.deleteMessage(msg.chat_id, msg.message_id)
-    
-
-if __name__ == '__main__':
-    asyncio.run(main())
