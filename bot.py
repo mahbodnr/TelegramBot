@@ -2,6 +2,7 @@ from typing import Union
 import asyncio
 
 import httpx
+import requests
 
 from message import TelegramMessage
 from database import Database
@@ -10,12 +11,19 @@ class TelegramBot:
     def __init__(
         self, 
         token: str,
+        webhook: str = None,
         support_id: Union[str, int] = None,
         database: Database= None
         ):
         self.token = token
         self.support_id = support_id
         self.database = database
+
+        if webhook:
+            r = requests.get(
+                f'https://api.telegram.org/bot{self.token}'
+                f'/setWebhook?url={webhook}')
+            assert r.status_code == 200, f"Couldn't set the webhook. {r.content}"
 
     async def __call__(
         self,

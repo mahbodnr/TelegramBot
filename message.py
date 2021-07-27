@@ -7,8 +7,8 @@ class TelegramMessage:
         ):
         self.response = response
         self.content = json.loads(response.content)
-        self.ok = self.content['ok']
-        self.result = self.content['result'] 
+        self.ok = self.content.get('ok')
+        self.result = self.content.get('result') 
         if self.ok and type(self.result)==dict:
             self.set_attrs(self.content['result'])
 
