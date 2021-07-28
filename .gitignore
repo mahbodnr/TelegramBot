@@ -136,3 +136,6 @@ mongodb.json
 
 # secret info
 secret.json
+
+# test files
+test.py
