@@ -2753,5 +2753,70 @@ class Message:
     reply_markup: InlineKeyboardMarkup
 
 
+@dataclass
+class Update:
+    """
+    This object represents an incoming update.At most one of the optional parameters can be present in any given update.
+
+    Keyword arguments:
+
+    :param update_id (Integer): The update's unique identifier. Update identifiers start from a certain positive number and increase sequentially. This ID becomes especially handy if you're using Webhooks, since it allows you to ignore repeated updates or to restore the correct update sequence, should they get out of order. If there are no new updates for at least a week, then identifier of the next update will be chosen randomly instead of sequentially.
+    :param message (Message): Optional. New incoming message of any kind \xe2\x80\x94 text, photo, sticker, etc.
+    :param edited_message (Message): Optional. New version of a message that is known to the bot and was edited
+    :param channel_post (Message): Optional. New incoming channel post of any kind \xe2\x80\x94 text, photo, sticker, etc.
+    :param edited_channel_post (Message): Optional. New version of a channel post that is known to the bot and was edited
+    :param inline_query (InlineQuery): Optional. New incoming inline query
+    :param chosen_inline_result (ChosenInlineResult): Optional. The result of an inline query that was chosen by a user and sent to their chat partner. Please see our documentation on the feedback collecting for details on how to enable these updates for your bot.
+    :param callback_query (CallbackQuery): Optional. New incoming callback query
+    :param shipping_query (ShippingQuery): Optional. New incoming shipping query. Only for invoices with flexible price
+    :param pre_checkout_query (PreCheckoutQuery): Optional. New incoming pre-checkout query. Contains full information about checkout
+    :param poll (Poll): Optional. New poll state. Bots receive only updates about stopped polls and polls, which are sent by the bot
+    :param poll_answer (PollAnswer): Optional. A user changed their answer in a non-anonymous poll. Bots receive new votes only in polls that were sent by the bot itself.
+    :param my_chat_member (ChatMemberUpdated): Optional. The bot's chat member status was updated in a chat. For private chats, this update is received only when the bot is blocked or unblocked by the user.
+    :param chat_member (ChatMemberUpdated): Optional. A chat member's status was updated in a chat. The bot must be an administrator in the chat and must explicitly specify \xe2\x80\x9cchat_member\xe2\x80\x9d in the list of allowed_updates to receive these updates.
+    """
+    update_id: int
+    message: Message
+    edited_message: Message
+    channel_post: Message
+    edited_channel_post: Message
+    inline_query: InlineQuery
+    chosen_inline_result: ChosenInlineResult
+    callback_query: CallbackQuery
+    shipping_query: ShippingQuery
+    pre_checkout_query: PreCheckoutQuery
+    poll: Poll
+    poll_answer: PollAnswer
+    my_chat_member: ChatMemberUpdated
+    chat_member: ChatMemberUpdated
+
+
+@dataclass
+class WebhookInfo:
+    """
+    Contains information about the current status of a webhook.
+
+    Keyword arguments:
+
+    :param url (String): Webhook URL, may be empty if webhook is not set up
+    :param has_custom_certificate (Boolean): True, if a custom certificate was provided for webhook certificate checks
+    :param pending_update_count (Integer): Number of updates awaiting delivery
+    :param ip_address (String): Optional. Currently used webhook IP address
+    :param last_error_date (Integer): Optional. Unix time for the most recent error that happened when trying to deliver an update via webhook
+    :param last_error_message (String): Optional. Error message in human-readable format for the most recent error that happened when trying to deliver an update via webhook
+    :param max_connections (Integer): Optional. Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery
+    :param allowed_updates (Array of String): Optional. A list of update types the bot is subscribed to. Defaults to all update types except chat_member
+    """
+    url: str
+    has_custom_certificate: bool
+    pending_update_count: int
+    ip_address: str
+    last_error_date: int
+    last_error_message: str
+    max_connections: int
+    allowed_updates: List[str]
+
+
+
 
 
