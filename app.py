@@ -13,12 +13,11 @@ bot = TelegramBot(
     )
 
 
-@bot.onUpdate
+@bot.onUpdate(filters="message")
 async def show_message(update):
-    if update.message:
-        await bot.sendMessage(
-            update.message._from.id,
-            f"Hi {update.message._from.first_name}"
-            )
+    await bot.sendMessage(
+        update.message._from.id,
+        f"Hi {update.message._from.first_name}"
+        )
 
 # uvicorn app:bot.app --reload

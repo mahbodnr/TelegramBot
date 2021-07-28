@@ -1,5 +1,4 @@
 from typing import Union, List
-import asyncio
 
 import httpx
 import requests
@@ -1740,19 +1739,37 @@ class TelegramBot:
 
     def onUpdate(
         self,
-        handle,
         path: str = "/",
-        filters: List['Filter'] = None,
+        filters: Union[str, List[str]] = None,
         ):
-        @self.app.post(path)
-        async def recWebHook(req: Request):
-            r = await req.json()
-            # read update
-            update = self._make_instance(Update, r)
-            # write on database
-            if self.database:
-                self.database.add_update(update)
-                if update.message and update.message._from:
-                    self.database.add_user(update.message._from)
-            #handle
-            return await handle(update)
+        def get_update(handle):
+            @self.app.post(path)
+            async def recWebHook(req: Request):
+                r = await req.json()
+                # read update
+                update = self._make_instance(Update, r)
+                # filter update
+                passed_filter = False
+                if type(filters) == str:
+                    if getattr(update, filters):
+                        passed_filter = True
+                elif type(filters) == list:
+                    for filter in filters:
+                        if getattr(update, filter):
+                            passed_filter = True
+                            break
+                else:
+                    raise TypeError(
+                        "'filters' must be either a list or a string." 
+                        f" got {type(filters)}"
+                        )
+                if not passed_filter:
+                    return
+                # write on database
+                if self.database:
+                    self.database.add_update(update)
+                    if update.message and update.message._from:
+                        self.database.add_user(update.message._from)
+                #handle
+                return await handle(update)
+        return get_update
