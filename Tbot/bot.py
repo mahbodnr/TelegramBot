@@ -3,8 +3,10 @@ import asyncio
 
 import httpx
 import requests
+from fastapi import FastAPI,Request
+import uvicorn
+from dacite import from_dict
 
-from .message import TelegramMessage
 from .database import Database
 from .types import *
 
@@ -26,6 +28,8 @@ class TelegramBot:
                 f'/setWebhook?url={webhook}')
             assert r.status_code == 200, f"Couldn't set the webhook. {r.content}"
 
+        self.app = FastAPI()
+        
 
     async def __call__(
         self,
@@ -36,12 +40,7 @@ class TelegramBot:
             r = await client.post(
                     f"https://api.telegram.org/bot{self.token}/{method}",
                     json=json_data,
-            )
-        msg = TelegramMessage(r)
-        if self.database and hasattr(msg, 'chat'):
-            self.database.add_user(msg)
-            self.database.add_messages(msg)
-        return msg
+            )     
 
 
     def getUpdates(
@@ -1732,3 +1731,28 @@ class TelegramBot:
         """
         kwargs = {k:v for k,v in locals().items() if k!='self' and v!=None}
         return self("getGameHighScores", kwargs)
+
+
+    def _make_instance(self, telegramType: object, req: dict) -> object:
+        req_data= eval(str(req).replace('"from"', '"_from"').replace("'from'", "'_from'"))
+        return from_dict(telegramType, req_data)
+
+
+    def onUpdate(
+        self,
+        handle,
+        path: str = "/",
+        filters: List['Filter'] = None,
+        ):
+        @self.app.post(path)
+        async def recWebHook(req: Request):
+            r = await req.json()
+            # read update
+            update = self._make_instance(Update, r)
+            # write on database
+            if self.database:
+                self.database.add_update(update)
+                if update.message and update.message._from:
+                    self.database.add_user(update.message._from)
+            #handle
+            return await handle(update)

@@ -6,7 +6,6 @@ from typing import Union, List
 class VoiceChatStarted:
     """
     This object represents a service message about a voice chat started in the chat. Currently holds no information.
-
     """
     pass
 
@@ -14,8 +13,7 @@ class VoiceChatStarted:
 @dataclass
 class ChatMember:
     """
-    This object contains information about one member of a chat. Currently, the following 6 types of chat members are supported:
-    
+    This object contains information about one member of a chat. Currently, the following 6 types of chat members are supported:    
     ChatMemberOwner
     ChatMemberAdministrator
     ChatMemberMember
@@ -23,7 +21,6 @@ class ChatMember:
     ChatMemberLeft
     ChatMemberBanned
     
-
     """
     pass
 
@@ -31,8 +28,7 @@ class ChatMember:
 @dataclass
 class BotCommandScope:
     """
-    This object represents the scope to which bot commands are applied. Currently, the following 7 scopes are supported:
-    
+    This object represents the scope to which bot commands are applied. Currently, the following 7 scopes are supported:    
     BotCommandScopeDefault
     BotCommandScopeAllPrivateChats
     BotCommandScopeAllGroupChats
@@ -41,7 +37,6 @@ class BotCommandScope:
     BotCommandScopeChatAdministrators
     BotCommandScopeChatMember
     
-
     """
     pass
 
@@ -49,15 +44,13 @@ class BotCommandScope:
 @dataclass
 class InputMedia:
     """
-    This object represents the content of a media message to be sent. It should be one of
-    
+    This object represents the content of a media message to be sent. It should be one of    
     InputMediaAnimation
     InputMediaDocument
     InputMediaAudio
     InputMediaPhoto
     InputMediaVideo
     
-
     """
     pass
 
@@ -66,7 +59,6 @@ class InputMedia:
 class InputFile:
     """
     This object represents the contents of a file to be uploaded. Must be posted using multipart/form-data in the usual way that files are uploaded via the browser.
-
     """
     pass
 
@@ -74,8 +66,7 @@ class InputFile:
 @dataclass
 class InlineQueryResult:
     """
-    This object represents one result of an inline query. Telegram clients currently support results of the following 20 types:
-    
+    This object represents one result of an inline query. Telegram clients currently support results of the following 20 types:    
     InlineQueryResultCachedAudio
     InlineQueryResultCachedDocument
     InlineQueryResultCachedGif
@@ -96,9 +87,7 @@ class InlineQueryResult:
     InlineQueryResultVenue
     InlineQueryResultVideo
     InlineQueryResultVoice
-    
-    Note: All URLs passed in inline query results will be available to end users and therefore must be assumed to be public.
-
+        Note: All URLs passed in inline query results will be available to end users and therefore must be assumed to be public.
     """
     pass
 
@@ -106,15 +95,13 @@ class InlineQueryResult:
 @dataclass
 class InputMessageContent:
     """
-    This object represents the content of a message to be sent as a result of an inline query. Telegram clients currently support the following 5 types:
-    
+    This object represents the content of a message to be sent as a result of an inline query. Telegram clients currently support the following 5 types:    
     InputTextMessageContent
     InputLocationMessageContent
     InputVenueMessageContent
     InputContactMessageContent
     InputInvoiceMessageContent
     
-
     """
     pass
 
@@ -122,8 +109,7 @@ class InputMessageContent:
 @dataclass
 class PassportElementError:
     """
-    This object represents an error in the Telegram Passport element which was submitted that should be resolved by the user. It should be one of:
-    
+    This object represents an error in the Telegram Passport element which was submitted that should be resolved by the user. It should be one of:    
     PassportElementErrorDataField
     PassportElementErrorFrontSide
     PassportElementErrorReverseSide
@@ -134,7 +120,6 @@ class PassportElementError:
     PassportElementErrorTranslationFiles
     PassportElementErrorUnspecified
     
-
     """
     pass
 
@@ -143,7 +128,6 @@ class PassportElementError:
 class CallbackGame:
     """
     A placeholder, currently holds no information. Use BotFather to set up your game.
-
     """
     pass
 
@@ -152,7 +136,6 @@ class CallbackGame:
 class User:
     """
     This object represents a Telegram user or bot.
-
     Keyword arguments:
 
     :param id (Integer): Unique identifier for this user or bot. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier.
@@ -168,18 +151,17 @@ class User:
     id: int
     is_bot: bool
     first_name: str
-    last_name: str
-    username: str
-    language_code: str
-    can_join_groups: bool
-    can_read_all_group_messages: bool
-    supports_inline_queries: bool
+    last_name: str = None
+    username: str = None
+    language_code: str = None
+    can_join_groups: bool = None
+    can_read_all_group_messages: bool = None
+    supports_inline_queries: bool = None
 
 @dataclass
 class MessageId:
     """
     This object represents a unique message identifier.
-
     Keyword arguments:
 
     :param message_id (Integer): Unique message identifier
@@ -191,7 +173,6 @@ class MessageId:
 class MessageEntity:
     """
     This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc.
-
     Keyword arguments:
 
     :param type (String): Type of the entity. Can be \xe2\x80\x9cmention\xe2\x80\x9d (@username), \xe2\x80\x9chashtag\xe2\x80\x9d (#hashtag), \xe2\x80\x9ccashtag\xe2\x80\x9d ($USD), \xe2\x80\x9cbot_command\xe2\x80\x9d (/start@jobs_bot), \xe2\x80\x9curl\xe2\x80\x9d (https://telegram.org), \xe2\x80\x9cemail\xe2\x80\x9d (do-not-reply@telegram.org), \xe2\x80\x9cphone_number\xe2\x80\x9d (+1-212-555-0123), \xe2\x80\x9cbold\xe2\x80\x9d (bold text), \xe2\x80\x9citalic\xe2\x80\x9d (italic text), \xe2\x80\x9cunderline\xe2\x80\x9d (underlined text), \xe2\x80\x9cstrikethrough\xe2\x80\x9d (strikethrough text), \xe2\x80\x9ccode\xe2\x80\x9d (monowidth string), \xe2\x80\x9cpre\xe2\x80\x9d (monowidth block), \xe2\x80\x9ctext_link\xe2\x80\x9d (for clickable text URLs), \xe2\x80\x9ctext_mention\xe2\x80\x9d (for users without usernames)
@@ -204,16 +185,15 @@ class MessageEntity:
     type: str
     offset: int
     length: int
-    url: str
-    user: User
-    language: str
+    url: str = None
+    user: User = None
+    language: str = None
 
 
 @dataclass
 class PhotoSize:
     """
     This object represents one size of a photo or a file / sticker thumbnail.
-
     Keyword arguments:
 
     :param file_id (String): Identifier for this file, which can be used to download or reuse the file
@@ -226,14 +206,13 @@ class PhotoSize:
     file_unique_id: str
     width: int
     height: int
-    file_size: int
+    file_size: int = None
 
 
 @dataclass
 class Animation:
     """
     This object represents an animation file (GIF or H.264/MPEG-4 AVC video without sound).
-
     Keyword arguments:
 
     :param file_id (String): Identifier for this file, which can be used to download or reuse the file
@@ -251,17 +230,16 @@ class Animation:
     width: int
     height: int
     duration: int
-    thumb: PhotoSize
-    file_name: str
-    mime_type: str
-    file_size: int
+    thumb: PhotoSize = None
+    file_name: str = None
+    mime_type: str = None
+    file_size: int = None
 
 
 @dataclass
 class Audio:
     """
     This object represents an audio file to be treated as music by the Telegram clients.
-
     Keyword arguments:
 
     :param file_id (String): Identifier for this file, which can be used to download or reuse the file
@@ -277,19 +255,18 @@ class Audio:
     file_id: str
     file_unique_id: str
     duration: int
-    performer: str
-    title: str
-    file_name: str
-    mime_type: str
-    file_size: int
-    thumb: PhotoSize
+    performer: str = None
+    title: str = None
+    file_name: str = None
+    mime_type: str = None
+    file_size: int = None
+    thumb: PhotoSize = None
 
 
 @dataclass
 class Document:
     """
     This object represents a general file (as opposed to photos, voice messages and audio files).
-
     Keyword arguments:
 
     :param file_id (String): Identifier for this file, which can be used to download or reuse the file
@@ -301,17 +278,16 @@ class Document:
     """
     file_id: str
     file_unique_id: str
-    thumb: PhotoSize
-    file_name: str
-    mime_type: str
-    file_size: int
+    thumb: PhotoSize = None
+    file_name: str = None
+    mime_type: str = None
+    file_size: int = None
 
 
 @dataclass
 class Video:
     """
     This object represents a video file.
-
     Keyword arguments:
 
     :param file_id (String): Identifier for this file, which can be used to download or reuse the file
@@ -329,17 +305,16 @@ class Video:
     width: int
     height: int
     duration: int
-    thumb: PhotoSize
-    file_name: str
-    mime_type: str
-    file_size: int
+    thumb: PhotoSize = None
+    file_name: str = None
+    mime_type: str = None
+    file_size: int = None
 
 
 @dataclass
 class VideoNote:
     """
     This object represents a video message (available in Telegram apps as of v.4.0).
-
     Keyword arguments:
 
     :param file_id (String): Identifier for this file, which can be used to download or reuse the file
@@ -353,15 +328,14 @@ class VideoNote:
     file_unique_id: str
     length: int
     duration: int
-    thumb: PhotoSize
-    file_size: int
+    thumb: PhotoSize = None
+    file_size: int = None
 
 
 @dataclass
 class Voice:
     """
     This object represents a voice note.
-
     Keyword arguments:
 
     :param file_id (String): Identifier for this file, which can be used to download or reuse the file
@@ -373,15 +347,14 @@ class Voice:
     file_id: str
     file_unique_id: str
     duration: int
-    mime_type: str
-    file_size: int
+    mime_type: str = None
+    file_size: int = None
 
 
 @dataclass
 class Contact:
     """
     This object represents a phone contact.
-
     Keyword arguments:
 
     :param phone_number (String): Contact's phone number
@@ -392,16 +365,15 @@ class Contact:
     """
     phone_number: str
     first_name: str
-    last_name: str
-    user_id: int
-    vcard: str
+    last_name: str = None
+    user_id: int = None
+    vcard: str = None
 
 
 @dataclass
 class Dice:
     """
     This object represents an animated emoji that displays a random value.
-
     Keyword arguments:
 
     :param emoji (String): Emoji on which the dice throw animation is based
@@ -415,7 +387,6 @@ class Dice:
 class PollOption:
     """
     This object contains information about one answer option in a poll.
-
     Keyword arguments:
 
     :param text (String): Option text, 1-100 characters
@@ -429,7 +400,6 @@ class PollOption:
 class PollAnswer:
     """
     This object represents an answer of a user in a non-anonymous poll.
-
     Keyword arguments:
 
     :param poll_id (String): Unique poll identifier
@@ -445,7 +415,6 @@ class PollAnswer:
 class Poll:
     """
     This object contains information about a poll.
-
     Keyword arguments:
 
     :param id (String): Unique poll identifier
@@ -470,18 +439,17 @@ class Poll:
     is_anonymous: bool
     type: str
     allows_multiple_answers: bool
-    correct_option_id: int
-    explanation: str
-    explanation_entities: List[MessageEntity]
-    open_period: int
-    close_date: int
+    correct_option_id: int = None
+    explanation: str = None
+    explanation_entities: List[MessageEntity] = None
+    open_period: int = None
+    close_date: int = None
 
 
 @dataclass
 class Location:
     """
     This object represents a point on the map.
-
     Keyword arguments:
 
     :param longitude (Float): Longitude as defined by sender
@@ -493,17 +461,16 @@ class Location:
     """
     longitude: float
     latitude: float
-    horizontal_accuracy: float
-    live_period: int
-    heading: int
-    proximity_alert_radius: int
+    horizontal_accuracy: float = None
+    live_period: int = None
+    heading: int = None
+    proximity_alert_radius: int = None
 
 
 @dataclass
 class Venue:
     """
     This object represents a venue.
-
     Keyword arguments:
 
     :param location (Location): Venue location. Can't be a live location
@@ -517,17 +484,16 @@ class Venue:
     location: Location
     title: str
     address: str
-    foursquare_id: str
-    foursquare_type: str
-    google_place_id: str
-    google_place_type: str
+    foursquare_id: str = None
+    foursquare_type: str = None
+    google_place_id: str = None
+    google_place_type: str = None
 
 
 @dataclass
 class ProximityAlertTriggered:
     """
     This object represents the content of a service message, sent whenever a user in the chat triggers a proximity alert set by another user.
-
     Keyword arguments:
 
     :param traveler (User): User that triggered the alert
@@ -543,7 +509,6 @@ class ProximityAlertTriggered:
 class MessageAutoDeleteTimerChanged:
     """
     This object represents a service message about a change in auto-delete timer settings.
-
     Keyword arguments:
 
     :param message_auto_delete_time (Integer): New auto-delete time for messages in the chat
@@ -555,7 +520,6 @@ class MessageAutoDeleteTimerChanged:
 class VoiceChatScheduled:
     """
     This object represents a service message about a voice chat scheduled in the chat.
-
     Keyword arguments:
 
     :param start_date (Integer): Point in time (Unix timestamp) when the voice chat is supposed to be started by a chat administrator
@@ -567,7 +531,6 @@ class VoiceChatScheduled:
 class VoiceChatEnded:
     """
     This object represents a service message about a voice chat ended in the chat.
-
     Keyword arguments:
 
     :param duration (Integer): Voice chat duration; in seconds
@@ -579,19 +542,17 @@ class VoiceChatEnded:
 class VoiceChatParticipantsInvited:
     """
     This object represents a service message about new members invited to a voice chat.
-
     Keyword arguments:
 
     :param users (Array of User): Optional. New members that were invited to the voice chat
     """
-    users: List[User]
+    users: List[User] = None
 
 
 @dataclass
 class UserProfilePhotos:
     """
     This object represent a user's profile pictures.
-
     Keyword arguments:
 
     :param total_count (Integer): Total number of profile pictures the target user has
@@ -604,9 +565,7 @@ class UserProfilePhotos:
 @dataclass
 class File:
     """
-    This object represents a file ready to be downloaded. The file can be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile.
-    Maximum file size to download is 20 MB
-
+    This object represents a file ready to be downloaded. The file can be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile.    Maximum file size to download is 20 MB
     Keyword arguments:
 
     :param file_id (String): Identifier for this file, which can be used to download or reuse the file
@@ -616,27 +575,25 @@ class File:
     """
     file_id: str
     file_unique_id: str
-    file_size: int
-    file_path: str
+    file_size: int = None
+    file_path: str = None
 
 
 @dataclass
 class KeyboardButtonPollType:
     """
     This object represents type of a poll, which is allowed to be created and sent when the corresponding button is pressed.
-
     Keyword arguments:
 
     :param type (String): Optional. If quiz is passed, the user will be allowed to create only polls in the quiz mode. If regular is passed, only regular polls will be allowed. Otherwise, the user will be allowed to create a poll of any type.
     """
-    type: str
+    type: str = None
 
 
 @dataclass
 class KeyboardButton:
     """
     This object represents one button of the reply keyboard. For simple text buttons String can be used instead of this object to specify text of the button. Optional fields request_contact, request_location, and request_poll are mutually exclusive.
-
     Keyword arguments:
 
     :param text (String): Text of the button. If none of the optional fields are used, it will be sent as a message when the button is pressed
@@ -645,16 +602,18 @@ class KeyboardButton:
     :param request_poll (KeyboardButtonPollType): Optional. If specified, the user will be asked to create a poll and send it to the bot when the button is pressed. Available in private chats only
     """
     text: str
-    request_contact: bool
-    request_location: bool
-    request_poll: KeyboardButtonPollType
+    request_contact: bool = None
+    request_location: bool = None
+    request_poll: KeyboardButtonPollType = None
+
+
+
 
 
 @dataclass
 class ReplyKeyboardMarkup:
     """
     This object represents a custom keyboard with reply options (see Introduction to bots for details and examples).
-
     Keyword arguments:
 
     :param keyboard (Array of Array of KeyboardButton): Array of button rows, each represented by an Array of KeyboardButton objects
@@ -664,33 +623,28 @@ class ReplyKeyboardMarkup:
     :param selective (Boolean): Optional. Use this parameter if you want to show the keyboard to specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.Example: A user requests to change the bot's language, bot replies to the request with a keyboard to select the new language. Other users in the group don't see the keyboard.
     """
     keyboard: List[List[KeyboardButton]]
-    resize_keyboard: bool
-    one_time_keyboard: bool
-    input_field_placeholder: str
-    selective: bool
-
-
+    resize_keyboard: bool = None
+    one_time_keyboard: bool = None
+    input_field_placeholder: str = None
+    selective: bool = None
+    
 @dataclass
 class ReplyKeyboardRemove:
     """
     Upon receiving a message with this object, Telegram clients will remove the current custom keyboard and display the default letter-keyboard. By default, custom keyboards are displayed until a new keyboard is sent by a bot. An exception is made for one-time keyboards that are hidden immediately after the user presses a button (see ReplyKeyboardMarkup).
-
     Keyword arguments:
 
     :param remove_keyboard (True): Requests clients to remove the custom keyboard (user will not be able to summon this keyboard; if you want to hide the keyboard from sight but keep it accessible, use one_time_keyboard in ReplyKeyboardMarkup)
     :param selective (Boolean): Optional. Use this parameter if you want to remove the keyboard for specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.Example: A user votes in a poll, bot returns confirmation message in reply to the vote and removes the keyboard for that user, while still showing the keyboard with poll options to users who haven't voted yet.
     """
     remove_keyboard: True
-    selective: bool
+    selective: bool = None
 
 
 @dataclass
 class LoginUrl:
     """
-    This object represents a parameter of the inline keyboard button used to automatically authorize a user. Serves as a great replacement for the Telegram Login Widget when the user is coming from Telegram. All the user needs to do is tap/click a button and confirm that they want to log in:
-    Telegram apps support these buttons as of version 5.7.
-    Sample bot: @discussbot
-
+    This object represents a parameter of the inline keyboard button used to automatically authorize a user. Serves as a great replacement for the Telegram Login Widget when the user is coming from Telegram. All the user needs to do is tap/click a button and confirm that they want to log in:    Telegram apps support these buttons as of version 5.7.    Sample bot: @discussbot
     Keyword arguments:
 
     :param url (String): An HTTP URL to be opened with user authorization data added to the query string when the button is pressed. If the user refuses to provide authorization data, the original URL without information about the user will be opened. The data added is the same as described in Receiving authorization data.NOTE: You must always check the hash of the received data to verify the authentication and the integrity of the data as described in Checking authorization.
@@ -699,16 +653,15 @@ class LoginUrl:
     :param request_write_access (Boolean): Optional. Pass True to request the permission for your bot to send messages to the user.
     """
     url: str
-    forward_text: str
-    bot_username: str
-    request_write_access: bool
+    forward_text: str = None
+    bot_username: str = None
+    request_write_access: bool = None
 
 
 @dataclass
 class InlineKeyboardButton:
     """
     This object represents one button of an inline keyboard. You must use exactly one of the optional fields.
-
     Keyword arguments:
 
     :param text (String): Label text on the button
@@ -721,56 +674,53 @@ class InlineKeyboardButton:
     :param pay (Boolean): Optional. Specify True, to send a Pay button.NOTE: This type of button must always be the first button in the first row.
     """
     text: str
-    url: str
-    login_url: LoginUrl
-    callback_data: str
-    switch_inline_query: str
-    switch_inline_query_current_chat: str
-    callback_game: CallbackGame
-    pay: bool
+    url: str = None
+    login_url: LoginUrl = None
+    callback_data: str = None
+    switch_inline_query: str = None
+    switch_inline_query_current_chat: str = None
+    callback_game: CallbackGame = None
+    pay: bool = None
+
 
 
 @dataclass
 class InlineKeyboardMarkup:
     """
     This object represents an inline keyboard that appears right next to the message it belongs to.
-
     Keyword arguments:
 
     :param inline_keyboard (Array of Array of InlineKeyboardButton): Array of button rows, each represented by an Array of InlineKeyboardButton objects
     """
     inline_keyboard: List[List[InlineKeyboardButton]]
 
-
 @dataclass
 class CallbackQuery:
     """
     This object represents an incoming callback query from a callback button in an inline keyboard. If the button that originated the query was attached to a message sent by the bot, the field message will be present. If the button was attached to a message sent via the bot (in inline mode), the field inline_message_id will be present. Exactly one of the fields data or game_short_name will be present.
-
     Keyword arguments:
 
     :param id (String): Unique identifier for this query
     :param _from (User): Sender
+    :param chat_instance (String): Global identifier, uniquely corresponding to the chat to which the message with the callback button was sent. Useful for high scores in games.
     :param message (Message): Optional. Message with the callback button that originated the query. Note that message content and message date will not be available if the message is too old
     :param inline_message_id (String): Optional. Identifier of the message sent via the bot in inline mode, that originated the query.
-    :param chat_instance (String): Global identifier, uniquely corresponding to the chat to which the message with the callback button was sent. Useful for high scores in games.
     :param data (String): Optional. Data associated with the callback button. Be aware that a bad client can send arbitrary data in this field.
     :param game_short_name (String): Optional. Short name of a Game to be returned, serves as the unique identifier for the game
     """
     id: str
     _from: User
-    message: "Message"
-    inline_message_id: str
     chat_instance: str
-    data: str
-    game_short_name: str
+    message: "Message" = None
+    inline_message_id: str = None
+    data: str = None
+    game_short_name: str = None
 
 
 @dataclass
 class ForceReply:
     """
     Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as if the user has selected the bot's message and tapped 'Reply'). This can be extremely useful if you want to create user-friendly step-by-step interfaces without having to sacrifice privacy mode.
-
     Keyword arguments:
 
     :param force_reply (True): Shows reply interface to the user, as if they manually selected the bot's message and tapped 'Reply'
@@ -778,15 +728,14 @@ class ForceReply:
     :param selective (Boolean): Optional. Use this parameter if you want to force reply from specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.
     """
     force_reply: True
-    input_field_placeholder: str
-    selective: bool
+    input_field_placeholder: str = None
+    selective: bool = None
 
 
 @dataclass
 class ChatPhoto:
     """
     This object represents a chat photo.
-
     Keyword arguments:
 
     :param small_file_id (String): File identifier of small (160x160) chat photo. This file_id can be used only for photo download and only for as long as the photo is not changed.
@@ -804,7 +753,6 @@ class ChatPhoto:
 class ChatInviteLink:
     """
     Represents an invite link for a chat.
-
     Keyword arguments:
 
     :param invite_link (String): The invite link. If the link was created by another chat administrator, then the second part of the link will be replaced with \xe2\x80\x9c\xe2\x80\xa6\xe2\x80\x9d.
@@ -818,15 +766,14 @@ class ChatInviteLink:
     creator: User
     is_primary: bool
     is_revoked: bool
-    expire_date: int
-    member_limit: int
+    expire_date: int = None
+    member_limit: int = None
 
 
 @dataclass
 class ChatMemberOwner:
     """
     Represents a chat member that owns the chat and has all administrator privileges.
-
     Keyword arguments:
 
     :param status (String): The member's status in the chat, always \xe2\x80\x9ccreator\xe2\x80\x9d
@@ -837,14 +784,13 @@ class ChatMemberOwner:
     status: str
     user: User
     is_anonymous: bool
-    custom_title: str
+    custom_title: str = None
 
 
 @dataclass
 class ChatMemberAdministrator:
     """
     Represents a chat member that has some additional privileges.
-
     Keyword arguments:
 
     :param status (String): The member's status in the chat, always \xe2\x80\x9cadministrator\xe2\x80\x9d
@@ -874,17 +820,16 @@ class ChatMemberAdministrator:
     can_promote_members: bool
     can_change_info: bool
     can_invite_users: bool
-    can_post_messages: bool
-    can_edit_messages: bool
-    can_pin_messages: bool
-    custom_title: str
+    can_post_messages: bool = None
+    can_edit_messages: bool = None
+    can_pin_messages: bool = None
+    custom_title: str = None
 
 
 @dataclass
 class ChatMemberMember:
     """
     Represents a chat member that has no additional privileges or restrictions.
-
     Keyword arguments:
 
     :param status (String): The member's status in the chat, always \xe2\x80\x9cmember\xe2\x80\x9d
@@ -898,7 +843,6 @@ class ChatMemberMember:
 class ChatMemberRestricted:
     """
     Represents a chat member that is under certain restrictions in the chat. Supergroups only.
-
     Keyword arguments:
 
     :param status (String): The member's status in the chat, always \xe2\x80\x9crestricted\xe2\x80\x9d
@@ -932,7 +876,6 @@ class ChatMemberRestricted:
 class ChatMemberLeft:
     """
     Represents a chat member that isn't currently a member of the chat, but may join it themselves.
-
     Keyword arguments:
 
     :param status (String): The member's status in the chat, always \xe2\x80\x9cleft\xe2\x80\x9d
@@ -946,7 +889,6 @@ class ChatMemberLeft:
 class ChatMemberBanned:
     """
     Represents a chat member that was banned in the chat and can't return to the chat or view chat messages.
-
     Keyword arguments:
 
     :param status (String): The member's status in the chat, always \xe2\x80\x9ckicked\xe2\x80\x9d
@@ -962,7 +904,6 @@ class ChatMemberBanned:
 class ChatPermissions:
     """
     Describes actions that a non-administrator user is allowed to take in a chat.
-
     Keyword arguments:
 
     :param can_send_messages (Boolean): Optional. True, if the user is allowed to send text messages, contacts, locations and venues
@@ -974,21 +915,20 @@ class ChatPermissions:
     :param can_invite_users (Boolean): Optional. True, if the user is allowed to invite new users to the chat
     :param can_pin_messages (Boolean): Optional. True, if the user is allowed to pin messages. Ignored in public supergroups
     """
-    can_send_messages: bool
-    can_send_media_messages: bool
-    can_send_polls: bool
-    can_send_other_messages: bool
-    can_add_web_page_previews: bool
-    can_change_info: bool
-    can_invite_users: bool
-    can_pin_messages: bool
+    can_send_messages: bool = None
+    can_send_media_messages: bool = None
+    can_send_polls: bool = None
+    can_send_other_messages: bool = None
+    can_add_web_page_previews: bool = None
+    can_change_info: bool = None
+    can_invite_users: bool = None
+    can_pin_messages: bool = None
 
 
 @dataclass
 class ChatLocation:
     """
     Represents a location to which a chat is connected.
-
     Keyword arguments:
 
     :param location (Location): The location to which the supergroup is connected. Can't be a live location.
@@ -1002,7 +942,6 @@ class ChatLocation:
 class BotCommand:
     """
     This object represents a bot command.
-
     Keyword arguments:
 
     :param command (String): Text of the command, 1-32 characters. Can contain only lowercase English letters, digits and underscores.
@@ -1016,7 +955,6 @@ class BotCommand:
 class BotCommandScopeDefault:
     """
     Represents the default scope of bot commands. Default commands are used if no commands with a narrower scope are specified for the user.
-
     Keyword arguments:
 
     :param type (String): Scope type, must be default
@@ -1028,7 +966,6 @@ class BotCommandScopeDefault:
 class BotCommandScopeAllPrivateChats:
     """
     Represents the scope of bot commands, covering all private chats.
-
     Keyword arguments:
 
     :param type (String): Scope type, must be all_private_chats
@@ -1040,7 +977,6 @@ class BotCommandScopeAllPrivateChats:
 class BotCommandScopeAllGroupChats:
     """
     Represents the scope of bot commands, covering all group and supergroup chats.
-
     Keyword arguments:
 
     :param type (String): Scope type, must be all_group_chats
@@ -1052,7 +988,6 @@ class BotCommandScopeAllGroupChats:
 class BotCommandScopeAllChatAdministrators:
     """
     Represents the scope of bot commands, covering all group and supergroup chat administrators.
-
     Keyword arguments:
 
     :param type (String): Scope type, must be all_chat_administrators
@@ -1064,7 +999,6 @@ class BotCommandScopeAllChatAdministrators:
 class BotCommandScopeChat:
     """
     Represents the scope of bot commands, covering a specific chat.
-
     Keyword arguments:
 
     :param type (String): Scope type, must be chat
@@ -1078,7 +1012,6 @@ class BotCommandScopeChat:
 class BotCommandScopeChatAdministrators:
     """
     Represents the scope of bot commands, covering all administrators of a specific group or supergroup chat.
-
     Keyword arguments:
 
     :param type (String): Scope type, must be chat_administrators
@@ -1092,7 +1025,6 @@ class BotCommandScopeChatAdministrators:
 class BotCommandScopeChatMember:
     """
     Represents the scope of bot commands, covering a specific member of a group or supergroup chat.
-
     Keyword arguments:
 
     :param type (String): Scope type, must be chat_member
@@ -1108,21 +1040,19 @@ class BotCommandScopeChatMember:
 class ResponseParameters:
     """
     Contains information about why a request was unsuccessful.
-
     Keyword arguments:
 
     :param migrate_to_chat_id (Integer): Optional. The group has been migrated to a supergroup with the specified identifier. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier.
     :param retry_after (Integer): Optional. In case of exceeding flood control, the number of seconds left to wait before the request can be repeated
     """
-    migrate_to_chat_id: int
-    retry_after: int
+    migrate_to_chat_id: int = None
+    retry_after: int = None
 
 
 @dataclass
 class InputMediaPhoto:
     """
     Represents a photo to be sent.
-
     Keyword arguments:
 
     :param type (String): Type of the result, must be photo
@@ -1133,16 +1063,15 @@ class InputMediaPhoto:
     """
     type: str
     media: str
-    caption: str
-    parse_mode: str
-    caption_entities: List[MessageEntity]
+    caption: str = None
+    parse_mode: str = None
+    caption_entities: List[MessageEntity] = None
 
 
 @dataclass
 class InputMediaVideo:
     """
     Represents a video to be sent.
-
     Keyword arguments:
 
     :param type (String): Type of the result, must be video
@@ -1158,21 +1087,20 @@ class InputMediaVideo:
     """
     type: str
     media: str
-    thumb: Union[InputFile, str]
-    caption: str
-    parse_mode: str
-    caption_entities: List[MessageEntity]
-    width: int
-    height: int
-    duration: int
-    supports_streaming: bool
+    thumb: Union[InputFile, str] = None
+    caption: str = None
+    parse_mode: str = None
+    caption_entities: List[MessageEntity] = None
+    width: int = None
+    height: int = None
+    duration: int = None
+    supports_streaming: bool = None
 
 
 @dataclass
 class InputMediaAnimation:
     """
     Represents an animation file (GIF or H.264/MPEG-4 AVC video without sound) to be sent.
-
     Keyword arguments:
 
     :param type (String): Type of the result, must be animation
@@ -1187,20 +1115,19 @@ class InputMediaAnimation:
     """
     type: str
     media: str
-    thumb: Union[InputFile, str]
-    caption: str
-    parse_mode: str
-    caption_entities: List[MessageEntity]
-    width: int
-    height: int
-    duration: int
+    thumb: Union[InputFile, str] = None
+    caption: str = None
+    parse_mode: str = None
+    caption_entities: List[MessageEntity] = None
+    width: int = None
+    height: int = None
+    duration: int = None
 
 
 @dataclass
 class InputMediaAudio:
     """
     Represents an audio file to be treated as music to be sent.
-
     Keyword arguments:
 
     :param type (String): Type of the result, must be audio
@@ -1215,20 +1142,19 @@ class InputMediaAudio:
     """
     type: str
     media: str
-    thumb: Union[InputFile, str]
-    caption: str
-    parse_mode: str
-    caption_entities: List[MessageEntity]
-    duration: int
-    performer: str
-    title: str
+    thumb: Union[InputFile, str] = None
+    caption: str = None
+    parse_mode: str = None
+    caption_entities: List[MessageEntity] = None
+    duration: int = None
+    performer: str = None
+    title: str = None
 
 
 @dataclass
 class InputMediaDocument:
     """
     Represents a general file to be sent.
-
     Keyword arguments:
 
     :param type (String): Type of the result, must be document
@@ -1241,18 +1167,17 @@ class InputMediaDocument:
     """
     type: str
     media: str
-    thumb: Union[InputFile, str]
-    caption: str
-    parse_mode: str
-    caption_entities: List[MessageEntity]
-    disable_content_type_detection: bool
+    thumb: Union[InputFile, str] = None
+    caption: str = None
+    parse_mode: str = None
+    caption_entities: List[MessageEntity] = None
+    disable_content_type_detection: bool = None
 
 
 @dataclass
 class MaskPosition:
     """
     This object describes the position on faces where a mask should be placed by default.
-
     Keyword arguments:
 
     :param point (String): The part of the face relative to which the mask should be placed. One of \xe2\x80\x9cforehead\xe2\x80\x9d, \xe2\x80\x9ceyes\xe2\x80\x9d, \xe2\x80\x9cmouth\xe2\x80\x9d, or \xe2\x80\x9cchin\xe2\x80\x9d.
@@ -1266,11 +1191,11 @@ class MaskPosition:
     scale: float
 
 
+
 @dataclass
 class Sticker:
     """
     This object represents a sticker.
-
     Keyword arguments:
 
     :param file_id (String): Identifier for this file, which can be used to download or reuse the file
@@ -1289,18 +1214,17 @@ class Sticker:
     width: int
     height: int
     is_animated: bool
-    thumb: PhotoSize
-    emoji: str
-    set_name: str
-    mask_position: MaskPosition
-    file_size: int
+    thumb: PhotoSize = None
+    emoji: str = None
+    set_name: str = None
+    mask_position: MaskPosition = None
+    file_size: int = None
 
 
 @dataclass
 class StickerSet:
     """
     This object represents a sticker set.
-
     Keyword arguments:
 
     :param name (String): Sticker set name
@@ -1315,14 +1239,12 @@ class StickerSet:
     is_animated: bool
     contains_masks: bool
     stickers: List[Sticker]
-    thumb: PhotoSize
-
+    thumb: PhotoSize = None
 
 @dataclass
 class InlineQuery:
     """
     This object represents an incoming inline query. When the user sends an empty query, your bot could return some default or trending results.
-
     Keyword arguments:
 
     :param id (String): Unique identifier for this query
@@ -1336,15 +1258,14 @@ class InlineQuery:
     _from: User
     query: str
     offset: str
-    chat_type: str
-    location: Location
+    chat_type: str = None
+    location: Location = None
 
 
 @dataclass
 class InlineQueryResultArticle:
     """
     Represents a link to an article or web page.
-
     Keyword arguments:
 
     :param type (String): Type of the result, must be article
@@ -1363,20 +1284,19 @@ class InlineQueryResultArticle:
     id: str
     title: str
     input_message_content: InputMessageContent
-    reply_markup: InlineKeyboardMarkup
-    url: str
-    hide_url: bool
-    description: str
-    thumb_url: str
-    thumb_width: int
-    thumb_height: int
+    reply_markup: InlineKeyboardMarkup = None
+    url: str = None
+    hide_url: bool = None
+    description: str = None
+    thumb_url: str = None
+    thumb_width: int = None
+    thumb_height: int = None
 
 
 @dataclass
 class InlineQueryResultPhoto:
     """
     Represents a link to a photo. By default, this photo will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the photo.
-
     Keyword arguments:
 
     :param type (String): Type of the result, must be photo
@@ -1397,31 +1317,30 @@ class InlineQueryResultPhoto:
     id: str
     photo_url: str
     thumb_url: str
-    photo_width: int
-    photo_height: int
-    title: str
-    description: str
-    caption: str
-    parse_mode: str
-    caption_entities: List[MessageEntity]
-    reply_markup: InlineKeyboardMarkup
-    input_message_content: InputMessageContent
+    photo_width: int = None
+    photo_height: int = None
+    title: str = None
+    description: str = None
+    caption: str = None
+    parse_mode: str = None
+    caption_entities: List[MessageEntity] = None
+    reply_markup: InlineKeyboardMarkup = None
+    input_message_content: InputMessageContent = None
 
 
 @dataclass
 class InlineQueryResultGif:
     """
     Represents a link to an animated GIF file. By default, this animated GIF file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
-
     Keyword arguments:
 
     :param type (String): Type of the result, must be gif
     :param id (String): Unique identifier for this result, 1-64 bytes
     :param gif_url (String): A valid URL for the GIF file. File size must not exceed 1MB
+    :param thumb_url (String): URL of the static (JPEG or GIF) or animated (MPEG4) thumbnail for the result
     :param gif_width (Integer): Optional. Width of the GIF
     :param gif_height (Integer): Optional. Height of the GIF
     :param gif_duration (Integer): Optional. Duration of the GIF
-    :param thumb_url (String): URL of the static (JPEG or GIF) or animated (MPEG4) thumbnail for the result
     :param thumb_mime_type (String): Optional. MIME type of the thumbnail, must be one of \xe2\x80\x9cimage/jpeg\xe2\x80\x9d, \xe2\x80\x9cimage/gif\xe2\x80\x9d, or \xe2\x80\x9cvideo/mp4\xe2\x80\x9d. Defaults to \xe2\x80\x9cimage/jpeg\xe2\x80\x9d
     :param title (String): Optional. Title for the result
     :param caption (String): Optional. Caption of the GIF file to be sent, 0-1024 characters after entities parsing
@@ -1433,33 +1352,32 @@ class InlineQueryResultGif:
     type: str
     id: str
     gif_url: str
-    gif_width: int
-    gif_height: int
-    gif_duration: int
     thumb_url: str
-    thumb_mime_type: str
-    title: str
-    caption: str
-    parse_mode: str
-    caption_entities: List[MessageEntity]
-    reply_markup: InlineKeyboardMarkup
-    input_message_content: InputMessageContent
+    gif_width: int = None
+    gif_height: int = None
+    gif_duration: int = None
+    thumb_mime_type: str = None
+    title: str = None
+    caption: str = None
+    parse_mode: str = None
+    caption_entities: List[MessageEntity] = None
+    reply_markup: InlineKeyboardMarkup = None
+    input_message_content: InputMessageContent = None
 
 
 @dataclass
 class InlineQueryResultMpeg4Gif:
     """
     Represents a link to a video animation (H.264/MPEG-4 AVC video without sound). By default, this animated MPEG-4 file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
-
     Keyword arguments:
 
     :param type (String): Type of the result, must be mpeg4_gif
     :param id (String): Unique identifier for this result, 1-64 bytes
     :param mpeg4_url (String): A valid URL for the MP4 file. File size must not exceed 1MB
+    :param thumb_url (String): URL of the static (JPEG or GIF) or animated (MPEG4) thumbnail for the result
     :param mpeg4_width (Integer): Optional. Video width
     :param mpeg4_height (Integer): Optional. Video height
     :param mpeg4_duration (Integer): Optional. Video duration
-    :param thumb_url (String): URL of the static (JPEG or GIF) or animated (MPEG4) thumbnail for the result
     :param thumb_mime_type (String): Optional. MIME type of the thumbnail, must be one of \xe2\x80\x9cimage/jpeg\xe2\x80\x9d, \xe2\x80\x9cimage/gif\xe2\x80\x9d, or \xe2\x80\x9cvideo/mp4\xe2\x80\x9d. Defaults to \xe2\x80\x9cimage/jpeg\xe2\x80\x9d
     :param title (String): Optional. Title for the result
     :param caption (String): Optional. Caption of the MPEG-4 file to be sent, 0-1024 characters after entities parsing
@@ -1471,25 +1389,23 @@ class InlineQueryResultMpeg4Gif:
     type: str
     id: str
     mpeg4_url: str
-    mpeg4_width: int
-    mpeg4_height: int
-    mpeg4_duration: int
     thumb_url: str
-    thumb_mime_type: str
-    title: str
-    caption: str
-    parse_mode: str
-    caption_entities: List[MessageEntity]
-    reply_markup: InlineKeyboardMarkup
-    input_message_content: InputMessageContent
+    mpeg4_width: int = None
+    mpeg4_height: int = None
+    mpeg4_duration: int = None
+    thumb_mime_type: str = None
+    title: str = None
+    caption: str = None
+    parse_mode: str = None
+    caption_entities: List[MessageEntity] = None
+    reply_markup: InlineKeyboardMarkup = None
+    input_message_content: InputMessageContent = None
 
 
 @dataclass
 class InlineQueryResultVideo:
     """
-    Represents a link to a page containing an embedded video player or a video file. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the video.
-    If an InlineQueryResultVideo message contains an embedded video (e.g., YouTube), you must replace its content using input_message_content.
-
+    Represents a link to a page containing an embedded video player or a video file. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the video.    If an InlineQueryResultVideo message contains an embedded video (e.g., YouTube), you must replace its content using input_message_content.
     Keyword arguments:
 
     :param type (String): Type of the result, must be video
@@ -1514,22 +1430,21 @@ class InlineQueryResultVideo:
     mime_type: str
     thumb_url: str
     title: str
-    caption: str
-    parse_mode: str
-    caption_entities: List[MessageEntity]
-    video_width: int
-    video_height: int
-    video_duration: int
-    description: str
-    reply_markup: InlineKeyboardMarkup
-    input_message_content: InputMessageContent
+    caption: str = None
+    parse_mode: str = None
+    caption_entities: List[MessageEntity] = None
+    video_width: int = None
+    video_height: int = None
+    video_duration: int = None
+    description: str = None
+    reply_markup: InlineKeyboardMarkup = None
+    input_message_content: InputMessageContent = None
 
 
 @dataclass
 class InlineQueryResultAudio:
     """
     Represents a link to an MP3 audio file. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
-
     Keyword arguments:
 
     :param type (String): Type of the result, must be audio
@@ -1548,20 +1463,19 @@ class InlineQueryResultAudio:
     id: str
     audio_url: str
     title: str
-    caption: str
-    parse_mode: str
-    caption_entities: List[MessageEntity]
-    performer: str
-    audio_duration: int
-    reply_markup: InlineKeyboardMarkup
-    input_message_content: InputMessageContent
+    caption: str = None
+    parse_mode: str = None
+    caption_entities: List[MessageEntity] = None
+    performer: str = None
+    audio_duration: int = None
+    reply_markup: InlineKeyboardMarkup = None
+    input_message_content: InputMessageContent = None
 
 
 @dataclass
 class InlineQueryResultVoice:
     """
     Represents a link to a voice recording in an .OGG container encoded with OPUS. By default, this voice recording will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the the voice message.
-
     Keyword arguments:
 
     :param type (String): Type of the result, must be voice
@@ -1579,29 +1493,28 @@ class InlineQueryResultVoice:
     id: str
     voice_url: str
     title: str
-    caption: str
-    parse_mode: str
-    caption_entities: List[MessageEntity]
-    voice_duration: int
-    reply_markup: InlineKeyboardMarkup
-    input_message_content: InputMessageContent
+    caption: str = None
+    parse_mode: str = None
+    caption_entities: List[MessageEntity] = None
+    voice_duration: int = None
+    reply_markup: InlineKeyboardMarkup = None
+    input_message_content: InputMessageContent = None
 
 
 @dataclass
 class InlineQueryResultDocument:
     """
     Represents a link to a file. By default, this file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the file. Currently, only .PDF and .ZIP files can be sent using this method.
-
     Keyword arguments:
 
     :param type (String): Type of the result, must be document
     :param id (String): Unique identifier for this result, 1-64 bytes
     :param title (String): Title for the result
+    :param document_url (String): A valid URL for the file
+    :param mime_type (String): Mime type of the content of the file, either \xe2\x80\x9capplication/pdf\xe2\x80\x9d or \xe2\x80\x9capplication/zip\xe2\x80\x9d
     :param caption (String): Optional. Caption of the document to be sent, 0-1024 characters after entities parsing
     :param parse_mode (String): Optional. Mode for parsing entities in the document caption. See formatting options for more details.
     :param caption_entities (Array of MessageEntity): Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
-    :param document_url (String): A valid URL for the file
-    :param mime_type (String): Mime type of the content of the file, either \xe2\x80\x9capplication/pdf\xe2\x80\x9d or \xe2\x80\x9capplication/zip\xe2\x80\x9d
     :param description (String): Optional. Short description of the result
     :param reply_markup (InlineKeyboardMarkup): Optional. Inline keyboard attached to the message
     :param input_message_content (InputMessageContent): Optional. Content of the message to be sent instead of the file
@@ -1612,24 +1525,23 @@ class InlineQueryResultDocument:
     type: str
     id: str
     title: str
-    caption: str
-    parse_mode: str
-    caption_entities: List[MessageEntity]
     document_url: str
     mime_type: str
-    description: str
-    reply_markup: InlineKeyboardMarkup
-    input_message_content: InputMessageContent
-    thumb_url: str
-    thumb_width: int
-    thumb_height: int
+    caption: str = None
+    parse_mode: str = None
+    caption_entities: List[MessageEntity] = None
+    description: str = None
+    reply_markup: InlineKeyboardMarkup = None
+    input_message_content: InputMessageContent = None
+    thumb_url: str = None
+    thumb_width: int = None
+    thumb_height: int = None
 
 
 @dataclass
 class InlineQueryResultLocation:
     """
     Represents a location on a map. By default, the location will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the location.
-
     Keyword arguments:
 
     :param type (String): Type of the result, must be location
@@ -1652,22 +1564,21 @@ class InlineQueryResultLocation:
     latitude: float
     longitude: float
     title: str
-    horizontal_accuracy: float
-    live_period: int
-    heading: int
-    proximity_alert_radius: int
-    reply_markup: InlineKeyboardMarkup
-    input_message_content: InputMessageContent
-    thumb_url: str
-    thumb_width: int
-    thumb_height: int
+    horizontal_accuracy: float = None
+    live_period: int = None
+    heading: int = None
+    proximity_alert_radius: int = None
+    reply_markup: InlineKeyboardMarkup = None
+    input_message_content: InputMessageContent = None
+    thumb_url: str = None
+    thumb_width: int = None
+    thumb_height: int = None
 
 
 @dataclass
 class InlineQueryResultVenue:
     """
     Represents a venue. By default, the venue will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the venue.
-
     Keyword arguments:
 
     :param type (String): Type of the result, must be venue
@@ -1692,22 +1603,21 @@ class InlineQueryResultVenue:
     longitude: float
     title: str
     address: str
-    foursquare_id: str
-    foursquare_type: str
-    google_place_id: str
-    google_place_type: str
-    reply_markup: InlineKeyboardMarkup
-    input_message_content: InputMessageContent
-    thumb_url: str
-    thumb_width: int
-    thumb_height: int
+    foursquare_id: str = None
+    foursquare_type: str = None
+    google_place_id: str = None
+    google_place_type: str = None
+    reply_markup: InlineKeyboardMarkup = None
+    input_message_content: InputMessageContent = None
+    thumb_url: str = None
+    thumb_width: int = None
+    thumb_height: int = None
 
 
 @dataclass
 class InlineQueryResultContact:
     """
     Represents a contact with a phone number. By default, this contact will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the contact.
-
     Keyword arguments:
 
     :param type (String): Type of the result, must be contact
@@ -1726,20 +1636,19 @@ class InlineQueryResultContact:
     id: str
     phone_number: str
     first_name: str
-    last_name: str
-    vcard: str
-    reply_markup: InlineKeyboardMarkup
-    input_message_content: InputMessageContent
-    thumb_url: str
-    thumb_width: int
-    thumb_height: int
+    last_name: str = None
+    vcard: str = None
+    reply_markup: InlineKeyboardMarkup = None
+    input_message_content: InputMessageContent = None
+    thumb_url: str = None
+    thumb_width: int = None
+    thumb_height: int = None
 
 
 @dataclass
 class InlineQueryResultGame:
     """
     Represents a Game.
-
     Keyword arguments:
 
     :param type (String): Type of the result, must be game
@@ -1750,14 +1659,13 @@ class InlineQueryResultGame:
     type: str
     id: str
     game_short_name: str
-    reply_markup: InlineKeyboardMarkup
+    reply_markup: InlineKeyboardMarkup = None
 
 
 @dataclass
 class InlineQueryResultCachedPhoto:
     """
     Represents a link to a photo stored on the Telegram servers. By default, this photo will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the photo.
-
     Keyword arguments:
 
     :param type (String): Type of the result, must be photo
@@ -1774,20 +1682,19 @@ class InlineQueryResultCachedPhoto:
     type: str
     id: str
     photo_file_id: str
-    title: str
-    description: str
-    caption: str
-    parse_mode: str
-    caption_entities: List[MessageEntity]
-    reply_markup: InlineKeyboardMarkup
-    input_message_content: InputMessageContent
+    title: str = None
+    description: str = None
+    caption: str = None
+    parse_mode: str = None
+    caption_entities: List[MessageEntity] = None
+    reply_markup: InlineKeyboardMarkup = None
+    input_message_content: InputMessageContent = None
 
 
 @dataclass
 class InlineQueryResultCachedGif:
     """
     Represents a link to an animated GIF file stored on the Telegram servers. By default, this animated GIF file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with specified content instead of the animation.
-
     Keyword arguments:
 
     :param type (String): Type of the result, must be gif
@@ -1803,19 +1710,18 @@ class InlineQueryResultCachedGif:
     type: str
     id: str
     gif_file_id: str
-    title: str
-    caption: str
-    parse_mode: str
-    caption_entities: List[MessageEntity]
-    reply_markup: InlineKeyboardMarkup
-    input_message_content: InputMessageContent
+    title: str = None
+    caption: str = None
+    parse_mode: str = None
+    caption_entities: List[MessageEntity] = None
+    reply_markup: InlineKeyboardMarkup = None
+    input_message_content: InputMessageContent = None
 
 
 @dataclass
 class InlineQueryResultCachedMpeg4Gif:
     """
     Represents a link to a video animation (H.264/MPEG-4 AVC video without sound) stored on the Telegram servers. By default, this animated MPEG-4 file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
-
     Keyword arguments:
 
     :param type (String): Type of the result, must be mpeg4_gif
@@ -1831,19 +1737,18 @@ class InlineQueryResultCachedMpeg4Gif:
     type: str
     id: str
     mpeg4_file_id: str
-    title: str
-    caption: str
-    parse_mode: str
-    caption_entities: List[MessageEntity]
-    reply_markup: InlineKeyboardMarkup
-    input_message_content: InputMessageContent
+    title: str = None
+    caption: str = None
+    parse_mode: str = None
+    caption_entities: List[MessageEntity] = None
+    reply_markup: InlineKeyboardMarkup = None
+    input_message_content: InputMessageContent = None
 
 
 @dataclass
 class InlineQueryResultCachedSticker:
     """
     Represents a link to a sticker stored on the Telegram servers. By default, this sticker will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the sticker.
-
     Keyword arguments:
 
     :param type (String): Type of the result, must be sticker
@@ -1855,15 +1760,14 @@ class InlineQueryResultCachedSticker:
     type: str
     id: str
     sticker_file_id: str
-    reply_markup: InlineKeyboardMarkup
-    input_message_content: InputMessageContent
+    reply_markup: InlineKeyboardMarkup = None
+    input_message_content: InputMessageContent = None
 
 
 @dataclass
 class InlineQueryResultCachedDocument:
     """
     Represents a link to a file stored on the Telegram servers. By default, this file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the file.
-
     Keyword arguments:
 
     :param type (String): Type of the result, must be document
@@ -1881,19 +1785,18 @@ class InlineQueryResultCachedDocument:
     id: str
     title: str
     document_file_id: str
-    description: str
-    caption: str
-    parse_mode: str
-    caption_entities: List[MessageEntity]
-    reply_markup: InlineKeyboardMarkup
-    input_message_content: InputMessageContent
+    description: str = None
+    caption: str = None
+    parse_mode: str = None
+    caption_entities: List[MessageEntity] = None
+    reply_markup: InlineKeyboardMarkup = None
+    input_message_content: InputMessageContent = None
 
 
 @dataclass
 class InlineQueryResultCachedVideo:
     """
     Represents a link to a video file stored on the Telegram servers. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the video.
-
     Keyword arguments:
 
     :param type (String): Type of the result, must be video
@@ -1911,19 +1814,18 @@ class InlineQueryResultCachedVideo:
     id: str
     video_file_id: str
     title: str
-    description: str
-    caption: str
-    parse_mode: str
-    caption_entities: List[MessageEntity]
-    reply_markup: InlineKeyboardMarkup
-    input_message_content: InputMessageContent
+    description: str = None
+    caption: str = None
+    parse_mode: str = None
+    caption_entities: List[MessageEntity] = None
+    reply_markup: InlineKeyboardMarkup = None
+    input_message_content: InputMessageContent = None
 
 
 @dataclass
 class InlineQueryResultCachedVoice:
     """
     Represents a link to a voice message stored on the Telegram servers. By default, this voice message will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the voice message.
-
     Keyword arguments:
 
     :param type (String): Type of the result, must be voice
@@ -1940,18 +1842,17 @@ class InlineQueryResultCachedVoice:
     id: str
     voice_file_id: str
     title: str
-    caption: str
-    parse_mode: str
-    caption_entities: List[MessageEntity]
-    reply_markup: InlineKeyboardMarkup
-    input_message_content: InputMessageContent
+    caption: str = None
+    parse_mode: str = None
+    caption_entities: List[MessageEntity] = None
+    reply_markup: InlineKeyboardMarkup = None
+    input_message_content: InputMessageContent = None
 
 
 @dataclass
 class InlineQueryResultCachedAudio:
     """
     Represents a link to an MP3 audio file stored on the Telegram servers. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
-
     Keyword arguments:
 
     :param type (String): Type of the result, must be audio
@@ -1966,18 +1867,17 @@ class InlineQueryResultCachedAudio:
     type: str
     id: str
     audio_file_id: str
-    caption: str
-    parse_mode: str
-    caption_entities: List[MessageEntity]
-    reply_markup: InlineKeyboardMarkup
-    input_message_content: InputMessageContent
+    caption: str = None
+    parse_mode: str = None
+    caption_entities: List[MessageEntity] = None
+    reply_markup: InlineKeyboardMarkup = None
+    input_message_content: InputMessageContent = None
 
 
 @dataclass
 class InputTextMessageContent:
     """
     Represents the content of a text message to be sent as the result of an inline query.
-
     Keyword arguments:
 
     :param message_text (String): Text of the message to be sent, 1-4096 characters
@@ -1986,16 +1886,15 @@ class InputTextMessageContent:
     :param disable_web_page_preview (Boolean): Optional. Disables link previews for links in the sent message
     """
     message_text: str
-    parse_mode: str
-    entities: List[MessageEntity]
-    disable_web_page_preview: bool
+    parse_mode: str = None
+    entities: List[MessageEntity] = None
+    disable_web_page_preview: bool = None
 
 
 @dataclass
 class InputLocationMessageContent:
     """
     Represents the content of a location message to be sent as the result of an inline query.
-
     Keyword arguments:
 
     :param latitude (Float): Latitude of the location in degrees
@@ -2007,17 +1906,16 @@ class InputLocationMessageContent:
     """
     latitude: float
     longitude: float
-    horizontal_accuracy: float
-    live_period: int
-    heading: int
-    proximity_alert_radius: int
+    horizontal_accuracy: float = None
+    live_period: int = None
+    heading: int = None
+    proximity_alert_radius: int = None
 
 
 @dataclass
 class InputVenueMessageContent:
     """
     Represents the content of a venue message to be sent as the result of an inline query.
-
     Keyword arguments:
 
     :param latitude (Float): Latitude of the venue in degrees
@@ -2033,17 +1931,16 @@ class InputVenueMessageContent:
     longitude: float
     title: str
     address: str
-    foursquare_id: str
-    foursquare_type: str
-    google_place_id: str
-    google_place_type: str
+    foursquare_id: str = None
+    foursquare_type: str = None
+    google_place_id: str = None
+    google_place_type: str = None
 
 
 @dataclass
 class InputContactMessageContent:
     """
     Represents the content of a contact message to be sent as the result of an inline query.
-
     Keyword arguments:
 
     :param phone_number (String): Contact's phone number
@@ -2053,15 +1950,14 @@ class InputContactMessageContent:
     """
     phone_number: str
     first_name: str
-    last_name: str
-    vcard: str
+    last_name: str = None
+    vcard: str = None
 
 
 @dataclass
 class LabeledPrice:
     """
     This object represents a portion of the price for goods or services.
-
     Keyword arguments:
 
     :param label (String): Portion label
@@ -2075,7 +1971,6 @@ class LabeledPrice:
 class InputInvoiceMessageContent:
     """
     Represents the content of an invoice message to be sent as the result of an inline query.
-
     Keyword arguments:
 
     :param title (String): Product name, 1-32 characters
@@ -2105,47 +2000,45 @@ class InputInvoiceMessageContent:
     provider_token: str
     currency: str
     prices: List[LabeledPrice]
-    max_tip_amount: int
-    suggested_tip_amounts: List[int]
-    provider_data: str
-    photo_url: str
-    photo_size: int
-    photo_width: int
-    photo_height: int
-    need_name: bool
-    need_phone_number: bool
-    need_email: bool
-    need_shipping_address: bool
-    send_phone_number_to_provider: bool
-    send_email_to_provider: bool
-    is_flexible: bool
+    max_tip_amount: int = None
+    suggested_tip_amounts: List[int] = None
+    provider_data: str = None
+    photo_url: str = None
+    photo_size: int = None
+    photo_width: int = None
+    photo_height: int = None
+    need_name: bool = None
+    need_phone_number: bool = None
+    need_email: bool = None
+    need_shipping_address: bool = None
+    send_phone_number_to_provider: bool = None
+    send_email_to_provider: bool = None
+    is_flexible: bool = None
 
 
 @dataclass
 class ChosenInlineResult:
     """
     Represents a result of an inline query that was chosen by the user and sent to their chat partner.
-
     Keyword arguments:
 
     :param result_id (String): The unique identifier for the result that was chosen
     :param _from (User): The user that chose the result
+    :param query (String): The query that was used to obtain the result
     :param location (Location): Optional. Sender location, only for bots that require user location
     :param inline_message_id (String): Optional. Identifier of the sent inline message. Available only if there is an inline keyboard attached to the message. Will be also received in callback queries and can be used to edit the message.
-    :param query (String): The query that was used to obtain the result
     """
     result_id: str
     _from: User
-    location: Location
-    inline_message_id: str
     query: str
+    location: Location = None
+    inline_message_id: str = None
 
 
 @dataclass
 class Invoice:
     """
     This object contains basic information about an invoice.
-
     Keyword arguments:
 
     :param title (String): Product name
@@ -2165,7 +2058,6 @@ class Invoice:
 class ShippingAddress:
     """
     This object represents a shipping address.
-
     Keyword arguments:
 
     :param country_code (String): ISO 3166-1 alpha-2 country code
@@ -2187,7 +2079,6 @@ class ShippingAddress:
 class OrderInfo:
     """
     This object represents information about an order.
-
     Keyword arguments:
 
     :param name (String): Optional. User name
@@ -2195,17 +2086,16 @@ class OrderInfo:
     :param email (String): Optional. User email
     :param shipping_address (ShippingAddress): Optional. User shipping address
     """
-    name: str
-    phone_number: str
-    email: str
-    shipping_address: ShippingAddress
+    name: str = None
+    phone_number: str = None
+    email: str = None
+    shipping_address: ShippingAddress = None
 
 
 @dataclass
 class ShippingOption:
     """
     This object represents one shipping option.
-
     Keyword arguments:
 
     :param id (String): Shipping option identifier
@@ -2221,31 +2111,29 @@ class ShippingOption:
 class SuccessfulPayment:
     """
     This object contains basic information about a successful payment.
-
     Keyword arguments:
 
     :param currency (String): Three-letter ISO 4217 currency code
     :param total_amount (Integer): Total price in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
     :param invoice_payload (String): Bot specified invoice payload
-    :param shipping_option_id (String): Optional. Identifier of the shipping option chosen by the user
-    :param order_info (OrderInfo): Optional. Order info provided by the user
     :param telegram_payment_charge_id (String): Telegram payment identifier
     :param provider_payment_charge_id (String): Provider payment identifier
+    :param shipping_option_id (String): Optional. Identifier of the shipping option chosen by the user
+    :param order_info (OrderInfo): Optional. Order info provided by the user
     """
     currency: str
     total_amount: int
     invoice_payload: str
-    shipping_option_id: str
-    order_info: OrderInfo
     telegram_payment_charge_id: str
     provider_payment_charge_id: str
+    shipping_option_id: str = None
+    order_info: OrderInfo = None
 
 
 @dataclass
 class ShippingQuery:
     """
     This object contains information about an incoming shipping query.
-
     Keyword arguments:
 
     :param id (String): Unique query identifier
@@ -2263,7 +2151,6 @@ class ShippingQuery:
 class PreCheckoutQuery:
     """
     This object contains information about an incoming pre-checkout query.
-
     Keyword arguments:
 
     :param id (String): Unique query identifier
@@ -2279,15 +2166,14 @@ class PreCheckoutQuery:
     currency: str
     total_amount: int
     invoice_payload: str
-    shipping_option_id: str
-    order_info: OrderInfo
+    shipping_option_id: str = None
+    order_info: OrderInfo = None
 
 
 @dataclass
 class PassportFile:
     """
     This object represents a file uploaded to Telegram Passport. Currently all Telegram Passport files are in JPEG format when decrypted and don't exceed 10MB.
-
     Keyword arguments:
 
     :param file_id (String): Identifier for this file, which can be used to download or reuse the file
@@ -2305,10 +2191,10 @@ class PassportFile:
 class EncryptedPassportElement:
     """
     Contains information about documents or other Telegram Passport elements shared with the bot by the user.
-
     Keyword arguments:
 
     :param type (String): Element type. One of \xe2\x80\x9cpersonal_details\xe2\x80\x9d, \xe2\x80\x9cpassport\xe2\x80\x9d, \xe2\x80\x9cdriver_license\xe2\x80\x9d, \xe2\x80\x9cidentity_card\xe2\x80\x9d, \xe2\x80\x9cinternal_passport\xe2\x80\x9d, \xe2\x80\x9caddress\xe2\x80\x9d, \xe2\x80\x9cutility_bill\xe2\x80\x9d, \xe2\x80\x9cbank_statement\xe2\x80\x9d, \xe2\x80\x9crental_agreement\xe2\x80\x9d, \xe2\x80\x9cpassport_registration\xe2\x80\x9d, \xe2\x80\x9ctemporary_registration\xe2\x80\x9d, \xe2\x80\x9cphone_number\xe2\x80\x9d, \xe2\x80\x9cemail\xe2\x80\x9d.
+    :param hash (String): Base64-encoded element hash for using in PassportElementErrorUnspecified
     :param data (String): Optional. Base64-encoded encrypted Telegram Passport element data provided by the user, available for \xe2\x80\x9cpersonal_details\xe2\x80\x9d, \xe2\x80\x9cpassport\xe2\x80\x9d, \xe2\x80\x9cdriver_license\xe2\x80\x9d, \xe2\x80\x9cidentity_card\xe2\x80\x9d, \xe2\x80\x9cinternal_passport\xe2\x80\x9d and \xe2\x80\x9caddress\xe2\x80\x9d types. Can be decrypted and verified using the accompanying EncryptedCredentials.
     :param phone_number (String): Optional. User's verified phone number, available only for \xe2\x80\x9cphone_number\xe2\x80\x9d type
     :param email (String): Optional. User's verified email address, available only for \xe2\x80\x9cemail\xe2\x80\x9d type
@@ -2317,25 +2203,23 @@ class EncryptedPassportElement:
     :param reverse_side (PassportFile): Optional. Encrypted file with the reverse side of the document, provided by the user. Available for \xe2\x80\x9cdriver_license\xe2\x80\x9d and \xe2\x80\x9cidentity_card\xe2\x80\x9d. The file can be decrypted and verified using the accompanying EncryptedCredentials.
     :param selfie (PassportFile): Optional. Encrypted file with the selfie of the user holding a document, provided by the user; available for \xe2\x80\x9cpassport\xe2\x80\x9d, \xe2\x80\x9cdriver_license\xe2\x80\x9d, \xe2\x80\x9cidentity_card\xe2\x80\x9d and \xe2\x80\x9cinternal_passport\xe2\x80\x9d. The file can be decrypted and verified using the accompanying EncryptedCredentials.
     :param translation (Array of PassportFile): Optional. Array of encrypted files with translated versions of documents provided by the user. Available if requested for \xe2\x80\x9cpassport\xe2\x80\x9d, \xe2\x80\x9cdriver_license\xe2\x80\x9d, \xe2\x80\x9cidentity_card\xe2\x80\x9d, \xe2\x80\x9cinternal_passport\xe2\x80\x9d, \xe2\x80\x9cutility_bill\xe2\x80\x9d, \xe2\x80\x9cbank_statement\xe2\x80\x9d, \xe2\x80\x9crental_agreement\xe2\x80\x9d, \xe2\x80\x9cpassport_registration\xe2\x80\x9d and \xe2\x80\x9ctemporary_registration\xe2\x80\x9d types. Files can be decrypted and verified using the accompanying EncryptedCredentials.
-    :param hash (String): Base64-encoded element hash for using in PassportElementErrorUnspecified
     """
     type: str
-    data: str
-    phone_number: str
-    email: str
-    files: List[PassportFile]
-    front_side: Union[PassportFile]
-    reverse_side: Union[PassportFile]
-    selfie: Union[PassportFile]
-    translation: List[PassportFile]
     hash: str
+    data: str = None
+    phone_number: str = None
+    email: str = None
+    files: List[PassportFile] = None
+    front_side: Union[PassportFile] = None
+    reverse_side: Union[PassportFile] = None
+    selfie: Union[PassportFile] = None
+    translation: List[PassportFile] = None
 
 
 @dataclass
 class EncryptedCredentials:
     """
     Contains data required for decrypting and authenticating EncryptedPassportElement. See the Telegram Passport Documentation for a complete description of the data decryption and authentication processes.
-
     Keyword arguments:
 
     :param data (String): Base64-encoded encrypted JSON-serialized data with unique user's payload, data hashes and secrets required for EncryptedPassportElement decryption and authentication
@@ -2351,7 +2235,6 @@ class EncryptedCredentials:
 class PassportElementErrorDataField:
     """
     Represents an issue in one of the data fields that was provided by the user. The error is considered resolved when the field's value changes.
-
     Keyword arguments:
 
     :param source (String): Error source, must be data
@@ -2371,7 +2254,6 @@ class PassportElementErrorDataField:
 class PassportElementErrorFrontSide:
     """
     Represents an issue with the front side of a document. The error is considered resolved when the file with the front side of the document changes.
-
     Keyword arguments:
 
     :param source (String): Error source, must be front_side
@@ -2389,7 +2271,6 @@ class PassportElementErrorFrontSide:
 class PassportElementErrorReverseSide:
     """
     Represents an issue with the reverse side of a document. The error is considered resolved when the file with reverse side of the document changes.
-
     Keyword arguments:
 
     :param source (String): Error source, must be reverse_side
@@ -2407,7 +2288,6 @@ class PassportElementErrorReverseSide:
 class PassportElementErrorSelfie:
     """
     Represents an issue with the selfie with a document. The error is considered resolved when the file with the selfie changes.
-
     Keyword arguments:
 
     :param source (String): Error source, must be selfie
@@ -2425,7 +2305,6 @@ class PassportElementErrorSelfie:
 class PassportElementErrorFile:
     """
     Represents an issue with a document scan. The error is considered resolved when the file with the document scan changes.
-
     Keyword arguments:
 
     :param source (String): Error source, must be file
@@ -2443,7 +2322,6 @@ class PassportElementErrorFile:
 class PassportElementErrorFiles:
     """
     Represents an issue with a list of scans. The error is considered resolved when the list of files containing the scans changes.
-
     Keyword arguments:
 
     :param source (String): Error source, must be files
@@ -2461,7 +2339,6 @@ class PassportElementErrorFiles:
 class PassportElementErrorTranslationFile:
     """
     Represents an issue with one of the files that constitute the translation of a document. The error is considered resolved when the file changes.
-
     Keyword arguments:
 
     :param source (String): Error source, must be translation_file
@@ -2479,7 +2356,6 @@ class PassportElementErrorTranslationFile:
 class PassportElementErrorTranslationFiles:
     """
     Represents an issue with the translated version of a document. The error is considered resolved when a file with the document translation change.
-
     Keyword arguments:
 
     :param source (String): Error source, must be translation_files
@@ -2497,7 +2373,6 @@ class PassportElementErrorTranslationFiles:
 class PassportElementErrorUnspecified:
     """
     Represents an issue in an unspecified place. The error is considered resolved when new data is added.
-
     Keyword arguments:
 
     :param source (String): Error source, must be unspecified
@@ -2515,7 +2390,6 @@ class PassportElementErrorUnspecified:
 class PassportData:
     """
     Contains information about Telegram Passport data shared with the bot by the user.
-
     Keyword arguments:
 
     :param data (Array of EncryptedPassportElement): Array with information about documents and other Telegram Passport elements that was shared with the bot
@@ -2529,7 +2403,6 @@ class PassportData:
 class Game:
     """
     This object represents a game. Use BotFather to create and edit games, their short names will act as unique identifiers.
-
     Keyword arguments:
 
     :param title (String): Title of the game
@@ -2542,16 +2415,15 @@ class Game:
     title: str
     description: str
     photo: List[PhotoSize]
-    text: str
-    text_entities: List[MessageEntity]
-    animation: Animation
+    text: str = None
+    text_entities: List[MessageEntity] = None
+    animation: Animation = None
 
 
 @dataclass
 class GameHighScore:
     """
     This object represents one row of the high scores table for a game.
-
     Keyword arguments:
 
     :param position (Integer): Position in high score table for the game
@@ -2567,7 +2439,6 @@ class GameHighScore:
 class Chat:
     """
     This object represents a chat.
-
     Keyword arguments:
 
     :param id (Integer): Unique identifier for this chat. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier.
@@ -2591,29 +2462,28 @@ class Chat:
     """
     id: int
     type: str
-    title: str
-    username: str
-    first_name: str
-    last_name: str
-    photo: ChatPhoto
-    bio: str
-    description: str
-    invite_link: str
-    pinned_message: "Message"
-    permissions: ChatPermissions
-    slow_mode_delay: int
-    message_auto_delete_time: int
-    sticker_set_name: str
-    can_set_sticker_set: bool
-    linked_chat_id: int
-    location: ChatLocation
+    title: str = None
+    username: str = None
+    first_name: str = None
+    last_name: str = None
+    photo: ChatPhoto = None
+    bio: str = None
+    description: str = None
+    invite_link: str = None
+    pinned_message: "Message" = None
+    permissions: ChatPermissions = None
+    slow_mode_delay: int = None
+    message_auto_delete_time: int = None
+    sticker_set_name: str = None
+    can_set_sticker_set: bool = None
+    linked_chat_id: int = None
+    location: ChatLocation = None
 
 
 @dataclass
 class ChatMemberUpdated:
     """
     This object represents changes in the status of a chat member.
-
     Keyword arguments:
 
     :param chat (Chat): Chat the user belongs to
@@ -2628,21 +2498,20 @@ class ChatMemberUpdated:
     date: int
     old_chat_member: ChatMember
     new_chat_member: ChatMember
-    invite_link: ChatInviteLink
+    invite_link: ChatInviteLink = None
 
 
 @dataclass
 class Message:
     """
     This object represents a message.
-
     Keyword arguments:
 
     :param message_id (Integer): Unique message identifier inside this chat
-    :param _from (User): Optional. Sender, empty for messages sent to channels
-    :param sender_chat (Chat): Optional. Sender of the message, sent on behalf of a chat. The channel itself for channel messages. The supergroup itself for messages from anonymous group administrators. The linked channel for messages automatically forwarded to the discussion group
     :param date (Integer): Date the message was sent in Unix time
     :param chat (Chat): Conversation the message belongs to
+    :param _from (User): Optional. Sender, empty for messages sent to channels
+    :param sender_chat (Chat): Optional. Sender of the message, sent on behalf of a chat. The channel itself for channel messages. The supergroup itself for messages from anonymous group administrators. The linked channel for messages automatically forwarded to the discussion group
     :param forward_from (User): Optional. For forwarded messages, sender of the original message
     :param forward_from_chat (Chat): Optional. For messages forwarded from channels or from anonymous administrators, information about the original sender chat
     :param forward_from_message_id (Integer): Optional. For messages forwarded from channels, identifier of the original message in the channel
@@ -2696,68 +2565,68 @@ class Message:
     :param reply_markup (InlineKeyboardMarkup): Optional. Inline keyboard attached to the message. login_url buttons are represented as ordinary url buttons.
     """
     message_id: int
-    _from: User
-    sender_chat: Chat
     date: int
     chat: Chat
-    forward_from: User
-    forward_from_chat: Chat
-    forward_from_message_id: int
-    forward_signature: str
-    forward_sender_name: str
-    forward_date: int
-    reply_to_message: "Message"
-    via_bot: User
-    edit_date: int
-    media_group_id: str
-    author_signature: str
-    text: str
-    entities: List[MessageEntity]
-    animation: Animation
-    audio: Audio
-    document: Document
-    photo: List[PhotoSize]
-    sticker: Sticker
-    video: Video
-    video_note: VideoNote
-    voice: Voice
-    caption: str
-    caption_entities: List[MessageEntity]
-    contact: Contact
-    dice: Dice
-    game: Game
-    poll: Poll
-    venue: Venue
-    location: Location
-    new_chat_members: List[User]
-    left_chat_member: User
-    new_chat_title: str
-    new_chat_photo: List[PhotoSize]
-    delete_chat_photo: True
-    group_chat_created: True
-    supergroup_chat_created: True
-    channel_chat_created: True
-    message_auto_delete_timer_changed: MessageAutoDeleteTimerChanged
-    migrate_to_chat_id: int
-    migrate_from_chat_id: int
-    pinned_message: "Message"
-    invoice: Invoice
-    successful_payment: SuccessfulPayment
-    connected_website: str
-    passport_data: Union[PassportData]
-    proximity_alert_triggered: ProximityAlertTriggered
-    voice_chat_scheduled: VoiceChatScheduled
-    voice_chat_started: VoiceChatStarted
-    voice_chat_ended: VoiceChatEnded
-    voice_chat_participants_invited: VoiceChatParticipantsInvited
-    reply_markup: InlineKeyboardMarkup
+    _from: User = None
+    sender_chat: Chat = None
+    forward_from: User = None
+    forward_from_chat: Chat = None
+    forward_from_message_id: int = None
+    forward_signature: str = None
+    forward_sender_name: str = None
+    forward_date: int = None
+    reply_to_message: "Message" = None
+    via_bot: User = None
+    edit_date: int = None
+    media_group_id: str = None
+    author_signature: str = None
+    text: str = None
+    entities: List[MessageEntity] = None
+    animation: Animation = None
+    audio: Audio = None
+    document: Document = None
+    photo: List[PhotoSize] = None
+    sticker: Sticker = None
+    video: Video = None
+    video_note: VideoNote = None
+    voice: Voice = None
+    caption: str = None
+    caption_entities: List[MessageEntity] = None
+    contact: Contact = None
+    dice: Dice = None
+    game: Game = None
+    poll: Poll = None
+    venue: Venue = None
+    location: Location = None
+    new_chat_members: List[User] = None
+    left_chat_member: User = None
+    new_chat_title: str = None
+    new_chat_photo: List[PhotoSize] = None
+    delete_chat_photo: True = None
+    group_chat_created: True = None
+    supergroup_chat_created: True = None
+    channel_chat_created: True = None
+    message_auto_delete_timer_changed: MessageAutoDeleteTimerChanged = None
+    migrate_to_chat_id: int = None
+    migrate_from_chat_id: int = None
+    pinned_message: "Message" = None
+    invoice: Invoice = None
+    successful_payment: SuccessfulPayment = None
+    connected_website: str = None
+    passport_data: Union[PassportData] = None
+    proximity_alert_triggered: ProximityAlertTriggered = None
+    voice_chat_scheduled: VoiceChatScheduled = None
+    voice_chat_started: VoiceChatStarted = None
+    voice_chat_ended: VoiceChatEnded = None
+    voice_chat_participants_invited: VoiceChatParticipantsInvited = None
+    reply_markup: InlineKeyboardMarkup = None
+
 
 
 @dataclass
 class Update:
     """
     This object represents an incoming update.At most one of the optional parameters can be present in any given update.
-
     Keyword arguments:
 
     :param update_id (Integer): The update's unique identifier. Update identifiers start from a certain positive number and increase sequentially. This ID becomes especially handy if you're using Webhooks, since it allows you to ignore repeated updates or to restore the correct update sequence, should they get out of order. If there are no new updates for at least a week, then identifier of the next update will be chosen randomly instead of sequentially.
@@ -2776,26 +2645,25 @@ class Update:
     :param chat_member (ChatMemberUpdated): Optional. A chat member's status was updated in a chat. The bot must be an administrator in the chat and must explicitly specify \xe2\x80\x9cchat_member\xe2\x80\x9d in the list of allowed_updates to receive these updates.
     """
     update_id: int
-    message: Message
-    edited_message: Message
-    channel_post: Message
-    edited_channel_post: Message
-    inline_query: InlineQuery
-    chosen_inline_result: ChosenInlineResult
-    callback_query: CallbackQuery
-    shipping_query: ShippingQuery
-    pre_checkout_query: PreCheckoutQuery
-    poll: Poll
-    poll_answer: PollAnswer
-    my_chat_member: ChatMemberUpdated
-    chat_member: ChatMemberUpdated
+    message: Message = None
+    edited_message: Message = None
+    channel_post: Message = None
+    edited_channel_post: Message = None
+    inline_query: InlineQuery = None
+    chosen_inline_result: ChosenInlineResult = None
+    callback_query: CallbackQuery = None
+    shipping_query: ShippingQuery = None
+    pre_checkout_query: PreCheckoutQuery = None
+    poll: Poll = None
+    poll_answer: PollAnswer = None
+    my_chat_member: ChatMemberUpdated = None
+    chat_member: ChatMemberUpdated = None
 
 
 @dataclass
 class WebhookInfo:
     """
     Contains information about the current status of a webhook.
-
     Keyword arguments:
 
     :param url (String): Webhook URL, may be empty if webhook is not set up
@@ -2810,11 +2678,11 @@ class WebhookInfo:
     url: str
     has_custom_certificate: bool
     pending_update_count: int
-    ip_address: str
-    last_error_date: int
-    last_error_message: str
-    max_connections: int
-    allowed_updates: List[str]
+    ip_address: str = None
+    last_error_date: int = None
+    last_error_message: str = None
+    max_connections: int = None
+    allowed_updates: List[str] = None
 
 
 
