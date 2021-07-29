@@ -1,4 +1,5 @@
 from typing import Union, List
+from collections import Iterable 
 
 import httpx
 import requests
@@ -7,6 +8,7 @@ import uvicorn
 from dacite import from_dict
 
 from .database import Database
+from .filters import Filters, Filter
 from .types import *
 
 class TelegramBot:
@@ -1740,30 +1742,21 @@ class TelegramBot:
     def onUpdate(
         self,
         path: str = "/",
-        filters: Union[str, List[str]] = None,
+        filters: Union[Filters, Filter, Iterable] = None,
         ):
         def get_update(handle):
             @self.app.post(path)
-            async def recWebHook(req: Request):
+            async def recWebHook(req: Request, filters= filters):
                 r = await req.json()
                 # read update
                 update = self._make_instance(Update, r)
                 # filter update
-                passed_filter = False
-                if type(filters) == str:
-                    if getattr(update, filters):
-                        passed_filter = True
-                elif type(filters) == list:
-                    for filter in filters:
-                        if getattr(update, filter):
-                            passed_filter = True
-                            break
-                else:
-                    raise TypeError(
-                        "'filters' must be either a list or a string." 
-                        f" got {type(filters)}"
-                        )
-                if not passed_filter:
+                if type(filters) != Filters:
+                    filters = (
+                        Filters(filters) if isinstance(filters, Iterable)
+                        else Filters([filters])
+                    )
+                if filters and not filters.check(update):
                     return
                 # write on database
                 if self.database:
