@@ -19,16 +19,16 @@ bot = TelegramBot(
     )
 
 
-@bot.onUpdate(filters= UpdateType(["edited_message"]) | UpdateType(["message"]))
+@bot.onUpdate(filters= UpdateType(["edited_message", "message"]))
 async def show_message(update):
     if update.message:
         await bot.sendMessage(
-            update.message._from.id,
-            f"Hi {update.message._from.first_name}"
+            update.message.from_.id,
+            f"Hi {update.message.from_.first_name}"
             )
     elif update.edited_message:
         await bot.sendMessage(
-          update.edited_message._from.id,
+          update.edited_message.from_.id,
           f"You edited your message. I am watching you 👀"
           )
 

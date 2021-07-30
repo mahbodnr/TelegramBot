@@ -1,4 +1,3 @@
-from dataclasses import asdict
 
 from pymongo import MongoClient
 
@@ -20,14 +19,14 @@ class Database:
     def add_update(self,
         update: Update,
         ):
-        self.updates.insert_one(asdict(update))
+        self.updates.insert_one(update.dict())
 
 
     def add_messages(
         self,
         message: Message,
         ):
-        self.messages.insert_one(asdict(message))
+        self.messages.insert_one(message.dict())
 
 
     def add_user(
@@ -37,12 +36,12 @@ class Database:
         if self.users.find({'_id':user.id}).count()>0:
             self.users.update_one(
                 {'_id': user.id},
-                {'$set': {**asdict(user)}}
+                {'$set': {**user.dict()}}
                 )
         else:
             self.users.insert_one(
                 {
                     '_id': user.id,
-                    **asdict(user),
+                    **user.dict(),
                 }
             )

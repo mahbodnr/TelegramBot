@@ -1746,23 +1746,18 @@ class TelegramBot:
         ):
         def get_update(handle):
             @self.app.post(path)
-            async def recWebHook(req: Request, filters= filters):
-                r = await req.json()
-                # read update
-                update = self._make_instance(Update, r)
+            async def recWebHook(update: Update):
                 # filter update
-                if type(filters) != Filters:
-                    filters = (
-                        Filters(filters) if isinstance(filters, Iterable)
-                        else Filters([filters])
-                    )
-                if filters and not filters.check(update):
+                f = filters
+                if type(f) != Filters:
+                    f = Filters(f) if isinstance(f, Iterable) else Filters([f])
+                if f and not f.check(update):
                     return
                 # write on database
                 if self.database:
                     self.database.add_update(update)
-                    if update.message and update.message._from:
-                        self.database.add_user(update.message._from)
+                    # if update.message and update.message._from:
+                    #     self.database.add_user(update.message._from)
                 #handle
                 return await handle(update)
         return get_update

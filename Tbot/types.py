@@ -1,17 +1,22 @@
-from dataclasses import dataclass
-from typing import Union, List
+from typing import Union, List, Optional
+from pydantic import BaseModel
 
 
-@dataclass
-class VoiceChatStarted:
+class TelegramType(BaseModel):
+
+    class Config:
+        fields = {
+        'from_': 'from'
+        }
+
+
+class VoiceChatStarted(TelegramType):
     """
     This object represents a service message about a voice chat started in the chat. Currently holds no information.
     """
-    pass
 
 
-@dataclass
-class ChatMember:
+class ChatMember(TelegramType):
     """
     This object contains information about one member of a chat. Currently, the following 6 types of chat members are supported:    
     ChatMemberOwner
@@ -22,11 +27,9 @@ class ChatMember:
     ChatMemberBanned
     
     """
-    pass
 
 
-@dataclass
-class BotCommandScope:
+class BotCommandScope(TelegramType):
     """
     This object represents the scope to which bot commands are applied. Currently, the following 7 scopes are supported:    
     BotCommandScopeDefault
@@ -38,11 +41,9 @@ class BotCommandScope:
     BotCommandScopeChatMember
     
     """
-    pass
 
 
-@dataclass
-class InputMedia:
+class InputMedia(TelegramType):
     """
     This object represents the content of a media message to be sent. It should be one of    
     InputMediaAnimation
@@ -52,19 +53,15 @@ class InputMedia:
     InputMediaVideo
     
     """
-    pass
 
 
-@dataclass
-class InputFile:
+class InputFile(TelegramType):
     """
     This object represents the contents of a file to be uploaded. Must be posted using multipart/form-data in the usual way that files are uploaded via the browser.
     """
-    pass
 
 
-@dataclass
-class InlineQueryResult:
+class InlineQueryResult(TelegramType):
     """
     This object represents one result of an inline query. Telegram clients currently support results of the following 20 types:    
     InlineQueryResultCachedAudio
@@ -89,11 +86,9 @@ class InlineQueryResult:
     InlineQueryResultVoice
         Note: All URLs passed in inline query results will be available to end users and therefore must be assumed to be public.
     """
-    pass
 
 
-@dataclass
-class InputMessageContent:
+class InputMessageContent(TelegramType):
     """
     This object represents the content of a message to be sent as a result of an inline query. Telegram clients currently support the following 5 types:    
     InputTextMessageContent
@@ -103,11 +98,9 @@ class InputMessageContent:
     InputInvoiceMessageContent
     
     """
-    pass
 
 
-@dataclass
-class PassportElementError:
+class PassportElementError(TelegramType):
     """
     This object represents an error in the Telegram Passport element which was submitted that should be resolved by the user. It should be one of:    
     PassportElementErrorDataField
@@ -121,19 +114,39 @@ class PassportElementError:
     PassportElementErrorUnspecified
     
     """
-    pass
 
 
-@dataclass
-class CallbackGame:
+class CallbackGame(TelegramType):
     """
     A placeholder, currently holds no information. Use BotFather to set up your game.
     """
-    pass
 
 
-@dataclass
-class User:
+class WebhookInfo(TelegramType):
+    """
+    Contains information about the current status of a webhook.
+    Keyword arguments:
+
+    :param url (String): Webhook URL, may be empty if webhook is not set up
+    :param has_custom_certificate (Boolean): True, if a custom certificate was provided for webhook certificate checks
+    :param pending_update_count (Integer): Number of updates awaiting delivery
+    :param ip_address (String): Optional. Currently used webhook IP address
+    :param last_error_date (Integer): Optional. Unix time for the most recent error that happened when trying to deliver an update via webhook
+    :param last_error_message (String): Optional. Error message in human-readable format for the most recent error that happened when trying to deliver an update via webhook
+    :param max_connections (Integer): Optional. Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery
+    :param allowed_updates (Array of String): Optional. A list of update types the bot is subscribed to. Defaults to all update types except chat_member
+    """
+    url: str
+    has_custom_certificate: bool
+    pending_update_count: int
+    ip_address: Optional[str] = None
+    last_error_date: Optional[int] = None
+    last_error_message: Optional[str] = None
+    max_connections: Optional[int] = None
+    allowed_updates: Optional[List[str]] = None
+
+
+class User(TelegramType):
     """
     This object represents a Telegram user or bot.
     Keyword arguments:
@@ -151,15 +164,15 @@ class User:
     id: int
     is_bot: bool
     first_name: str
-    last_name: str = None
-    username: str = None
-    language_code: str = None
-    can_join_groups: bool = None
-    can_read_all_group_messages: bool = None
-    supports_inline_queries: bool = None
+    last_name: Optional[str] = None
+    username: Optional[str] = None
+    language_code: Optional[str] = None
+    can_join_groups: Optional[bool] = None
+    can_read_all_group_messages: Optional[bool] = None
+    supports_inline_queries: Optional[bool] = None
 
-@dataclass
-class MessageId:
+
+class MessageId(TelegramType):
     """
     This object represents a unique message identifier.
     Keyword arguments:
@@ -169,8 +182,7 @@ class MessageId:
     message_id: int
 
 
-@dataclass
-class MessageEntity:
+class MessageEntity(TelegramType):
     """
     This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc.
     Keyword arguments:
@@ -185,13 +197,12 @@ class MessageEntity:
     type: str
     offset: int
     length: int
-    url: str = None
-    user: User = None
-    language: str = None
+    url: Optional[str] = None
+    user: Optional[User] = None
+    language: Optional[str] = None
 
 
-@dataclass
-class PhotoSize:
+class PhotoSize(TelegramType):
     """
     This object represents one size of a photo or a file / sticker thumbnail.
     Keyword arguments:
@@ -206,11 +217,10 @@ class PhotoSize:
     file_unique_id: str
     width: int
     height: int
-    file_size: int = None
+    file_size: Optional[int] = None
 
 
-@dataclass
-class Animation:
+class Animation(TelegramType):
     """
     This object represents an animation file (GIF or H.264/MPEG-4 AVC video without sound).
     Keyword arguments:
@@ -230,14 +240,13 @@ class Animation:
     width: int
     height: int
     duration: int
-    thumb: PhotoSize = None
-    file_name: str = None
-    mime_type: str = None
-    file_size: int = None
+    thumb: Optional[PhotoSize] = None
+    file_name: Optional[str] = None
+    mime_type: Optional[str] = None
+    file_size: Optional[int] = None
 
 
-@dataclass
-class Audio:
+class Audio(TelegramType):
     """
     This object represents an audio file to be treated as music by the Telegram clients.
     Keyword arguments:
@@ -255,16 +264,15 @@ class Audio:
     file_id: str
     file_unique_id: str
     duration: int
-    performer: str = None
-    title: str = None
-    file_name: str = None
-    mime_type: str = None
-    file_size: int = None
-    thumb: PhotoSize = None
+    performer: Optional[str] = None
+    title: Optional[str] = None
+    file_name: Optional[str] = None
+    mime_type: Optional[str] = None
+    file_size: Optional[int] = None
+    thumb: Optional[PhotoSize] = None
 
 
-@dataclass
-class Document:
+class Document(TelegramType):
     """
     This object represents a general file (as opposed to photos, voice messages and audio files).
     Keyword arguments:
@@ -278,14 +286,13 @@ class Document:
     """
     file_id: str
     file_unique_id: str
-    thumb: PhotoSize = None
-    file_name: str = None
-    mime_type: str = None
-    file_size: int = None
+    thumb: Optional[PhotoSize] = None
+    file_name: Optional[str] = None
+    mime_type: Optional[str] = None
+    file_size: Optional[int] = None
 
 
-@dataclass
-class Video:
+class Video(TelegramType):
     """
     This object represents a video file.
     Keyword arguments:
@@ -305,14 +312,13 @@ class Video:
     width: int
     height: int
     duration: int
-    thumb: PhotoSize = None
-    file_name: str = None
-    mime_type: str = None
-    file_size: int = None
+    thumb: Optional[PhotoSize] = None
+    file_name: Optional[str] = None
+    mime_type: Optional[str] = None
+    file_size: Optional[int] = None
 
 
-@dataclass
-class VideoNote:
+class VideoNote(TelegramType):
     """
     This object represents a video message (available in Telegram apps as of v.4.0).
     Keyword arguments:
@@ -328,12 +334,11 @@ class VideoNote:
     file_unique_id: str
     length: int
     duration: int
-    thumb: PhotoSize = None
-    file_size: int = None
+    thumb: Optional[PhotoSize] = None
+    file_size: Optional[int] = None
 
 
-@dataclass
-class Voice:
+class Voice(TelegramType):
     """
     This object represents a voice note.
     Keyword arguments:
@@ -347,12 +352,11 @@ class Voice:
     file_id: str
     file_unique_id: str
     duration: int
-    mime_type: str = None
-    file_size: int = None
+    mime_type: Optional[str] = None
+    file_size: Optional[int] = None
 
 
-@dataclass
-class Contact:
+class Contact(TelegramType):
     """
     This object represents a phone contact.
     Keyword arguments:
@@ -365,13 +369,12 @@ class Contact:
     """
     phone_number: str
     first_name: str
-    last_name: str = None
-    user_id: int = None
-    vcard: str = None
+    last_name: Optional[str] = None
+    user_id: Optional[int] = None
+    vcard: Optional[str] = None
 
 
-@dataclass
-class Dice:
+class Dice(TelegramType):
     """
     This object represents an animated emoji that displays a random value.
     Keyword arguments:
@@ -383,8 +386,7 @@ class Dice:
     value: int
 
 
-@dataclass
-class PollOption:
+class PollOption(TelegramType):
     """
     This object contains information about one answer option in a poll.
     Keyword arguments:
@@ -396,8 +398,7 @@ class PollOption:
     voter_count: int
 
 
-@dataclass
-class PollAnswer:
+class PollAnswer(TelegramType):
     """
     This object represents an answer of a user in a non-anonymous poll.
     Keyword arguments:
@@ -411,8 +412,7 @@ class PollAnswer:
     option_ids: List[int]
 
 
-@dataclass
-class Poll:
+class Poll(TelegramType):
     """
     This object contains information about a poll.
     Keyword arguments:
@@ -439,15 +439,14 @@ class Poll:
     is_anonymous: bool
     type: str
     allows_multiple_answers: bool
-    correct_option_id: int = None
-    explanation: str = None
-    explanation_entities: List[MessageEntity] = None
-    open_period: int = None
-    close_date: int = None
+    correct_option_id: Optional[int] = None
+    explanation: Optional[str] = None
+    explanation_entities: Optional[List[MessageEntity]] = None
+    open_period: Optional[int] = None
+    close_date: Optional[int] = None
 
 
-@dataclass
-class Location:
+class Location(TelegramType):
     """
     This object represents a point on the map.
     Keyword arguments:
@@ -461,14 +460,13 @@ class Location:
     """
     longitude: float
     latitude: float
-    horizontal_accuracy: float = None
-    live_period: int = None
-    heading: int = None
-    proximity_alert_radius: int = None
+    horizontal_accuracy: Optional[float] = None
+    live_period: Optional[int] = None
+    heading: Optional[int] = None
+    proximity_alert_radius: Optional[int] = None
 
 
-@dataclass
-class Venue:
+class Venue(TelegramType):
     """
     This object represents a venue.
     Keyword arguments:
@@ -484,14 +482,13 @@ class Venue:
     location: Location
     title: str
     address: str
-    foursquare_id: str = None
-    foursquare_type: str = None
-    google_place_id: str = None
-    google_place_type: str = None
+    foursquare_id: Optional[str] = None
+    foursquare_type: Optional[str] = None
+    google_place_id: Optional[str] = None
+    google_place_type: Optional[str] = None
 
 
-@dataclass
-class ProximityAlertTriggered:
+class ProximityAlertTriggered(TelegramType):
     """
     This object represents the content of a service message, sent whenever a user in the chat triggers a proximity alert set by another user.
     Keyword arguments:
@@ -505,8 +502,7 @@ class ProximityAlertTriggered:
     distance: int
 
 
-@dataclass
-class MessageAutoDeleteTimerChanged:
+class MessageAutoDeleteTimerChanged(TelegramType):
     """
     This object represents a service message about a change in auto-delete timer settings.
     Keyword arguments:
@@ -516,8 +512,7 @@ class MessageAutoDeleteTimerChanged:
     message_auto_delete_time: int
 
 
-@dataclass
-class VoiceChatScheduled:
+class VoiceChatScheduled(TelegramType):
     """
     This object represents a service message about a voice chat scheduled in the chat.
     Keyword arguments:
@@ -527,8 +522,7 @@ class VoiceChatScheduled:
     start_date: int
 
 
-@dataclass
-class VoiceChatEnded:
+class VoiceChatEnded(TelegramType):
     """
     This object represents a service message about a voice chat ended in the chat.
     Keyword arguments:
@@ -538,19 +532,17 @@ class VoiceChatEnded:
     duration: int
 
 
-@dataclass
-class VoiceChatParticipantsInvited:
+class VoiceChatParticipantsInvited(TelegramType):
     """
     This object represents a service message about new members invited to a voice chat.
     Keyword arguments:
 
     :param users (Array of User): Optional. New members that were invited to the voice chat
     """
-    users: List[User] = None
+    users: Optional[List[User]] = None
 
 
-@dataclass
-class UserProfilePhotos:
+class UserProfilePhotos(TelegramType):
     """
     This object represent a user's profile pictures.
     Keyword arguments:
@@ -562,8 +554,7 @@ class UserProfilePhotos:
     photos: List[List[PhotoSize]]
 
 
-@dataclass
-class File:
+class File(TelegramType):
     """
     This object represents a file ready to be downloaded. The file can be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile.    Maximum file size to download is 20 MB
     Keyword arguments:
@@ -575,43 +566,11 @@ class File:
     """
     file_id: str
     file_unique_id: str
-    file_size: int = None
-    file_path: str = None
+    file_size: Optional[int] = None
+    file_path: Optional[str] = None
 
 
-@dataclass
-class KeyboardButtonPollType:
-    """
-    This object represents type of a poll, which is allowed to be created and sent when the corresponding button is pressed.
-    Keyword arguments:
-
-    :param type (String): Optional. If quiz is passed, the user will be allowed to create only polls in the quiz mode. If regular is passed, only regular polls will be allowed. Otherwise, the user will be allowed to create a poll of any type.
-    """
-    type: str = None
-
-
-@dataclass
-class KeyboardButton:
-    """
-    This object represents one button of the reply keyboard. For simple text buttons String can be used instead of this object to specify text of the button. Optional fields request_contact, request_location, and request_poll are mutually exclusive.
-    Keyword arguments:
-
-    :param text (String): Text of the button. If none of the optional fields are used, it will be sent as a message when the button is pressed
-    :param request_contact (Boolean): Optional. If True, the user's phone number will be sent as a contact when the button is pressed. Available in private chats only
-    :param request_location (Boolean): Optional. If True, the user's current location will be sent when the button is pressed. Available in private chats only
-    :param request_poll (KeyboardButtonPollType): Optional. If specified, the user will be asked to create a poll and send it to the bot when the button is pressed. Available in private chats only
-    """
-    text: str
-    request_contact: bool = None
-    request_location: bool = None
-    request_poll: KeyboardButtonPollType = None
-
-
-
-
-
-@dataclass
-class ReplyKeyboardMarkup:
+class ReplyKeyboardMarkup(TelegramType):
     """
     This object represents a custom keyboard with reply options (see Introduction to bots for details and examples).
     Keyword arguments:
@@ -622,14 +581,40 @@ class ReplyKeyboardMarkup:
     :param input_field_placeholder (String): Optional. The placeholder to be shown in the input field when the keyboard is active; 1-64 characters
     :param selective (Boolean): Optional. Use this parameter if you want to show the keyboard to specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.Example: A user requests to change the bot's language, bot replies to the request with a keyboard to select the new language. Other users in the group don't see the keyboard.
     """
-    keyboard: List[List[KeyboardButton]]
-    resize_keyboard: bool = None
-    one_time_keyboard: bool = None
-    input_field_placeholder: str = None
-    selective: bool = None
-    
-@dataclass
-class ReplyKeyboardRemove:
+    keyboard: List[List["KeyboardButton"]]
+    resize_keyboard: Optional[bool] = None
+    one_time_keyboard: Optional[bool] = None
+    input_field_placeholder: Optional[str] = None
+    selective: Optional[bool] = None
+
+
+class KeyboardButton(TelegramType):
+    """
+    This object represents one button of the reply keyboard. For simple text buttons String can be used instead of this object to specify text of the button. Optional fields request_contact, request_location, and request_poll are mutually exclusive.
+    Keyword arguments:
+
+    :param text (String): Text of the button. If none of the optional fields are used, it will be sent as a message when the button is pressed
+    :param request_contact (Boolean): Optional. If True, the user's phone number will be sent as a contact when the button is pressed. Available in private chats only
+    :param request_location (Boolean): Optional. If True, the user's current location will be sent when the button is pressed. Available in private chats only
+    :param request_poll (KeyboardButtonPollType): Optional. If specified, the user will be asked to create a poll and send it to the bot when the button is pressed. Available in private chats only
+    """
+    text: str
+    request_contact: Optional[bool] = None
+    request_location: Optional[bool] = None
+    request_poll: Optional["KeyboardButtonPollType"] = None
+
+
+class KeyboardButtonPollType(TelegramType):
+    """
+    This object represents type of a poll, which is allowed to be created and sent when the corresponding button is pressed.
+    Keyword arguments:
+
+    :param type (String): Optional. If quiz is passed, the user will be allowed to create only polls in the quiz mode. If regular is passed, only regular polls will be allowed. Otherwise, the user will be allowed to create a poll of any type.
+    """
+    type: Optional[str] = None
+
+
+class ReplyKeyboardRemove(TelegramType):
     """
     Upon receiving a message with this object, Telegram clients will remove the current custom keyboard and display the default letter-keyboard. By default, custom keyboards are displayed until a new keyboard is sent by a bot. An exception is made for one-time keyboards that are hidden immediately after the user presses a button (see ReplyKeyboardMarkup).
     Keyword arguments:
@@ -637,29 +622,21 @@ class ReplyKeyboardRemove:
     :param remove_keyboard (True): Requests clients to remove the custom keyboard (user will not be able to summon this keyboard; if you want to hide the keyboard from sight but keep it accessible, use one_time_keyboard in ReplyKeyboardMarkup)
     :param selective (Boolean): Optional. Use this parameter if you want to remove the keyboard for specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.Example: A user votes in a poll, bot returns confirmation message in reply to the vote and removes the keyboard for that user, while still showing the keyboard with poll options to users who haven't voted yet.
     """
-    remove_keyboard: True
-    selective: bool = None
+    remove_keyboard: bool
+    selective: Optional[bool] = None
 
 
-@dataclass
-class LoginUrl:
+class InlineKeyboardMarkup(TelegramType):
     """
-    This object represents a parameter of the inline keyboard button used to automatically authorize a user. Serves as a great replacement for the Telegram Login Widget when the user is coming from Telegram. All the user needs to do is tap/click a button and confirm that they want to log in:    Telegram apps support these buttons as of version 5.7.    Sample bot: @discussbot
+    This object represents an inline keyboard that appears right next to the message it belongs to.
     Keyword arguments:
 
-    :param url (String): An HTTP URL to be opened with user authorization data added to the query string when the button is pressed. If the user refuses to provide authorization data, the original URL without information about the user will be opened. The data added is the same as described in Receiving authorization data.NOTE: You must always check the hash of the received data to verify the authentication and the integrity of the data as described in Checking authorization.
-    :param forward_text (String): Optional. New text of the button in forwarded messages.
-    :param bot_username (String): Optional. Username of a bot, which will be used for user authorization. See Setting up a bot for more details. If not specified, the current bot's username will be assumed. The url's domain must be the same as the domain linked with the bot. See Linking your domain to the bot for more details.
-    :param request_write_access (Boolean): Optional. Pass True to request the permission for your bot to send messages to the user.
+    :param inline_keyboard (Array of Array of InlineKeyboardButton): Array of button rows, each represented by an Array of InlineKeyboardButton objects
     """
-    url: str
-    forward_text: str = None
-    bot_username: str = None
-    request_write_access: bool = None
+    inline_keyboard: List[List["InlineKeyboardButton"]]
 
 
-@dataclass
-class InlineKeyboardButton:
+class InlineKeyboardButton(TelegramType):
     """
     This object represents one button of an inline keyboard. You must use exactly one of the optional fields.
     Keyword arguments:
@@ -674,28 +651,32 @@ class InlineKeyboardButton:
     :param pay (Boolean): Optional. Specify True, to send a Pay button.NOTE: This type of button must always be the first button in the first row.
     """
     text: str
-    url: str = None
-    login_url: LoginUrl = None
-    callback_data: str = None
-    switch_inline_query: str = None
-    switch_inline_query_current_chat: str = None
-    callback_game: CallbackGame = None
-    pay: bool = None
+    url: Optional[str] = None
+    login_url: Optional["LoginUrl"] = None
+    callback_data: Optional[str] = None
+    switch_inline_query: Optional[str] = None
+    switch_inline_query_current_chat: Optional[str] = None
+    callback_game: Optional[CallbackGame] = None
+    pay: Optional[bool] = None
 
 
-
-@dataclass
-class InlineKeyboardMarkup:
+class LoginUrl(TelegramType):
     """
-    This object represents an inline keyboard that appears right next to the message it belongs to.
+    This object represents a parameter of the inline keyboard button used to automatically authorize a user. Serves as a great replacement for the Telegram Login Widget when the user is coming from Telegram. All the user needs to do is tap/click a button and confirm that they want to log in:    Telegram apps support these buttons as of version 5.7.    Sample bot: @discussbot
     Keyword arguments:
 
-    :param inline_keyboard (Array of Array of InlineKeyboardButton): Array of button rows, each represented by an Array of InlineKeyboardButton objects
+    :param url (String): An HTTP URL to be opened with user authorization data added to the query string when the button is pressed. If the user refuses to provide authorization data, the original URL without information about the user will be opened. The data added is the same as described in Receiving authorization data.NOTE: You must always check the hash of the received data to verify the authentication and the integrity of the data as described in Checking authorization.
+    :param forward_text (String): Optional. New text of the button in forwarded messages.
+    :param bot_username (String): Optional. Username of a bot, which will be used for user authorization. See Setting up a bot for more details. If not specified, the current bot's username will be assumed. The url's domain must be the same as the domain linked with the bot. See Linking your domain to the bot for more details.
+    :param request_write_access (Boolean): Optional. Pass True to request the permission for your bot to send messages to the user.
     """
-    inline_keyboard: List[List[InlineKeyboardButton]]
+    url: str
+    forward_text: Optional[str] = None
+    bot_username: Optional[str] = None
+    request_write_access: Optional[bool] = None
 
-@dataclass
-class CallbackQuery:
+
+class CallbackQuery(TelegramType):
     """
     This object represents an incoming callback query from a callback button in an inline keyboard. If the button that originated the query was attached to a message sent by the bot, the field message will be present. If the button was attached to a message sent via the bot (in inline mode), the field inline_message_id will be present. Exactly one of the fields data or game_short_name will be present.
     Keyword arguments:
@@ -709,16 +690,15 @@ class CallbackQuery:
     :param game_short_name (String): Optional. Short name of a Game to be returned, serves as the unique identifier for the game
     """
     id: str
-    _from: User
+    from_: User
     chat_instance: str
-    message: "Message" = None
-    inline_message_id: str = None
-    data: str = None
-    game_short_name: str = None
+    message: Optional["Message"] = None
+    inline_message_id: Optional[str] = None
+    data: Optional[str] = None
+    game_short_name: Optional[str] = None
 
 
-@dataclass
-class ForceReply:
+class ForceReply(TelegramType):
     """
     Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as if the user has selected the bot's message and tapped 'Reply'). This can be extremely useful if you want to create user-friendly step-by-step interfaces without having to sacrifice privacy mode.
     Keyword arguments:
@@ -727,13 +707,12 @@ class ForceReply:
     :param input_field_placeholder (String): Optional. The placeholder to be shown in the input field when the reply is active; 1-64 characters
     :param selective (Boolean): Optional. Use this parameter if you want to force reply from specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.
     """
-    force_reply: True
-    input_field_placeholder: str = None
-    selective: bool = None
+    force_reply: bool
+    input_field_placeholder: Optional[str] = None
+    selective: Optional[bool] = None
 
 
-@dataclass
-class ChatPhoto:
+class ChatPhoto(TelegramType):
     """
     This object represents a chat photo.
     Keyword arguments:
@@ -749,8 +728,7 @@ class ChatPhoto:
     big_file_unique_id: str
 
 
-@dataclass
-class ChatInviteLink:
+class ChatInviteLink(TelegramType):
     """
     Represents an invite link for a chat.
     Keyword arguments:
@@ -766,12 +744,11 @@ class ChatInviteLink:
     creator: User
     is_primary: bool
     is_revoked: bool
-    expire_date: int = None
-    member_limit: int = None
+    expire_date: Optional[int] = None
+    member_limit: Optional[int] = None
 
 
-@dataclass
-class ChatMemberOwner:
+class ChatMemberOwner(TelegramType):
     """
     Represents a chat member that owns the chat and has all administrator privileges.
     Keyword arguments:
@@ -784,11 +761,10 @@ class ChatMemberOwner:
     status: str
     user: User
     is_anonymous: bool
-    custom_title: str = None
+    custom_title: Optional[str] = None
 
 
-@dataclass
-class ChatMemberAdministrator:
+class ChatMemberAdministrator(TelegramType):
     """
     Represents a chat member that has some additional privileges.
     Keyword arguments:
@@ -820,14 +796,13 @@ class ChatMemberAdministrator:
     can_promote_members: bool
     can_change_info: bool
     can_invite_users: bool
-    can_post_messages: bool = None
-    can_edit_messages: bool = None
-    can_pin_messages: bool = None
-    custom_title: str = None
+    can_post_messages: Optional[bool] = None
+    can_edit_messages: Optional[bool] = None
+    can_pin_messages: Optional[bool] = None
+    custom_title: Optional[str] = None
 
 
-@dataclass
-class ChatMemberMember:
+class ChatMemberMember(TelegramType):
     """
     Represents a chat member that has no additional privileges or restrictions.
     Keyword arguments:
@@ -839,8 +814,7 @@ class ChatMemberMember:
     user: User
 
 
-@dataclass
-class ChatMemberRestricted:
+class ChatMemberRestricted(TelegramType):
     """
     Represents a chat member that is under certain restrictions in the chat. Supergroups only.
     Keyword arguments:
@@ -872,8 +846,7 @@ class ChatMemberRestricted:
     until_date: int
 
 
-@dataclass
-class ChatMemberLeft:
+class ChatMemberLeft(TelegramType):
     """
     Represents a chat member that isn't currently a member of the chat, but may join it themselves.
     Keyword arguments:
@@ -885,8 +858,7 @@ class ChatMemberLeft:
     user: User
 
 
-@dataclass
-class ChatMemberBanned:
+class ChatMemberBanned(TelegramType):
     """
     Represents a chat member that was banned in the chat and can't return to the chat or view chat messages.
     Keyword arguments:
@@ -900,8 +872,27 @@ class ChatMemberBanned:
     until_date: int
 
 
-@dataclass
-class ChatPermissions:
+class ChatMemberUpdated(TelegramType):
+    """
+    This object represents changes in the status of a chat member.
+    Keyword arguments:
+
+    :param chat (Chat): Chat the user belongs to
+    :param _from (User): Performer of the action, which resulted in the change
+    :param date (Integer): Date the change was done in Unix time
+    :param old_chat_member (ChatMember): Previous information about the chat member
+    :param new_chat_member (ChatMember): New information about the chat member
+    :param invite_link (ChatInviteLink): Optional. Chat invite link, which was used by the user to join the chat; for joining by invite link events only.
+    """
+    chat: "Chat"
+    from_: User
+    date: int
+    old_chat_member: ChatMember
+    new_chat_member: ChatMember
+    invite_link: Optional[ChatInviteLink] = None
+
+
+class ChatPermissions(TelegramType):
     """
     Describes actions that a non-administrator user is allowed to take in a chat.
     Keyword arguments:
@@ -915,18 +906,17 @@ class ChatPermissions:
     :param can_invite_users (Boolean): Optional. True, if the user is allowed to invite new users to the chat
     :param can_pin_messages (Boolean): Optional. True, if the user is allowed to pin messages. Ignored in public supergroups
     """
-    can_send_messages: bool = None
-    can_send_media_messages: bool = None
-    can_send_polls: bool = None
-    can_send_other_messages: bool = None
-    can_add_web_page_previews: bool = None
-    can_change_info: bool = None
-    can_invite_users: bool = None
-    can_pin_messages: bool = None
+    can_send_messages: Optional[bool] = None
+    can_send_media_messages: Optional[bool] = None
+    can_send_polls: Optional[bool] = None
+    can_send_other_messages: Optional[bool] = None
+    can_add_web_page_previews: Optional[bool] = None
+    can_change_info: Optional[bool] = None
+    can_invite_users: Optional[bool] = None
+    can_pin_messages: Optional[bool] = None
 
 
-@dataclass
-class ChatLocation:
+class ChatLocation(TelegramType):
     """
     Represents a location to which a chat is connected.
     Keyword arguments:
@@ -938,8 +928,7 @@ class ChatLocation:
     address: str
 
 
-@dataclass
-class BotCommand:
+class BotCommand(TelegramType):
     """
     This object represents a bot command.
     Keyword arguments:
@@ -951,8 +940,7 @@ class BotCommand:
     description: str
 
 
-@dataclass
-class BotCommandScopeDefault:
+class BotCommandScopeDefault(TelegramType):
     """
     Represents the default scope of bot commands. Default commands are used if no commands with a narrower scope are specified for the user.
     Keyword arguments:
@@ -962,8 +950,7 @@ class BotCommandScopeDefault:
     type: str
 
 
-@dataclass
-class BotCommandScopeAllPrivateChats:
+class BotCommandScopeAllPrivateChats(TelegramType):
     """
     Represents the scope of bot commands, covering all private chats.
     Keyword arguments:
@@ -973,8 +960,7 @@ class BotCommandScopeAllPrivateChats:
     type: str
 
 
-@dataclass
-class BotCommandScopeAllGroupChats:
+class BotCommandScopeAllGroupChats(TelegramType):
     """
     Represents the scope of bot commands, covering all group and supergroup chats.
     Keyword arguments:
@@ -984,8 +970,7 @@ class BotCommandScopeAllGroupChats:
     type: str
 
 
-@dataclass
-class BotCommandScopeAllChatAdministrators:
+class BotCommandScopeAllChatAdministrators(TelegramType):
     """
     Represents the scope of bot commands, covering all group and supergroup chat administrators.
     Keyword arguments:
@@ -995,8 +980,7 @@ class BotCommandScopeAllChatAdministrators:
     type: str
 
 
-@dataclass
-class BotCommandScopeChat:
+class BotCommandScopeChat(TelegramType):
     """
     Represents the scope of bot commands, covering a specific chat.
     Keyword arguments:
@@ -1008,8 +992,7 @@ class BotCommandScopeChat:
     chat_id: Union[int, str]
 
 
-@dataclass
-class BotCommandScopeChatAdministrators:
+class BotCommandScopeChatAdministrators(TelegramType):
     """
     Represents the scope of bot commands, covering all administrators of a specific group or supergroup chat.
     Keyword arguments:
@@ -1021,8 +1004,7 @@ class BotCommandScopeChatAdministrators:
     chat_id: Union[int, str]
 
 
-@dataclass
-class BotCommandScopeChatMember:
+class BotCommandScopeChatMember(TelegramType):
     """
     Represents the scope of bot commands, covering a specific member of a group or supergroup chat.
     Keyword arguments:
@@ -1036,8 +1018,7 @@ class BotCommandScopeChatMember:
     user_id: int
 
 
-@dataclass
-class ResponseParameters:
+class ResponseParameters(TelegramType):
     """
     Contains information about why a request was unsuccessful.
     Keyword arguments:
@@ -1045,12 +1026,11 @@ class ResponseParameters:
     :param migrate_to_chat_id (Integer): Optional. The group has been migrated to a supergroup with the specified identifier. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier.
     :param retry_after (Integer): Optional. In case of exceeding flood control, the number of seconds left to wait before the request can be repeated
     """
-    migrate_to_chat_id: int = None
-    retry_after: int = None
+    migrate_to_chat_id: Optional[int] = None
+    retry_after: Optional[int] = None
 
 
-@dataclass
-class InputMediaPhoto:
+class InputMediaPhoto(TelegramType):
     """
     Represents a photo to be sent.
     Keyword arguments:
@@ -1063,13 +1043,12 @@ class InputMediaPhoto:
     """
     type: str
     media: str
-    caption: str = None
-    parse_mode: str = None
-    caption_entities: List[MessageEntity] = None
+    caption: Optional[str] = None
+    parse_mode: Optional[str] = None
+    caption_entities: Optional[List[MessageEntity]] = None
 
 
-@dataclass
-class InputMediaVideo:
+class InputMediaVideo(TelegramType):
     """
     Represents a video to be sent.
     Keyword arguments:
@@ -1087,18 +1066,17 @@ class InputMediaVideo:
     """
     type: str
     media: str
-    thumb: Union[InputFile, str] = None
-    caption: str = None
-    parse_mode: str = None
-    caption_entities: List[MessageEntity] = None
-    width: int = None
-    height: int = None
-    duration: int = None
-    supports_streaming: bool = None
+    thumb: Optional[Union[InputFile, str]] = None
+    caption: Optional[str] = None
+    parse_mode: Optional[str] = None
+    caption_entities: Optional[List[MessageEntity]] = None
+    width: Optional[int] = None
+    height: Optional[int] = None
+    duration: Optional[int] = None
+    supports_streaming: Optional[bool] = None
 
 
-@dataclass
-class InputMediaAnimation:
+class InputMediaAnimation(TelegramType):
     """
     Represents an animation file (GIF or H.264/MPEG-4 AVC video without sound) to be sent.
     Keyword arguments:
@@ -1115,17 +1093,16 @@ class InputMediaAnimation:
     """
     type: str
     media: str
-    thumb: Union[InputFile, str] = None
-    caption: str = None
-    parse_mode: str = None
-    caption_entities: List[MessageEntity] = None
-    width: int = None
-    height: int = None
-    duration: int = None
+    thumb: Optional[Union[InputFile, str]] = None
+    caption: Optional[str] = None
+    parse_mode: Optional[str] = None
+    caption_entities: Optional[List[MessageEntity]] = None
+    width: Optional[int] = None
+    height: Optional[int] = None
+    duration: Optional[int] = None
 
 
-@dataclass
-class InputMediaAudio:
+class InputMediaAudio(TelegramType):
     """
     Represents an audio file to be treated as music to be sent.
     Keyword arguments:
@@ -1142,17 +1119,16 @@ class InputMediaAudio:
     """
     type: str
     media: str
-    thumb: Union[InputFile, str] = None
-    caption: str = None
-    parse_mode: str = None
-    caption_entities: List[MessageEntity] = None
-    duration: int = None
-    performer: str = None
-    title: str = None
+    thumb: Optional[Union[InputFile, str]] = None
+    caption: Optional[str] = None
+    parse_mode: Optional[str] = None
+    caption_entities: Optional[List[MessageEntity]] = None
+    duration: Optional[int] = None
+    performer: Optional[str] = None
+    title: Optional[str] = None
 
 
-@dataclass
-class InputMediaDocument:
+class InputMediaDocument(TelegramType):
     """
     Represents a general file to be sent.
     Keyword arguments:
@@ -1167,33 +1143,14 @@ class InputMediaDocument:
     """
     type: str
     media: str
-    thumb: Union[InputFile, str] = None
-    caption: str = None
-    parse_mode: str = None
-    caption_entities: List[MessageEntity] = None
-    disable_content_type_detection: bool = None
+    thumb: Optional[Union[InputFile, str]] = None
+    caption: Optional[str] = None
+    parse_mode: Optional[str] = None
+    caption_entities: Optional[List[MessageEntity]] = None
+    disable_content_type_detection: Optional[bool] = None
 
 
-@dataclass
-class MaskPosition:
-    """
-    This object describes the position on faces where a mask should be placed by default.
-    Keyword arguments:
-
-    :param point (String): The part of the face relative to which the mask should be placed. One of \xe2\x80\x9cforehead\xe2\x80\x9d, \xe2\x80\x9ceyes\xe2\x80\x9d, \xe2\x80\x9cmouth\xe2\x80\x9d, or \xe2\x80\x9cchin\xe2\x80\x9d.
-    :param x_shift (Float number): Shift by X-axis measured in widths of the mask scaled to the face size, from left to right. For example, choosing -1.0 will place mask just to the left of the default mask position.
-    :param y_shift (Float number): Shift by Y-axis measured in heights of the mask scaled to the face size, from top to bottom. For example, 1.0 will place the mask just below the default mask position.
-    :param scale (Float number): Mask scaling coefficient. For example, 2.0 means double size.
-    """
-    point: str
-    x_shift: float
-    y_shift: float
-    scale: float
-
-
-
-@dataclass
-class Sticker:
+class Sticker(TelegramType):
     """
     This object represents a sticker.
     Keyword arguments:
@@ -1214,15 +1171,14 @@ class Sticker:
     width: int
     height: int
     is_animated: bool
-    thumb: PhotoSize = None
-    emoji: str = None
-    set_name: str = None
-    mask_position: MaskPosition = None
-    file_size: int = None
+    thumb: Optional[PhotoSize] = None
+    emoji: Optional[str] = None
+    set_name: Optional[str] = None
+    mask_position: Optional["MaskPosition"] = None
+    file_size: Optional[int] = None
 
 
-@dataclass
-class StickerSet:
+class StickerSet(TelegramType):
     """
     This object represents a sticker set.
     Keyword arguments:
@@ -1239,10 +1195,26 @@ class StickerSet:
     is_animated: bool
     contains_masks: bool
     stickers: List[Sticker]
-    thumb: PhotoSize = None
+    thumb: Optional[PhotoSize] = None
 
-@dataclass
-class InlineQuery:
+
+class MaskPosition(TelegramType):
+    """
+    This object describes the position on faces where a mask should be placed by default.
+    Keyword arguments:
+
+    :param point (String): The part of the face relative to which the mask should be placed. One of \xe2\x80\x9cforehead\xe2\x80\x9d, \xe2\x80\x9ceyes\xe2\x80\x9d, \xe2\x80\x9cmouth\xe2\x80\x9d, or \xe2\x80\x9cchin\xe2\x80\x9d.
+    :param x_shift (Float number): Shift by X-axis measured in widths of the mask scaled to the face size, from left to right. For example, choosing -1.0 will place mask just to the left of the default mask position.
+    :param y_shift (Float number): Shift by Y-axis measured in heights of the mask scaled to the face size, from top to bottom. For example, 1.0 will place the mask just below the default mask position.
+    :param scale (Float number): Mask scaling coefficient. For example, 2.0 means double size.
+    """
+    point: str
+    x_shift: float
+    y_shift: float
+    scale: float
+
+
+class InlineQuery(TelegramType):
     """
     This object represents an incoming inline query. When the user sends an empty query, your bot could return some default or trending results.
     Keyword arguments:
@@ -1255,15 +1227,14 @@ class InlineQuery:
     :param location (Location): Optional. Sender location, only for bots that request user location
     """
     id: str
-    _from: User
+    from_: User
     query: str
     offset: str
-    chat_type: str = None
-    location: Location = None
+    chat_type: Optional[str] = None
+    location: Optional[Location] = None
 
 
-@dataclass
-class InlineQueryResultArticle:
+class InlineQueryResultArticle(TelegramType):
     """
     Represents a link to an article or web page.
     Keyword arguments:
@@ -1284,17 +1255,16 @@ class InlineQueryResultArticle:
     id: str
     title: str
     input_message_content: InputMessageContent
-    reply_markup: InlineKeyboardMarkup = None
-    url: str = None
-    hide_url: bool = None
-    description: str = None
-    thumb_url: str = None
-    thumb_width: int = None
-    thumb_height: int = None
+    reply_markup: Optional[InlineKeyboardMarkup] = None
+    url: Optional[str] = None
+    hide_url: Optional[bool] = None
+    description: Optional[str] = None
+    thumb_url: Optional[str] = None
+    thumb_width: Optional[int] = None
+    thumb_height: Optional[int] = None
 
 
-@dataclass
-class InlineQueryResultPhoto:
+class InlineQueryResultPhoto(TelegramType):
     """
     Represents a link to a photo. By default, this photo will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the photo.
     Keyword arguments:
@@ -1317,19 +1287,18 @@ class InlineQueryResultPhoto:
     id: str
     photo_url: str
     thumb_url: str
-    photo_width: int = None
-    photo_height: int = None
-    title: str = None
-    description: str = None
-    caption: str = None
-    parse_mode: str = None
-    caption_entities: List[MessageEntity] = None
-    reply_markup: InlineKeyboardMarkup = None
-    input_message_content: InputMessageContent = None
+    photo_width: Optional[int] = None
+    photo_height: Optional[int] = None
+    title: Optional[str] = None
+    description: Optional[str] = None
+    caption: Optional[str] = None
+    parse_mode: Optional[str] = None
+    caption_entities: Optional[List[MessageEntity]] = None
+    reply_markup: Optional[InlineKeyboardMarkup] = None
+    input_message_content: Optional[InputMessageContent] = None
 
 
-@dataclass
-class InlineQueryResultGif:
+class InlineQueryResultGif(TelegramType):
     """
     Represents a link to an animated GIF file. By default, this animated GIF file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
     Keyword arguments:
@@ -1353,20 +1322,19 @@ class InlineQueryResultGif:
     id: str
     gif_url: str
     thumb_url: str
-    gif_width: int = None
-    gif_height: int = None
-    gif_duration: int = None
-    thumb_mime_type: str = None
-    title: str = None
-    caption: str = None
-    parse_mode: str = None
-    caption_entities: List[MessageEntity] = None
-    reply_markup: InlineKeyboardMarkup = None
-    input_message_content: InputMessageContent = None
+    gif_width: Optional[int] = None
+    gif_height: Optional[int] = None
+    gif_duration: Optional[int] = None
+    thumb_mime_type: Optional[str] = None
+    title: Optional[str] = None
+    caption: Optional[str] = None
+    parse_mode: Optional[str] = None
+    caption_entities: Optional[List[MessageEntity]] = None
+    reply_markup: Optional[InlineKeyboardMarkup] = None
+    input_message_content: Optional[InputMessageContent] = None
 
 
-@dataclass
-class InlineQueryResultMpeg4Gif:
+class InlineQueryResultMpeg4Gif(TelegramType):
     """
     Represents a link to a video animation (H.264/MPEG-4 AVC video without sound). By default, this animated MPEG-4 file will be sent by the user with optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
     Keyword arguments:
@@ -1390,20 +1358,19 @@ class InlineQueryResultMpeg4Gif:
     id: str
     mpeg4_url: str
     thumb_url: str
-    mpeg4_width: int = None
-    mpeg4_height: int = None
-    mpeg4_duration: int = None
-    thumb_mime_type: str = None
-    title: str = None
-    caption: str = None
-    parse_mode: str = None
-    caption_entities: List[MessageEntity] = None
-    reply_markup: InlineKeyboardMarkup = None
-    input_message_content: InputMessageContent = None
+    mpeg4_width: Optional[int] = None
+    mpeg4_height: Optional[int] = None
+    mpeg4_duration: Optional[int] = None
+    thumb_mime_type: Optional[str] = None
+    title: Optional[str] = None
+    caption: Optional[str] = None
+    parse_mode: Optional[str] = None
+    caption_entities: Optional[List[MessageEntity]] = None
+    reply_markup: Optional[InlineKeyboardMarkup] = None
+    input_message_content: Optional[InputMessageContent] = None
 
 
-@dataclass
-class InlineQueryResultVideo:
+class InlineQueryResultVideo(TelegramType):
     """
     Represents a link to a page containing an embedded video player or a video file. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the video.    If an InlineQueryResultVideo message contains an embedded video (e.g., YouTube), you must replace its content using input_message_content.
     Keyword arguments:
@@ -1430,19 +1397,18 @@ class InlineQueryResultVideo:
     mime_type: str
     thumb_url: str
     title: str
-    caption: str = None
-    parse_mode: str = None
-    caption_entities: List[MessageEntity] = None
-    video_width: int = None
-    video_height: int = None
-    video_duration: int = None
-    description: str = None
-    reply_markup: InlineKeyboardMarkup = None
-    input_message_content: InputMessageContent = None
+    caption: Optional[str] = None
+    parse_mode: Optional[str] = None
+    caption_entities: Optional[List[MessageEntity]] = None
+    video_width: Optional[int] = None
+    video_height: Optional[int] = None
+    video_duration: Optional[int] = None
+    description: Optional[str] = None
+    reply_markup: Optional[InlineKeyboardMarkup] = None
+    input_message_content: Optional[InputMessageContent] = None
 
 
-@dataclass
-class InlineQueryResultAudio:
+class InlineQueryResultAudio(TelegramType):
     """
     Represents a link to an MP3 audio file. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
     Keyword arguments:
@@ -1463,17 +1429,16 @@ class InlineQueryResultAudio:
     id: str
     audio_url: str
     title: str
-    caption: str = None
-    parse_mode: str = None
-    caption_entities: List[MessageEntity] = None
-    performer: str = None
-    audio_duration: int = None
-    reply_markup: InlineKeyboardMarkup = None
-    input_message_content: InputMessageContent = None
+    caption: Optional[str] = None
+    parse_mode: Optional[str] = None
+    caption_entities: Optional[List[MessageEntity]] = None
+    performer: Optional[str] = None
+    audio_duration: Optional[int] = None
+    reply_markup: Optional[InlineKeyboardMarkup] = None
+    input_message_content: Optional[InputMessageContent] = None
 
 
-@dataclass
-class InlineQueryResultVoice:
+class InlineQueryResultVoice(TelegramType):
     """
     Represents a link to a voice recording in an .OGG container encoded with OPUS. By default, this voice recording will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the the voice message.
     Keyword arguments:
@@ -1493,16 +1458,15 @@ class InlineQueryResultVoice:
     id: str
     voice_url: str
     title: str
-    caption: str = None
-    parse_mode: str = None
-    caption_entities: List[MessageEntity] = None
-    voice_duration: int = None
-    reply_markup: InlineKeyboardMarkup = None
-    input_message_content: InputMessageContent = None
+    caption: Optional[str] = None
+    parse_mode: Optional[str] = None
+    caption_entities: Optional[List[MessageEntity]] = None
+    voice_duration: Optional[int] = None
+    reply_markup: Optional[InlineKeyboardMarkup] = None
+    input_message_content: Optional[InputMessageContent] = None
 
 
-@dataclass
-class InlineQueryResultDocument:
+class InlineQueryResultDocument(TelegramType):
     """
     Represents a link to a file. By default, this file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the file. Currently, only .PDF and .ZIP files can be sent using this method.
     Keyword arguments:
@@ -1527,19 +1491,18 @@ class InlineQueryResultDocument:
     title: str
     document_url: str
     mime_type: str
-    caption: str = None
-    parse_mode: str = None
-    caption_entities: List[MessageEntity] = None
-    description: str = None
-    reply_markup: InlineKeyboardMarkup = None
-    input_message_content: InputMessageContent = None
-    thumb_url: str = None
-    thumb_width: int = None
-    thumb_height: int = None
+    caption: Optional[str] = None
+    parse_mode: Optional[str] = None
+    caption_entities: Optional[List[MessageEntity]] = None
+    description: Optional[str] = None
+    reply_markup: Optional[InlineKeyboardMarkup] = None
+    input_message_content: Optional[InputMessageContent] = None
+    thumb_url: Optional[str] = None
+    thumb_width: Optional[int] = None
+    thumb_height: Optional[int] = None
 
 
-@dataclass
-class InlineQueryResultLocation:
+class InlineQueryResultLocation(TelegramType):
     """
     Represents a location on a map. By default, the location will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the location.
     Keyword arguments:
@@ -1564,19 +1527,18 @@ class InlineQueryResultLocation:
     latitude: float
     longitude: float
     title: str
-    horizontal_accuracy: float = None
-    live_period: int = None
-    heading: int = None
-    proximity_alert_radius: int = None
-    reply_markup: InlineKeyboardMarkup = None
-    input_message_content: InputMessageContent = None
-    thumb_url: str = None
-    thumb_width: int = None
-    thumb_height: int = None
+    horizontal_accuracy: Optional[float] = None
+    live_period: Optional[int] = None
+    heading: Optional[int] = None
+    proximity_alert_radius: Optional[int] = None
+    reply_markup: Optional[InlineKeyboardMarkup] = None
+    input_message_content: Optional[InputMessageContent] = None
+    thumb_url: Optional[str] = None
+    thumb_width: Optional[int] = None
+    thumb_height: Optional[int] = None
 
 
-@dataclass
-class InlineQueryResultVenue:
+class InlineQueryResultVenue(TelegramType):
     """
     Represents a venue. By default, the venue will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the venue.
     Keyword arguments:
@@ -1603,19 +1565,18 @@ class InlineQueryResultVenue:
     longitude: float
     title: str
     address: str
-    foursquare_id: str = None
-    foursquare_type: str = None
-    google_place_id: str = None
-    google_place_type: str = None
-    reply_markup: InlineKeyboardMarkup = None
-    input_message_content: InputMessageContent = None
-    thumb_url: str = None
-    thumb_width: int = None
-    thumb_height: int = None
+    foursquare_id: Optional[str] = None
+    foursquare_type: Optional[str] = None
+    google_place_id: Optional[str] = None
+    google_place_type: Optional[str] = None
+    reply_markup: Optional[InlineKeyboardMarkup] = None
+    input_message_content: Optional[InputMessageContent] = None
+    thumb_url: Optional[str] = None
+    thumb_width: Optional[int] = None
+    thumb_height: Optional[int] = None
 
 
-@dataclass
-class InlineQueryResultContact:
+class InlineQueryResultContact(TelegramType):
     """
     Represents a contact with a phone number. By default, this contact will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the contact.
     Keyword arguments:
@@ -1636,17 +1597,16 @@ class InlineQueryResultContact:
     id: str
     phone_number: str
     first_name: str
-    last_name: str = None
-    vcard: str = None
-    reply_markup: InlineKeyboardMarkup = None
-    input_message_content: InputMessageContent = None
-    thumb_url: str = None
-    thumb_width: int = None
-    thumb_height: int = None
+    last_name: Optional[str] = None
+    vcard: Optional[str] = None
+    reply_markup: Optional[InlineKeyboardMarkup] = None
+    input_message_content: Optional[InputMessageContent] = None
+    thumb_url: Optional[str] = None
+    thumb_width: Optional[int] = None
+    thumb_height: Optional[int] = None
 
 
-@dataclass
-class InlineQueryResultGame:
+class InlineQueryResultGame(TelegramType):
     """
     Represents a Game.
     Keyword arguments:
@@ -1659,11 +1619,10 @@ class InlineQueryResultGame:
     type: str
     id: str
     game_short_name: str
-    reply_markup: InlineKeyboardMarkup = None
+    reply_markup: Optional[InlineKeyboardMarkup] = None
 
 
-@dataclass
-class InlineQueryResultCachedPhoto:
+class InlineQueryResultCachedPhoto(TelegramType):
     """
     Represents a link to a photo stored on the Telegram servers. By default, this photo will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the photo.
     Keyword arguments:
@@ -1682,17 +1641,16 @@ class InlineQueryResultCachedPhoto:
     type: str
     id: str
     photo_file_id: str
-    title: str = None
-    description: str = None
-    caption: str = None
-    parse_mode: str = None
-    caption_entities: List[MessageEntity] = None
-    reply_markup: InlineKeyboardMarkup = None
-    input_message_content: InputMessageContent = None
+    title: Optional[str] = None
+    description: Optional[str] = None
+    caption: Optional[str] = None
+    parse_mode: Optional[str] = None
+    caption_entities: Optional[List[MessageEntity]] = None
+    reply_markup: Optional[InlineKeyboardMarkup] = None
+    input_message_content: Optional[InputMessageContent] = None
 
 
-@dataclass
-class InlineQueryResultCachedGif:
+class InlineQueryResultCachedGif(TelegramType):
     """
     Represents a link to an animated GIF file stored on the Telegram servers. By default, this animated GIF file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with specified content instead of the animation.
     Keyword arguments:
@@ -1710,16 +1668,15 @@ class InlineQueryResultCachedGif:
     type: str
     id: str
     gif_file_id: str
-    title: str = None
-    caption: str = None
-    parse_mode: str = None
-    caption_entities: List[MessageEntity] = None
-    reply_markup: InlineKeyboardMarkup = None
-    input_message_content: InputMessageContent = None
+    title: Optional[str] = None
+    caption: Optional[str] = None
+    parse_mode: Optional[str] = None
+    caption_entities: Optional[List[MessageEntity]] = None
+    reply_markup: Optional[InlineKeyboardMarkup] = None
+    input_message_content: Optional[InputMessageContent] = None
 
 
-@dataclass
-class InlineQueryResultCachedMpeg4Gif:
+class InlineQueryResultCachedMpeg4Gif(TelegramType):
     """
     Represents a link to a video animation (H.264/MPEG-4 AVC video without sound) stored on the Telegram servers. By default, this animated MPEG-4 file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the animation.
     Keyword arguments:
@@ -1737,16 +1694,15 @@ class InlineQueryResultCachedMpeg4Gif:
     type: str
     id: str
     mpeg4_file_id: str
-    title: str = None
-    caption: str = None
-    parse_mode: str = None
-    caption_entities: List[MessageEntity] = None
-    reply_markup: InlineKeyboardMarkup = None
-    input_message_content: InputMessageContent = None
+    title: Optional[str] = None
+    caption: Optional[str] = None
+    parse_mode: Optional[str] = None
+    caption_entities: Optional[List[MessageEntity]] = None
+    reply_markup: Optional[InlineKeyboardMarkup] = None
+    input_message_content: Optional[InputMessageContent] = None
 
 
-@dataclass
-class InlineQueryResultCachedSticker:
+class InlineQueryResultCachedSticker(TelegramType):
     """
     Represents a link to a sticker stored on the Telegram servers. By default, this sticker will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the sticker.
     Keyword arguments:
@@ -1760,12 +1716,11 @@ class InlineQueryResultCachedSticker:
     type: str
     id: str
     sticker_file_id: str
-    reply_markup: InlineKeyboardMarkup = None
-    input_message_content: InputMessageContent = None
+    reply_markup: Optional[InlineKeyboardMarkup] = None
+    input_message_content: Optional[InputMessageContent] = None
 
 
-@dataclass
-class InlineQueryResultCachedDocument:
+class InlineQueryResultCachedDocument(TelegramType):
     """
     Represents a link to a file stored on the Telegram servers. By default, this file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the file.
     Keyword arguments:
@@ -1785,16 +1740,15 @@ class InlineQueryResultCachedDocument:
     id: str
     title: str
     document_file_id: str
-    description: str = None
-    caption: str = None
-    parse_mode: str = None
-    caption_entities: List[MessageEntity] = None
-    reply_markup: InlineKeyboardMarkup = None
-    input_message_content: InputMessageContent = None
+    description: Optional[str] = None
+    caption: Optional[str] = None
+    parse_mode: Optional[str] = None
+    caption_entities: Optional[List[MessageEntity]] = None
+    reply_markup: Optional[InlineKeyboardMarkup] = None
+    input_message_content: Optional[InputMessageContent] = None
 
 
-@dataclass
-class InlineQueryResultCachedVideo:
+class InlineQueryResultCachedVideo(TelegramType):
     """
     Represents a link to a video file stored on the Telegram servers. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use input_message_content to send a message with the specified content instead of the video.
     Keyword arguments:
@@ -1814,16 +1768,15 @@ class InlineQueryResultCachedVideo:
     id: str
     video_file_id: str
     title: str
-    description: str = None
-    caption: str = None
-    parse_mode: str = None
-    caption_entities: List[MessageEntity] = None
-    reply_markup: InlineKeyboardMarkup = None
-    input_message_content: InputMessageContent = None
+    description: Optional[str] = None
+    caption: Optional[str] = None
+    parse_mode: Optional[str] = None
+    caption_entities: Optional[List[MessageEntity]] = None
+    reply_markup: Optional[InlineKeyboardMarkup] = None
+    input_message_content: Optional[InputMessageContent] = None
 
 
-@dataclass
-class InlineQueryResultCachedVoice:
+class InlineQueryResultCachedVoice(TelegramType):
     """
     Represents a link to a voice message stored on the Telegram servers. By default, this voice message will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the voice message.
     Keyword arguments:
@@ -1842,15 +1795,14 @@ class InlineQueryResultCachedVoice:
     id: str
     voice_file_id: str
     title: str
-    caption: str = None
-    parse_mode: str = None
-    caption_entities: List[MessageEntity] = None
-    reply_markup: InlineKeyboardMarkup = None
-    input_message_content: InputMessageContent = None
+    caption: Optional[str] = None
+    parse_mode: Optional[str] = None
+    caption_entities: Optional[List[MessageEntity]] = None
+    reply_markup: Optional[InlineKeyboardMarkup] = None
+    input_message_content: Optional[InputMessageContent] = None
 
 
-@dataclass
-class InlineQueryResultCachedAudio:
+class InlineQueryResultCachedAudio(TelegramType):
     """
     Represents a link to an MP3 audio file stored on the Telegram servers. By default, this audio file will be sent by the user. Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
     Keyword arguments:
@@ -1867,15 +1819,14 @@ class InlineQueryResultCachedAudio:
     type: str
     id: str
     audio_file_id: str
-    caption: str = None
-    parse_mode: str = None
-    caption_entities: List[MessageEntity] = None
-    reply_markup: InlineKeyboardMarkup = None
-    input_message_content: InputMessageContent = None
+    caption: Optional[str] = None
+    parse_mode: Optional[str] = None
+    caption_entities: Optional[List[MessageEntity]] = None
+    reply_markup: Optional[InlineKeyboardMarkup] = None
+    input_message_content: Optional[InputMessageContent] = None
 
 
-@dataclass
-class InputTextMessageContent:
+class InputTextMessageContent(TelegramType):
     """
     Represents the content of a text message to be sent as the result of an inline query.
     Keyword arguments:
@@ -1886,13 +1837,12 @@ class InputTextMessageContent:
     :param disable_web_page_preview (Boolean): Optional. Disables link previews for links in the sent message
     """
     message_text: str
-    parse_mode: str = None
-    entities: List[MessageEntity] = None
-    disable_web_page_preview: bool = None
+    parse_mode: Optional[str] = None
+    entities: Optional[List[MessageEntity]] = None
+    disable_web_page_preview: Optional[bool] = None
 
 
-@dataclass
-class InputLocationMessageContent:
+class InputLocationMessageContent(TelegramType):
     """
     Represents the content of a location message to be sent as the result of an inline query.
     Keyword arguments:
@@ -1906,14 +1856,13 @@ class InputLocationMessageContent:
     """
     latitude: float
     longitude: float
-    horizontal_accuracy: float = None
-    live_period: int = None
-    heading: int = None
-    proximity_alert_radius: int = None
+    horizontal_accuracy: Optional[float] = None
+    live_period: Optional[int] = None
+    heading: Optional[int] = None
+    proximity_alert_radius: Optional[int] = None
 
 
-@dataclass
-class InputVenueMessageContent:
+class InputVenueMessageContent(TelegramType):
     """
     Represents the content of a venue message to be sent as the result of an inline query.
     Keyword arguments:
@@ -1931,14 +1880,13 @@ class InputVenueMessageContent:
     longitude: float
     title: str
     address: str
-    foursquare_id: str = None
-    foursquare_type: str = None
-    google_place_id: str = None
-    google_place_type: str = None
+    foursquare_id: Optional[str] = None
+    foursquare_type: Optional[str] = None
+    google_place_id: Optional[str] = None
+    google_place_type: Optional[str] = None
 
 
-@dataclass
-class InputContactMessageContent:
+class InputContactMessageContent(TelegramType):
     """
     Represents the content of a contact message to be sent as the result of an inline query.
     Keyword arguments:
@@ -1950,25 +1898,11 @@ class InputContactMessageContent:
     """
     phone_number: str
     first_name: str
-    last_name: str = None
-    vcard: str = None
+    last_name: Optional[str] = None
+    vcard: Optional[str] = None
 
 
-@dataclass
-class LabeledPrice:
-    """
-    This object represents a portion of the price for goods or services.
-    Keyword arguments:
-
-    :param label (String): Portion label
-    :param amount (Integer): Price of the product in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
-    """
-    label: str
-    amount: int
-
-
-@dataclass
-class InputInvoiceMessageContent:
+class InputInvoiceMessageContent(TelegramType):
     """
     Represents the content of an invoice message to be sent as the result of an inline query.
     Keyword arguments:
@@ -1999,25 +1933,24 @@ class InputInvoiceMessageContent:
     payload: str
     provider_token: str
     currency: str
-    prices: List[LabeledPrice]
-    max_tip_amount: int = None
-    suggested_tip_amounts: List[int] = None
-    provider_data: str = None
-    photo_url: str = None
-    photo_size: int = None
-    photo_width: int = None
-    photo_height: int = None
-    need_name: bool = None
-    need_phone_number: bool = None
-    need_email: bool = None
-    need_shipping_address: bool = None
-    send_phone_number_to_provider: bool = None
-    send_email_to_provider: bool = None
-    is_flexible: bool = None
+    prices: List["LabeledPrice"]
+    max_tip_amount: Optional[int] = None
+    suggested_tip_amounts: Optional[List[int]] = None
+    provider_data: Optional[str] = None
+    photo_url: Optional[str] = None
+    photo_size: Optional[int] = None
+    photo_width: Optional[int] = None
+    photo_height: Optional[int] = None
+    need_name: Optional[bool] = None
+    need_phone_number: Optional[bool] = None
+    need_email: Optional[bool] = None
+    need_shipping_address: Optional[bool] = None
+    send_phone_number_to_provider: Optional[bool] = None
+    send_email_to_provider: Optional[bool] = None
+    is_flexible: Optional[bool] = None
 
 
-@dataclass
-class ChosenInlineResult:
+class ChosenInlineResult(TelegramType):
     """
     Represents a result of an inline query that was chosen by the user and sent to their chat partner.
     Keyword arguments:
@@ -2029,14 +1962,25 @@ class ChosenInlineResult:
     :param inline_message_id (String): Optional. Identifier of the sent inline message. Available only if there is an inline keyboard attached to the message. Will be also received in callback queries and can be used to edit the message.
     """
     result_id: str
-    _from: User
+    from_: User
     query: str
-    location: Location = None
-    inline_message_id: str = None
+    location: Optional[Location] = None
+    inline_message_id: Optional[str] = None
 
 
-@dataclass
-class Invoice:
+class LabeledPrice(TelegramType):
+    """
+    This object represents a portion of the price for goods or services.
+    Keyword arguments:
+
+    :param label (String): Portion label
+    :param amount (Integer): Price of the product in the smallest units of the currency (integer, not float/double). For example, for a price of US$ 1.45 pass amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
+    """
+    label: str
+    amount: int
+
+
+class Invoice(TelegramType):
     """
     This object contains basic information about an invoice.
     Keyword arguments:
@@ -2054,8 +1998,7 @@ class Invoice:
     total_amount: int
 
 
-@dataclass
-class ShippingAddress:
+class ShippingAddress(TelegramType):
     """
     This object represents a shipping address.
     Keyword arguments:
@@ -2075,8 +2018,7 @@ class ShippingAddress:
     post_code: str
 
 
-@dataclass
-class OrderInfo:
+class OrderInfo(TelegramType):
     """
     This object represents information about an order.
     Keyword arguments:
@@ -2086,14 +2028,13 @@ class OrderInfo:
     :param email (String): Optional. User email
     :param shipping_address (ShippingAddress): Optional. User shipping address
     """
-    name: str = None
-    phone_number: str = None
-    email: str = None
-    shipping_address: ShippingAddress = None
+    name: Optional[str] = None
+    phone_number: Optional[str] = None
+    email: Optional[str] = None
+    shipping_address: Optional[ShippingAddress] = None
 
 
-@dataclass
-class ShippingOption:
+class ShippingOption(TelegramType):
     """
     This object represents one shipping option.
     Keyword arguments:
@@ -2107,8 +2048,7 @@ class ShippingOption:
     prices: List[LabeledPrice]
 
 
-@dataclass
-class SuccessfulPayment:
+class SuccessfulPayment(TelegramType):
     """
     This object contains basic information about a successful payment.
     Keyword arguments:
@@ -2126,12 +2066,11 @@ class SuccessfulPayment:
     invoice_payload: str
     telegram_payment_charge_id: str
     provider_payment_charge_id: str
-    shipping_option_id: str = None
-    order_info: OrderInfo = None
+    shipping_option_id: Optional[str] = None
+    order_info: Optional[OrderInfo] = None
 
 
-@dataclass
-class ShippingQuery:
+class ShippingQuery(TelegramType):
     """
     This object contains information about an incoming shipping query.
     Keyword arguments:
@@ -2142,13 +2081,12 @@ class ShippingQuery:
     :param shipping_address (ShippingAddress): User specified shipping address
     """
     id: str
-    _from: User
+    from_: User
     invoice_payload: str
     shipping_address: ShippingAddress
 
 
-@dataclass
-class PreCheckoutQuery:
+class PreCheckoutQuery(TelegramType):
     """
     This object contains information about an incoming pre-checkout query.
     Keyword arguments:
@@ -2162,16 +2100,27 @@ class PreCheckoutQuery:
     :param order_info (OrderInfo): Optional. Order info provided by the user
     """
     id: str
-    _from: User
+    from_: User
     currency: str
     total_amount: int
     invoice_payload: str
-    shipping_option_id: str = None
-    order_info: OrderInfo = None
+    shipping_option_id: Optional[str] = None
+    order_info: Optional[OrderInfo] = None
 
 
-@dataclass
-class PassportFile:
+class PassportData(TelegramType):
+    """
+    Contains information about Telegram Passport data shared with the bot by the user.
+    Keyword arguments:
+
+    :param data (Array of EncryptedPassportElement): Array with information about documents and other Telegram Passport elements that was shared with the bot
+    :param credentials (EncryptedCredentials): Encrypted credentials required to decrypt the data
+    """
+    data: List["EncryptedPassportElement"]
+    credentials: "EncryptedCredentials"
+
+
+class PassportFile(TelegramType):
     """
     This object represents a file uploaded to Telegram Passport. Currently all Telegram Passport files are in JPEG format when decrypted and don't exceed 10MB.
     Keyword arguments:
@@ -2187,8 +2136,7 @@ class PassportFile:
     file_date: int
 
 
-@dataclass
-class EncryptedPassportElement:
+class EncryptedPassportElement(TelegramType):
     """
     Contains information about documents or other Telegram Passport elements shared with the bot by the user.
     Keyword arguments:
@@ -2206,18 +2154,17 @@ class EncryptedPassportElement:
     """
     type: str
     hash: str
-    data: str = None
-    phone_number: str = None
-    email: str = None
-    files: List[PassportFile] = None
-    front_side: Union[PassportFile] = None
-    reverse_side: Union[PassportFile] = None
-    selfie: Union[PassportFile] = None
-    translation: List[PassportFile] = None
+    data: Optional[str] = None
+    phone_number: Optional[str] = None
+    email: Optional[str] = None
+    files: Optional[List[PassportFile]] = None
+    front_side: Optional[Union[PassportFile]] = None
+    reverse_side: Optional[Union[PassportFile]] = None
+    selfie: Optional[Union[PassportFile]] = None
+    translation: Optional[List[PassportFile]] = None
 
 
-@dataclass
-class EncryptedCredentials:
+class EncryptedCredentials(TelegramType):
     """
     Contains data required for decrypting and authenticating EncryptedPassportElement. See the Telegram Passport Documentation for a complete description of the data decryption and authentication processes.
     Keyword arguments:
@@ -2231,8 +2178,7 @@ class EncryptedCredentials:
     secret: str
 
 
-@dataclass
-class PassportElementErrorDataField:
+class PassportElementErrorDataField(TelegramType):
     """
     Represents an issue in one of the data fields that was provided by the user. The error is considered resolved when the field's value changes.
     Keyword arguments:
@@ -2250,8 +2196,7 @@ class PassportElementErrorDataField:
     message: str
 
 
-@dataclass
-class PassportElementErrorFrontSide:
+class PassportElementErrorFrontSide(TelegramType):
     """
     Represents an issue with the front side of a document. The error is considered resolved when the file with the front side of the document changes.
     Keyword arguments:
@@ -2267,8 +2212,7 @@ class PassportElementErrorFrontSide:
     message: str
 
 
-@dataclass
-class PassportElementErrorReverseSide:
+class PassportElementErrorReverseSide(TelegramType):
     """
     Represents an issue with the reverse side of a document. The error is considered resolved when the file with reverse side of the document changes.
     Keyword arguments:
@@ -2284,8 +2228,7 @@ class PassportElementErrorReverseSide:
     message: str
 
 
-@dataclass
-class PassportElementErrorSelfie:
+class PassportElementErrorSelfie(TelegramType):
     """
     Represents an issue with the selfie with a document. The error is considered resolved when the file with the selfie changes.
     Keyword arguments:
@@ -2301,8 +2244,7 @@ class PassportElementErrorSelfie:
     message: str
 
 
-@dataclass
-class PassportElementErrorFile:
+class PassportElementErrorFile(TelegramType):
     """
     Represents an issue with a document scan. The error is considered resolved when the file with the document scan changes.
     Keyword arguments:
@@ -2318,8 +2260,7 @@ class PassportElementErrorFile:
     message: str
 
 
-@dataclass
-class PassportElementErrorFiles:
+class PassportElementErrorFiles(TelegramType):
     """
     Represents an issue with a list of scans. The error is considered resolved when the list of files containing the scans changes.
     Keyword arguments:
@@ -2335,8 +2276,7 @@ class PassportElementErrorFiles:
     message: str
 
 
-@dataclass
-class PassportElementErrorTranslationFile:
+class PassportElementErrorTranslationFile(TelegramType):
     """
     Represents an issue with one of the files that constitute the translation of a document. The error is considered resolved when the file changes.
     Keyword arguments:
@@ -2352,8 +2292,7 @@ class PassportElementErrorTranslationFile:
     message: str
 
 
-@dataclass
-class PassportElementErrorTranslationFiles:
+class PassportElementErrorTranslationFiles(TelegramType):
     """
     Represents an issue with the translated version of a document. The error is considered resolved when a file with the document translation change.
     Keyword arguments:
@@ -2369,8 +2308,7 @@ class PassportElementErrorTranslationFiles:
     message: str
 
 
-@dataclass
-class PassportElementErrorUnspecified:
+class PassportElementErrorUnspecified(TelegramType):
     """
     Represents an issue in an unspecified place. The error is considered resolved when new data is added.
     Keyword arguments:
@@ -2386,21 +2324,7 @@ class PassportElementErrorUnspecified:
     message: str
 
 
-@dataclass
-class PassportData:
-    """
-    Contains information about Telegram Passport data shared with the bot by the user.
-    Keyword arguments:
-
-    :param data (Array of EncryptedPassportElement): Array with information about documents and other Telegram Passport elements that was shared with the bot
-    :param credentials (EncryptedCredentials): Encrypted credentials required to decrypt the data
-    """
-    data: List[EncryptedPassportElement]
-    credentials: EncryptedCredentials
-
-
-@dataclass
-class Game:
+class Game(TelegramType):
     """
     This object represents a game. Use BotFather to create and edit games, their short names will act as unique identifiers.
     Keyword arguments:
@@ -2415,13 +2339,12 @@ class Game:
     title: str
     description: str
     photo: List[PhotoSize]
-    text: str = None
-    text_entities: List[MessageEntity] = None
-    animation: Animation = None
+    text: Optional[str] = None
+    text_entities: Optional[List[MessageEntity]] = None
+    animation: Optional[Animation] = None
 
 
-@dataclass
-class GameHighScore:
+class GameHighScore(TelegramType):
     """
     This object represents one row of the high scores table for a game.
     Keyword arguments:
@@ -2435,8 +2358,7 @@ class GameHighScore:
     score: int
 
 
-@dataclass
-class Chat:
+class Chat(TelegramType):
     """
     This object represents a chat.
     Keyword arguments:
@@ -2462,47 +2384,25 @@ class Chat:
     """
     id: int
     type: str
-    title: str = None
-    username: str = None
-    first_name: str = None
-    last_name: str = None
-    photo: ChatPhoto = None
-    bio: str = None
-    description: str = None
-    invite_link: str = None
-    pinned_message: "Message" = None
-    permissions: ChatPermissions = None
-    slow_mode_delay: int = None
-    message_auto_delete_time: int = None
-    sticker_set_name: str = None
-    can_set_sticker_set: bool = None
-    linked_chat_id: int = None
-    location: ChatLocation = None
+    title: Optional[str] = None
+    username: Optional[str] = None
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    photo: Optional[ChatPhoto] = None
+    bio: Optional[str] = None
+    description: Optional[str] = None
+    invite_link: Optional[str] = None
+    pinned_message: Optional["Message"] = None
+    permissions: Optional[ChatPermissions] = None
+    slow_mode_delay: Optional[int] = None
+    message_auto_delete_time: Optional[int] = None
+    sticker_set_name: Optional[str] = None
+    can_set_sticker_set: Optional[bool] = None
+    linked_chat_id: Optional[int] = None
+    location: Optional[ChatLocation] = None
 
 
-@dataclass
-class ChatMemberUpdated:
-    """
-    This object represents changes in the status of a chat member.
-    Keyword arguments:
-
-    :param chat (Chat): Chat the user belongs to
-    :param _from (User): Performer of the action, which resulted in the change
-    :param date (Integer): Date the change was done in Unix time
-    :param old_chat_member (ChatMember): Previous information about the chat member
-    :param new_chat_member (ChatMember): New information about the chat member
-    :param invite_link (ChatInviteLink): Optional. Chat invite link, which was used by the user to join the chat; for joining by invite link events only.
-    """
-    chat: Chat
-    _from: User
-    date: int
-    old_chat_member: ChatMember
-    new_chat_member: ChatMember
-    invite_link: ChatInviteLink = None
-
-
-@dataclass
-class Message:
+class Message(TelegramType):
     """
     This object represents a message.
     Keyword arguments:
@@ -2567,64 +2467,62 @@ class Message:
     message_id: int
     date: int
     chat: Chat
-    _from: User = None
-    sender_chat: Chat = None
-    forward_from: User = None
-    forward_from_chat: Chat = None
-    forward_from_message_id: int = None
-    forward_signature: str = None
-    forward_sender_name: str = None
-    forward_date: int = None
-    reply_to_message: "Message" = None
-    via_bot: User = None
-    edit_date: int = None
-    media_group_id: str = None
-    author_signature: str = None
-    text: str = None
-    entities: List[MessageEntity] = None
-    animation: Animation = None
-    audio: Audio = None
-    document: Document = None
-    photo: List[PhotoSize] = None
-    sticker: Sticker = None
-    video: Video = None
-    video_note: VideoNote = None
-    voice: Voice = None
-    caption: str = None
-    caption_entities: List[MessageEntity] = None
-    contact: Contact = None
-    dice: Dice = None
-    game: Game = None
-    poll: Poll = None
-    venue: Venue = None
-    location: Location = None
-    new_chat_members: List[User] = None
-    left_chat_member: User = None
-    new_chat_title: str = None
-    new_chat_photo: List[PhotoSize] = None
-    delete_chat_photo: True = None
-    group_chat_created: True = None
-    supergroup_chat_created: True = None
-    channel_chat_created: True = None
-    message_auto_delete_timer_changed: MessageAutoDeleteTimerChanged = None
-    migrate_to_chat_id: int = None
-    migrate_from_chat_id: int = None
-    pinned_message: "Message" = None
-    invoice: Invoice = None
-    successful_payment: SuccessfulPayment = None
-    connected_website: str = None
-    passport_data: Union[PassportData] = None
-    proximity_alert_triggered: ProximityAlertTriggered = None
-    voice_chat_scheduled: VoiceChatScheduled = None
-    voice_chat_started: VoiceChatStarted = None
-    voice_chat_ended: VoiceChatEnded = None
-    voice_chat_participants_invited: VoiceChatParticipantsInvited = None
-    reply_markup: InlineKeyboardMarkup = None
+    from_: Optional[User] = None
+    sender_chat: Optional[Chat] = None
+    forward_from: Optional[User] = None
+    forward_from_chat: Optional[Chat] = None
+    forward_from_message_id: Optional[int] = None
+    forward_signature: Optional[str] = None
+    forward_sender_name: Optional[str] = None
+    forward_date: Optional[int] = None
+    reply_to_message: Optional["Message"] = None
+    via_bot: Optional[User] = None
+    edit_date: Optional[int] = None
+    media_group_id: Optional[str] = None
+    author_signature: Optional[str] = None
+    text: Optional[str] = None
+    entities: Optional[List[MessageEntity]] = None
+    animation: Optional[Animation] = None
+    audio: Optional[Audio] = None
+    document: Optional[Document] = None
+    photo: Optional[List[PhotoSize]] = None
+    sticker: Optional[Sticker] = None
+    video: Optional[Video] = None
+    video_note: Optional[VideoNote] = None
+    voice: Optional[Voice] = None
+    caption: Optional[str] = None
+    caption_entities: Optional[List[MessageEntity]] = None
+    contact: Optional[Contact] = None
+    dice: Optional[Dice] = None
+    game: Optional[Game] = None
+    poll: Optional[Poll] = None
+    venue: Optional[Venue] = None
+    location: Optional[Location] = None
+    new_chat_members: Optional[List[User]] = None
+    left_chat_member: Optional[User] = None
+    new_chat_title: Optional[str] = None
+    new_chat_photo: Optional[List[PhotoSize]] = None
+    delete_chat_photo: Optional[bool] = None
+    group_chat_created: Optional[bool] = None
+    supergroup_chat_created: Optional[bool] = None
+    channel_chat_created: Optional[bool] = None
+    message_auto_delete_timer_changed: Optional[MessageAutoDeleteTimerChanged] = None
+    migrate_to_chat_id: Optional[int] = None
+    migrate_from_chat_id: Optional[int] = None
+    pinned_message: Optional["Message"] = None
+    invoice: Optional[Invoice] = None
+    successful_payment: Optional[SuccessfulPayment] = None
+    connected_website: Optional[str] = None
+    passport_data: Optional[Union[PassportData]] = None
+    proximity_alert_triggered: Optional[ProximityAlertTriggered] = None
+    voice_chat_scheduled: Optional[VoiceChatScheduled] = None
+    voice_chat_started: Optional[VoiceChatStarted] = None
+    voice_chat_ended: Optional[VoiceChatEnded] = None
+    voice_chat_participants_invited: Optional[VoiceChatParticipantsInvited] = None
+    reply_markup: Optional[InlineKeyboardMarkup] = None
 
 
-
-@dataclass
-class Update:
+class Update(TelegramType):
     """
     This object represents an incoming update.At most one of the optional parameters can be present in any given update.
     Keyword arguments:
@@ -2645,46 +2543,19 @@ class Update:
     :param chat_member (ChatMemberUpdated): Optional. A chat member's status was updated in a chat. The bot must be an administrator in the chat and must explicitly specify \xe2\x80\x9cchat_member\xe2\x80\x9d in the list of allowed_updates to receive these updates.
     """
     update_id: int
-    message: Message = None
-    edited_message: Message = None
-    channel_post: Message = None
-    edited_channel_post: Message = None
-    inline_query: InlineQuery = None
-    chosen_inline_result: ChosenInlineResult = None
-    callback_query: CallbackQuery = None
-    shipping_query: ShippingQuery = None
-    pre_checkout_query: PreCheckoutQuery = None
-    poll: Poll = None
-    poll_answer: PollAnswer = None
-    my_chat_member: ChatMemberUpdated = None
-    chat_member: ChatMemberUpdated = None
-
-
-@dataclass
-class WebhookInfo:
-    """
-    Contains information about the current status of a webhook.
-    Keyword arguments:
-
-    :param url (String): Webhook URL, may be empty if webhook is not set up
-    :param has_custom_certificate (Boolean): True, if a custom certificate was provided for webhook certificate checks
-    :param pending_update_count (Integer): Number of updates awaiting delivery
-    :param ip_address (String): Optional. Currently used webhook IP address
-    :param last_error_date (Integer): Optional. Unix time for the most recent error that happened when trying to deliver an update via webhook
-    :param last_error_message (String): Optional. Error message in human-readable format for the most recent error that happened when trying to deliver an update via webhook
-    :param max_connections (Integer): Optional. Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery
-    :param allowed_updates (Array of String): Optional. A list of update types the bot is subscribed to. Defaults to all update types except chat_member
-    """
-    url: str
-    has_custom_certificate: bool
-    pending_update_count: int
-    ip_address: str = None
-    last_error_date: int = None
-    last_error_message: str = None
-    max_connections: int = None
-    allowed_updates: List[str] = None
-
-
+    message: Optional[Message] = None
+    edited_message: Optional[Message] = None
+    channel_post: Optional[Message] = None
+    edited_channel_post: Optional[Message] = None
+    inline_query: Optional[InlineQuery] = None
+    chosen_inline_result: Optional[ChosenInlineResult] = None
+    callback_query: Optional[CallbackQuery] = None
+    shipping_query: Optional[ShippingQuery] = None
+    pre_checkout_query: Optional[PreCheckoutQuery] = None
+    poll: Optional[Poll] = None
+    poll_answer: Optional[PollAnswer] = None
+    my_chat_member: Optional[ChatMemberUpdated] = None
+    chat_member: Optional[ChatMemberUpdated] = None
 
 
 
