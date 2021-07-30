@@ -33,6 +33,7 @@ class TelegramBot:
         self.onUpdate = onUpdate
         self.onMessage = onMessage
         self.onEditedMessage = onEditedMessage
+        self.onMyChatMember = onMyChatMember
 
         self.app = FastAPI()
         
@@ -46,8 +47,10 @@ class TelegramBot:
             r = await client.post(
                     f"https://api.telegram.org/bot{self.token}/{method}",
                     json=json_data,
-            )     
+            )
 
+        if self.database:
+            self.database.add_sent(r)
 
     def getUpdates(
         self,
@@ -1772,4 +1775,7 @@ class TelegramBot:
             elif update.edited_message:
                 for handle in self.onEditedMessage.handlers:
                     await handle(update.edited_message)
+            elif update.my_chat_member:
+                for handle in self.onMyChatMember.handlers:
+                    await handle(update.my_chat_member)
             # return await handle(update)

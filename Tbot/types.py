@@ -1,5 +1,6 @@
+from __future__ import annotations
 from typing import Union, List, Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, Extra
 
 
 class TelegramType(BaseModel):
@@ -14,7 +15,8 @@ class VoiceChatStarted(TelegramType):
     """
     This object represents a service message about a voice chat started in the chat. Currently holds no information.
     """
-
+    class Config:
+        extra = Extra.allow
 
 class ChatMember(TelegramType):
     """
@@ -27,6 +29,8 @@ class ChatMember(TelegramType):
     ChatMemberBanned
     
     """
+    class Config:
+        extra = Extra.allow
 
 
 class BotCommandScope(TelegramType):
@@ -41,7 +45,8 @@ class BotCommandScope(TelegramType):
     BotCommandScopeChatMember
     
     """
-
+    class Config:
+        extra = Extra.allow
 
 class InputMedia(TelegramType):
     """
@@ -53,13 +58,15 @@ class InputMedia(TelegramType):
     InputMediaVideo
     
     """
-
+    class Config:
+        extra = Extra.allow
 
 class InputFile(TelegramType):
     """
     This object represents the contents of a file to be uploaded. Must be posted using multipart/form-data in the usual way that files are uploaded via the browser.
     """
-
+    class Config:
+        extra = Extra.allow
 
 class InlineQueryResult(TelegramType):
     """
@@ -86,7 +93,8 @@ class InlineQueryResult(TelegramType):
     InlineQueryResultVoice
         Note: All URLs passed in inline query results will be available to end users and therefore must be assumed to be public.
     """
-
+    class Config:
+        extra = Extra.allow
 
 class InputMessageContent(TelegramType):
     """
@@ -98,7 +106,8 @@ class InputMessageContent(TelegramType):
     InputInvoiceMessageContent
     
     """
-
+    class Config:
+        extra = Extra.allow
 
 class PassportElementError(TelegramType):
     """
@@ -114,13 +123,15 @@ class PassportElementError(TelegramType):
     PassportElementErrorUnspecified
     
     """
-
+    class Config:
+        extra = Extra.allow
 
 class CallbackGame(TelegramType):
     """
     A placeholder, currently holds no information. Use BotFather to set up your game.
     """
-
+    class Config:
+        extra = Extra.allow
 
 class WebhookInfo(TelegramType):
     """
@@ -870,26 +881,6 @@ class ChatMemberBanned(TelegramType):
     status: str
     user: User
     until_date: int
-
-
-class ChatMemberUpdated(TelegramType):
-    """
-    This object represents changes in the status of a chat member.
-    Keyword arguments:
-
-    :param chat (Chat): Chat the user belongs to
-    :param _from (User): Performer of the action, which resulted in the change
-    :param date (Integer): Date the change was done in Unix time
-    :param old_chat_member (ChatMember): Previous information about the chat member
-    :param new_chat_member (ChatMember): New information about the chat member
-    :param invite_link (ChatInviteLink): Optional. Chat invite link, which was used by the user to join the chat; for joining by invite link events only.
-    """
-    chat: "Chat"
-    from_: User
-    date: int
-    old_chat_member: ChatMember
-    new_chat_member: ChatMember
-    invite_link: Optional[ChatInviteLink] = None
 
 
 class ChatPermissions(TelegramType):
@@ -2475,7 +2466,7 @@ class Message(TelegramType):
     forward_signature: Optional[str] = None
     forward_sender_name: Optional[str] = None
     forward_date: Optional[int] = None
-    reply_to_message: Optional["Message"] = None
+    reply_to_message: Optional[Message] = None
     via_bot: Optional[User] = None
     edit_date: Optional[int] = None
     media_group_id: Optional[str] = None
@@ -2509,7 +2500,7 @@ class Message(TelegramType):
     message_auto_delete_timer_changed: Optional[MessageAutoDeleteTimerChanged] = None
     migrate_to_chat_id: Optional[int] = None
     migrate_from_chat_id: Optional[int] = None
-    pinned_message: Optional["Message"] = None
+    pinned_message: Optional[Message] = None
     invoice: Optional[Invoice] = None
     successful_payment: Optional[SuccessfulPayment] = None
     connected_website: Optional[str] = None
@@ -2520,6 +2511,26 @@ class Message(TelegramType):
     voice_chat_ended: Optional[VoiceChatEnded] = None
     voice_chat_participants_invited: Optional[VoiceChatParticipantsInvited] = None
     reply_markup: Optional[InlineKeyboardMarkup] = None
+
+
+class ChatMemberUpdated(TelegramType):
+    """
+    This object represents changes in the status of a chat member.
+    Keyword arguments:
+
+    :param chat (Chat): Chat the user belongs to
+    :param _from (User): Performer of the action, which resulted in the change
+    :param date (Integer): Date the change was done in Unix time
+    :param old_chat_member (ChatMember): Previous information about the chat member
+    :param new_chat_member (ChatMember): New information about the chat member
+    :param invite_link (ChatInviteLink): Optional. Chat invite link, which was used by the user to join the chat; for joining by invite link events only.
+    """
+    chat: Chat
+    from_: User
+    date: int
+    old_chat_member: ChatMember
+    new_chat_member: ChatMember
+    invite_link: Optional[ChatInviteLink] = None
 
 
 class Update(TelegramType):
@@ -2559,3 +2570,7 @@ class Update(TelegramType):
 
 
 
+# update forward refs (https://pydantic-docs.helpmanual.io/usage/postponed_annotations/)
+
+Message.update_forward_refs()
+ChatMember.update_forward_refs()

@@ -1,5 +1,6 @@
 
 from pymongo import MongoClient
+import httpx
 
 from .types import Update, Message, User
 
@@ -13,7 +14,7 @@ class Database:
         self.db = self.cluster[database_name]
         self.updates = self.db['updates']
         self.users = self.db['users']
-        self.messages = self.db['messages']
+        self.sent = self.db['sent']
 
 
     def add_update(self,
@@ -22,11 +23,11 @@ class Database:
         self.updates.insert_one(update.dict())
 
 
-    def add_messages(
+    def add_sent(
         self,
-        message: Message,
+        response: httpx.Response,
         ):
-        self.messages.insert_one(message.dict())
+        self.sent.insert_one(response.json())
 
 
     def add_user(

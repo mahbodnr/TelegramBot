@@ -25,3 +25,6 @@ class onMessage(Handler):
 class onEditedMessage(Handler):
     handlers = set()
 
+
+class onMyChatMember(Handler):
+    handlers = set()
