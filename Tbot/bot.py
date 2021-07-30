@@ -10,6 +10,7 @@ from dacite import from_dict
 from .database import Database
 from .filters import Filters, Filter
 from .types import *
+from .handlers import *
 
 class TelegramBot:
     def __init__(
@@ -28,6 +29,10 @@ class TelegramBot:
                 f'https://api.telegram.org/bot{self.token}'
                 f'/setWebhook?url={webhook}')
             assert r.status_code == 200, f"Couldn't set the webhook. {r.content}"
+
+        self.onUpdate = onUpdate
+        self.onMessage = onMessage
+        self.onEditedMessage = onEditedMessage
 
         self.app = FastAPI()
         
@@ -1739,25 +1744,32 @@ class TelegramBot:
         return from_dict(telegramType, req_data)
 
 
-    def onUpdate(
+    def listen(
         self,
         path: str = "/",
         filters: Union[Filters, Filter, Iterable] = None,
         ):
-        def get_update(handle):
-            @self.app.post(path)
-            async def recWebHook(update: Update):
-                # filter update
-                f = filters
+        @self.app.post(path)
+        async def recWebHook(update: Update):
+            # filter update
+            f = filters
+            if f:
                 if type(f) != Filters:
                     f = Filters(f) if isinstance(f, Iterable) else Filters([f])
                 if f and not f.check(update):
                     return
-                # write on database
-                if self.database:
-                    self.database.add_update(update)
-                    # if update.message and update.message._from:
-                    #     self.database.add_user(update.message._from)
-                #handle
-                return await handle(update)
-        return get_update
+            # write on database
+            if self.database:
+                self.database.add_update(update)
+                if update.message and update.message.from_:
+                    self.database.add_user(update.message.from_)
+            #call handles
+            for handle in self.onUpdate.handlers:
+                await handle(update)
+            if update.message:
+                for handle in self.onMessage.handlers:
+                    await handle(update.message)
+            elif update.edited_message:
+                for handle in self.onEditedMessage.handlers:
+                    await handle(update.edited_message)
+            # return await handle(update)

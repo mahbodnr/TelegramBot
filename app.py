@@ -6,6 +6,7 @@ from pyngrok import ngrok
 from Tbot.bot import TelegramBot
 from Tbot.database import Database
 from Tbot.filters import Filters, UpdateType
+from Tbot.handlers import onUpdate, onMessage, onEditedMessage
 
 with open('./secret.json') as f:
   secret = json.load(f)
@@ -18,18 +19,24 @@ bot = TelegramBot(
     webhook = ngrok.connect(addr = 8000, bind_tls=True).public_url #secret['webhook']
     )
 
+bot.listen()
 
-@bot.onUpdate(filters= UpdateType(["edited_message", "message"]))
-async def show_message(update):
-    if update.message:
-        await bot.sendMessage(
-            update.message.from_.id,
-            f"Hi {update.message.from_.first_name}"
-            )
-    elif update.edited_message:
-        await bot.sendMessage(
-          update.edited_message.from_.id,
-          f"You edited your message. I am watching you 👀"
-          )
+@onUpdate
+async def handle_updates(update):
+    ...
+    
+@onMessage
+async def handle_messages(message):
+    await bot.sendMessage(
+        message.from_.id,
+        f"You said: {message.text}"
+        )
+
+@onEditedMessage
+async def edit_message(edited_message):
+    await bot.sendMessage(
+      edited_message.from_.id,
+      f"You edited your message. I am watching you 👀"
+      )
 
 # uvicorn app:bot.app --reload
