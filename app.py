@@ -5,7 +5,7 @@ from pyngrok import ngrok
 
 from Tbot.bot import TelegramBot
 from Tbot.database import Database
-from Tbot.filters import Filters, UpdateType
+from Tbot.filters import FilterCollection
 
 with open('./secret.json') as f:
   secret = json.load(f)
@@ -25,6 +25,7 @@ async def handle_updates(update):
     ...
     
 @bot.onMessage
+@FilterCollection(filters = {lambda x: True if x.chat.id == 247273392 else False})
 async def handle_messages(message):
     await bot.sendMessage(
         message.from_.id,

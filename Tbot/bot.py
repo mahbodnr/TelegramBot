@@ -8,7 +8,7 @@ import uvicorn
 from dacite import from_dict
 
 from .database import Database
-from .filters import Filters, Filter
+from .filters import FilterCollection, FilterCondition
 from .types import *
 from .handlers import *
 
@@ -1750,15 +1750,15 @@ class TelegramBot:
     def listen(
         self,
         path: str = "/",
-        filters: Union[Filters, Filter, Iterable] = None,
+        filters: Union[FilterCollection, FilterCondition, Iterable] = None,
         ):
         @self.app.post(path)
         async def recWebHook(update: Update):
             # filter update
             f = filters
             if f:
-                if type(f) != Filters:
-                    f = Filters(f) if isinstance(f, Iterable) else Filters([f])
+                if type(f) != FilterCollection:
+                    f = FilterCollection(f) if isinstance(f, Iterable) else FilterCollection([f])
                 if f and not f.check(update):
                     return
             # write on database

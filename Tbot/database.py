@@ -12,6 +12,7 @@ class Database:
         ):
         self.cluster = MongoClient(connecting_string)
         self.db = self.cluster[database_name]
+        # collections
         self.updates = self.db['updates']
         self.users = self.db['users']
         self.sent = self.db['sent']

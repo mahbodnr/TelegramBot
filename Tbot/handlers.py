@@ -1,7 +1,7 @@
 from typing import Union, List
 from collections import Iterable 
 
-from .filters import Filters, Filter
+from .filters import FilterCollection, FilterCondition
 from .types import *
 
 class Handler:

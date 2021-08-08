@@ -1,7 +1,7 @@
 from typing import Set, Callable, Union, List
+from types import FunctionType
 
-
-class Filter:
+class FilterCondition:
     def __init__(self, pass_filter: Callable):
         self.pass_filter = pass_filter
 
@@ -9,38 +9,60 @@ class Filter:
         return self.pass_filter(update)
 
     def __or__(self, other):
-        assert isinstance(other, (Filter, Filters)), f"got {other} of type: {type(other)}"
-        return Filters({self, other}, operator = 'or')
+        assert isinstance(other, (FilterCondition, FilterCollection)), f"got {other} of type: {type(other)}"
+        return FilterCollection({self, other}, operator = 'or')
 
     def __and__(self, other):
-        assert isinstance(other, (Filter, Filters)), f"got {other} of type: {type(other)}"
-        return Filters({self, other}, operator = 'and')
+        assert isinstance(other, (FilterCondition, FilterCollection)), f"got {other} of type: {type(other)}"
+        return FilterCollection({self, other}, operator = 'and')
 
 
 
-class Filters:
+class FilterCollection:
     def __init__(
         self,
-        filters_items: Set["Filters"],
+        filters: Set["FilterCollection"],
         operator: str = None,
         ):
-        self.filters_items = filters_items
+        self.filters_items = filters
 
         if len(self.filters_items) > 1:
             self.filters_items = set()
-            for filters_item in filters_items:
-                if isinstance(filters_item, (Filter)):
-                    self.filters_items.add(Filters({filters_item}))
-                elif isinstance(filters_item, (Filters)):
+            for filters_item in filters:
+                if isinstance(filters_item, FilterCondition):
+                    self.filters_items.add(FilterCollection({filters_item}))
+                elif isinstance(filters_item, FilterCollection):
                     self.filters_items.add(filters_item)
+                elif isinstance(filters_item, FunctionType):
+                    self.filters_items.add(FilterCollection({FilterCondition(filters_item)}))
+
                 else:
                     raise ValueError(
-                        "'filters_items' is a set of 'Filter' or 'Filters' instances."
+                        "'filters_items' is a set of 'FunctionType', 'FilterCondition' or"
+                        "'FilterCollection' instances."
                         f" got {filters_item} of type: {type(filters_item)}"
                         )
-
         self.operator = operator
 
+    def __call__(self, func):
+        @self.decorator
+        def wrapped_func(*args):
+            return func(*args)
+
+        return wrapped_func
+        
+
+    def decorator(self, func):
+        def decorator_function(*args):
+            if self.check(args[0]):
+                return func(*args)
+            else:
+                return self.do_nothing()
+        return decorator_function
+
+
+    async def do_nothing(self):
+        ...
 
     def check(self, update):
         if len(self.filters_items) == 1:
@@ -61,30 +83,28 @@ class Filters:
                     raise ValueError("operator must be either 'and' or 'or'.")
 
     def __or__(self, other):
-        assert isinstance(other, (Filter, Filters)), f"got {other} of type: {type(other)}"
-        return Filters({self, other}, operator = 'or')
+        assert isinstance(other, (FilterCondition, FilterCollection)), f"got {other} of type: {type(other)}"
+        return FilterCollection({self, other}, operator = 'or')
 
     def __and__(self, other):
-        assert isinstance(other, (Filter, Filters)), f"got {other} of type: {type(other)}"
-        return Filters({self, other}, operator = 'and')
+        assert isinstance(other, (FilterCondition, FilterCollection)), f"got {other} of type: {type(other)}"
+        return FilterCollection({self, other}, operator = 'and')
 
 
-
-class UpdateType(Filter):
-    def __init__(self, update_type: Union[str, List[str]]):
-        if type(update_type) == str:
-            self.update_types = [update_type]
-        elif type(update_type) == list:
-            self.update_types = update_type
+class TargetChats(FilterCondition):
+    def __init__(
+        self,
+        chat_ids : Union[Set[int], int]
+        ):
+        if isinstance(chat_ids, (int, str)):
+            self.chat_ids = {chat_ids}
         else:
-            raise ValueError(
-                "update_type must be either a list or a string."
-                f" got {update_type} of type: {type(update_type)}"
-                )
-
+            self.chat_ids = set(chat_ids)
 
     def pass_filter(self, update):
-        for update_type in self.update_types:
-            if getattr(update, update_type):
-                return True,
-        return False
+        if hasattr(update, 'chat'):
+            if update.chat in self.chat_ids:
+                return True
+        
+        else: # Update type
+            pass
