@@ -60,7 +60,6 @@ class FilterCollection:
                 return self.do_nothing()
         return decorator_function
 
-
     async def do_nothing(self):
         ...
 
@@ -102,9 +101,24 @@ class TargetChats(FilterCondition):
             self.chat_ids = set(chat_ids)
 
     def pass_filter(self, update):
-        if hasattr(update, 'chat'):
-            if update.chat in self.chat_ids:
+        for message_type in { 
+            "message",
+            "edited_message",
+            "channel_post",
+            "edited_channel_post",
+            "inline_query",
+            "chosen_inline_result",
+            "callback_query",
+            "shipping_query",
+            "pre_checkout_query",
+            "poll",
+            "poll_answer",
+            "my_chat_member",
+            "chat_member",
+        }:
+            if (
+                getattr(update, message_type) and
+                getattr(update, message_type).chat.id in self.chat_ids
+            ):
                 return True
-        
-        else: # Update type
-            pass
+        return False

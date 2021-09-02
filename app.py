@@ -5,7 +5,8 @@ from pyngrok import ngrok
 
 from Tbot.bot import TelegramBot
 from Tbot.database import Database
-from Tbot.filters import FilterCollection
+from Tbot.filters import FilterCollection, TargetChats
+from Tbot.panels import AdminPanel
 
 with open('./secret.json') as f:
   secret = json.load(f)
@@ -19,13 +20,14 @@ bot = TelegramBot(
     )
 
 bot.listen()
+admin_panel = AdminPanel(bot)
 
 @bot.onUpdate
+@FilterCollection({TargetChats(secret['admin_chat_id'])})
 async def handle_updates(update):
-    ...
+    await admin_panel(update)
     
 @bot.onMessage
-@FilterCollection(filters = {lambda x: True if x.chat.id == 247273392 else False})
 async def handle_messages(message):
     await bot.sendMessage(
         message.from_.id,
@@ -38,4 +40,5 @@ async def handle_my_chat_member(my_chat_member):
       my_chat_member.from_.id,
       str(my_chat_member.json())
       )
+
 # uvicorn app:bot.app --reload
