@@ -82,11 +82,15 @@ class FilterCollection:
                     raise ValueError("operator must be either 'and' or 'or'.")
 
     def __or__(self, other):
-        assert isinstance(other, (FilterCondition, FilterCollection)), f"got {other} of type: {type(other)}"
+        assert isinstance(other, (FilterCondition, FilterCollection)),(
+        f"got {other} of type: {type(other)}"
+        )
         return FilterCollection({self, other}, operator = 'or')
 
     def __and__(self, other):
-        assert isinstance(other, (FilterCondition, FilterCollection)), f"got {other} of type: {type(other)}"
+        assert isinstance(other, (FilterCondition, FilterCollection)),(
+        f"got {other} of type: {type(other)}"
+        )
         return FilterCollection({self, other}, operator = 'and')
 
 
@@ -96,9 +100,9 @@ class TargetChats(FilterCondition):
         chat_ids : Union[Set[int], int]
         ):
         if isinstance(chat_ids, (int, str)):
-            self.chat_ids = {chat_ids}
+            self.chat_ids = {int(chat_ids)}
         else:
-            self.chat_ids = set(chat_ids)
+            self.chat_ids = {int(chat_id) for chat_id in chat_ids}
 
     def pass_filter(self, update):
         for message_type in { 
@@ -118,7 +122,7 @@ class TargetChats(FilterCondition):
         }:
             if (
                 getattr(update, message_type) and
-                getattr(update, message_type).chat.id in self.chat_ids
+                getattr(update, message_type).from_.id in self.chat_ids
             ):
                 return True
         return False

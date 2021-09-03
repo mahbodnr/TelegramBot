@@ -637,14 +637,20 @@ class ReplyKeyboardRemove(TelegramType):
     selective: Optional[bool] = None
 
 
-class InlineKeyboardMarkup(TelegramType):
+class LoginUrl(TelegramType):
     """
-    This object represents an inline keyboard that appears right next to the message it belongs to.
+    This object represents a parameter of the inline keyboard button used to automatically authorize a user. Serves as a great replacement for the Telegram Login Widget when the user is coming from Telegram. All the user needs to do is tap/click a button and confirm that they want to log in:    Telegram apps support these buttons as of version 5.7.    Sample bot: @discussbot
     Keyword arguments:
 
-    :param inline_keyboard (Array of Array of InlineKeyboardButton): Array of button rows, each represented by an Array of InlineKeyboardButton objects
+    :param url (String): An HTTP URL to be opened with user authorization data added to the query string when the button is pressed. If the user refuses to provide authorization data, the original URL without information about the user will be opened. The data added is the same as described in Receiving authorization data.NOTE: You must always check the hash of the received data to verify the authentication and the integrity of the data as described in Checking authorization.
+    :param forward_text (String): Optional. New text of the button in forwarded messages.
+    :param bot_username (String): Optional. Username of a bot, which will be used for user authorization. See Setting up a bot for more details. If not specified, the current bot's username will be assumed. The url's domain must be the same as the domain linked with the bot. See Linking your domain to the bot for more details.
+    :param request_write_access (Boolean): Optional. Pass True to request the permission for your bot to send messages to the user.
     """
-    inline_keyboard: List[List["InlineKeyboardButton"]]
+    url: str
+    forward_text: Optional[str] = None
+    bot_username: Optional[str] = None
+    request_write_access: Optional[bool] = None
 
 
 class InlineKeyboardButton(TelegramType):
@@ -663,7 +669,7 @@ class InlineKeyboardButton(TelegramType):
     """
     text: str
     url: Optional[str] = None
-    login_url: Optional["LoginUrl"] = None
+    login_url: Optional[LoginUrl] = None
     callback_data: Optional[str] = None
     switch_inline_query: Optional[str] = None
     switch_inline_query_current_chat: Optional[str] = None
@@ -671,20 +677,14 @@ class InlineKeyboardButton(TelegramType):
     pay: Optional[bool] = None
 
 
-class LoginUrl(TelegramType):
+class InlineKeyboardMarkup(TelegramType):
     """
-    This object represents a parameter of the inline keyboard button used to automatically authorize a user. Serves as a great replacement for the Telegram Login Widget when the user is coming from Telegram. All the user needs to do is tap/click a button and confirm that they want to log in:    Telegram apps support these buttons as of version 5.7.    Sample bot: @discussbot
+    This object represents an inline keyboard that appears right next to the message it belongs to.
     Keyword arguments:
 
-    :param url (String): An HTTP URL to be opened with user authorization data added to the query string when the button is pressed. If the user refuses to provide authorization data, the original URL without information about the user will be opened. The data added is the same as described in Receiving authorization data.NOTE: You must always check the hash of the received data to verify the authentication and the integrity of the data as described in Checking authorization.
-    :param forward_text (String): Optional. New text of the button in forwarded messages.
-    :param bot_username (String): Optional. Username of a bot, which will be used for user authorization. See Setting up a bot for more details. If not specified, the current bot's username will be assumed. The url's domain must be the same as the domain linked with the bot. See Linking your domain to the bot for more details.
-    :param request_write_access (Boolean): Optional. Pass True to request the permission for your bot to send messages to the user.
+    :param inline_keyboard (Array of Array of InlineKeyboardButton): Array of button rows, each represented by an Array of InlineKeyboardButton objects
     """
-    url: str
-    forward_text: Optional[str] = None
-    bot_username: Optional[str] = None
-    request_write_access: Optional[bool] = None
+    inline_keyboard: List[List[InlineKeyboardButton]]
 
 
 class CallbackQuery(TelegramType):
@@ -2574,3 +2574,4 @@ class Update(TelegramType):
 
 Message.update_forward_refs()
 ChatMember.update_forward_refs()
+CallbackQuery.update_forward_refs()

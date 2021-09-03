@@ -1,3 +1,6 @@
+from .utils import mention_by_id
+from .types import InlineKeyboardMarkup, InlineKeyboardButton
+
 class AdminPanel:
     def __init__(
         self,
@@ -27,7 +30,9 @@ class AdminPanel:
                     "User id Must be a Number!", 
                     reply_to_message_id = update.message.message_id,
                     )
+
                 user_info = self.bot.database.users.find_one({"id": user_id})
+                
                 if not user_info:
                     return await self.bot.sendMessage(
                     chat_id, 
@@ -39,9 +44,24 @@ class AdminPanel:
                     chat_id,
                     (
                         f"* {user_info['first_name']}"
-                        f" {user_info['last_name'] if user_info['last_name'] else None}"
-                        f" {({user_info['id']})}"
-                        f" @{user_info['username']}" if  user_info['username'] else ''
+                        f" {user_info['last_name'] if user_info['last_name'] else ''}"
+                        f" ({mention_by_id(user_info['id'], user_info['id'], 'HTML')})"
+                        + (f" @{user_info['username']}" if  user_info['username'] else '')
                     ),
                     reply_to_message_id = update.message.message_id,
+                    parse_mode = 'HTML',
+                    reply_markup = InlineKeyboardMarkup(
+                        inline_keyboard = [[
+                            InlineKeyboardButton(
+                                text= "View Messages",
+                                callback_data= f"getMessages {user_id}",
+                            )
+                        ]]
+                    ),
+                )
+        
+        if update.callback_query:
+            chat_id = update.callback_query.from_.id
+            return await self.bot.sendMessage(
+                chat_id, "callback_query"
                 )

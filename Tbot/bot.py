@@ -3,8 +3,7 @@ from collections import Iterable
 
 import httpx
 import requests
-from fastapi import FastAPI,Request
-import uvicorn
+from fastapi import FastAPI
 from dacite import from_dict
 
 from .database import Database
@@ -45,8 +44,8 @@ class TelegramBot:
         ):
         async with httpx.AsyncClient() as client:
             r = await client.post(
-                    f"https://api.telegram.org/bot{self.token}/{method}",
-                    json=json_data,
+                f"https://api.telegram.org/bot{self.token}/{method}",
+                json=json_data,
             )
 
         if self.database:
@@ -166,7 +165,10 @@ class TelegramBot:
         :param allow_sending_without_reply (Boolean, Optional): Pass True, if the message should be sent even if the specified replied-to message is not found
         :param reply_markup (InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply, Optional): Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         """
-        kwargs = {k:v for k,v in locals().items() if k!='self' and v!=None}
+        kwargs = {
+            k:v.json(exclude_unset= True) if isinstance(v, TelegramType) else v 
+            for k,v in locals().items() if k!='self' and v!=None
+        }
         return self("sendMessage", kwargs)
 
     def forwardMessage(
@@ -1778,4 +1780,5 @@ class TelegramBot:
             elif update.my_chat_member:
                 for handle in self.onMyChatMember.handlers:
                     await handle(update.my_chat_member)
+            # TODO: other types
             # return await handle(update)
