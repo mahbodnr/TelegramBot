@@ -2571,7 +2571,6 @@ class Update(TelegramType):
 
 
 # update forward refs (https://pydantic-docs.helpmanual.io/usage/postponed_annotations/)
-
 Message.update_forward_refs()
 ChatMember.update_forward_refs()
 CallbackQuery.update_forward_refs()

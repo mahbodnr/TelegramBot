@@ -9,7 +9,7 @@ from dacite import from_dict
 from .database import Database
 from .filters import FilterCollection, FilterCondition
 from .types import *
-from .handlers import *
+from .handlers import ALL_HANDLERS
 
 class TelegramBot:
     def __init__(
@@ -29,10 +29,8 @@ class TelegramBot:
                 f'/setWebhook?url={webhook}')
             assert r.status_code == 200, f"Couldn't set the webhook. {r.content}"
 
-        self.onUpdate = onUpdate
-        self.onMessage = onMessage
-        self.onEditedMessage = onEditedMessage
-        self.onMyChatMember = onMyChatMember
+        for handler in ALL_HANDLERS:
+            setattr(self, handler.__name__, handler)
 
         self.app = FastAPI()
         
@@ -1749,11 +1747,19 @@ class TelegramBot:
         return from_dict(telegramType, req_data)
 
 
+    async def call_handlers(self, update):
+        for handle in ALL_HANDLERS[0].handlers: #onUpdate
+             await handle(update)
+        for handler_function in ALL_HANDLERS[1:]: # Other Handlers
+            if getattr(update, handler_function.attr_name):
+                for handle in handler_function.handlers:
+                    await handle(getattr(update, handler_function.attr_name))
+
     def listen(
         self,
         path: str = "/",
         filters: Union[FilterCollection, FilterCondition, Iterable] = None,
-        ):
+        ) -> None:
         @self.app.post(path)
         async def recWebHook(update: Update):
             # filter update
@@ -1768,17 +1774,4 @@ class TelegramBot:
                 self.database.add_update(update)
                 if update.message and update.message.from_:
                     self.database.add_user(update.message.from_)
-            #call handles
-            for handle in self.onUpdate.handlers:
-                await handle(update)
-            if update.message:
-                for handle in self.onMessage.handlers:
-                    await handle(update.message)
-            elif update.edited_message:
-                for handle in self.onEditedMessage.handlers:
-                    await handle(update.edited_message)
-            elif update.my_chat_member:
-                for handle in self.onMyChatMember.handlers:
-                    await handle(update.my_chat_member)
-            # TODO: other types
-            # return await handle(update)
+            await self.call_handlers(update)
